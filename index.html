@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Commission Calculator — Estimate your sales pay</title>
+<meta name="description" content="Free commission calculator for any sales job. Add base pay, per-unit commission, add-ons, tiered bonuses, revenue %, and spiffs to see your total earnings." />
+<meta property="og:title" content="Commission Calculator — Estimate your sales pay" />
+<meta property="og:description" content="Free commission calculator for any sales job." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-row">
+    <div class="brand">
+      <div class="brand-icon">$</div>
+      <span class="brand-name">CommissionCalc</span>
+    </div>
+    <span class="badge-pill">💸 Free · No signup</span>
+  </div>
+</header>
+
+<main class="container main">
+  <section class="hero">
+    <h1>See how much <span class="text-gradient-money">money</span> you're making</h1>
+    <p>Plug in your pay structure for any sales job — base pay, per-unit commission, add-ons, tiered bonuses, revenue %, and one-time spiffs. Watch the cash add up live. 💰</p>
+  </section>
+
+  <div class="grid">
+    <div class="inputs">
+
+      <!-- Base pay -->
+      <div class="card border-green">
+        <div class="card-head"><span class="chip chip-cash">$</span><h2>Base pay</h2></div>
+        <div class="card-body grid-2">
+          <div><label for="baseAmount">Amount</label><input id="baseAmount" type="number" min="0" value="20" /></div>
+          <div>
+            <label for="baseType">Pay frequency</label>
+            <select id="baseType">
+              <option value="hourly" selected>Per hour</option>
+              <option value="weekly">Per week</option>
+              <option value="biweekly">Bi-weekly</option>
+              <option value="monthly">Per month</option>
+              <option value="annual">Per year</option>
+            </select>
+          </div>
+          <p class="muted small col-span-2">Hourly assumes 40 hrs/week × 52 weeks for annualization.</p>
+        </div>
+      </div>
+
+      <!-- Sales period -->
+      <div class="card border-gold">
+        <div class="card-head"><span class="chip chip-gold">◎</span><h2>Sales period</h2></div>
+        <div class="card-body grid-2">
+          <div>
+            <label for="salesInputPeriod">I'm entering sales numbers as</label>
+            <select id="salesInputPeriod">
+              <option value="weekly">Per week</option>
+              <option value="biweekly">Bi-weekly</option>
+              <option value="monthly" selected>Per month</option>
+              <option value="annual">Per year</option>
+            </select>
+          </div>
+          <div>
+            <label for="salesPeriod">Show my earnings as</label>
+            <select id="salesPeriod">
+              <option value="hourly">Hourly</option>
+              <option value="weekly">Weekly</option>
+              <option value="biweekly">Bi-weekly</option>
+              <option value="monthly" selected>Monthly</option>
+              <option value="annual">Annual</option>
+            </select>
+          </div>
+          <p class="muted small col-span-2">Enter sales for whatever period you're tracking. We'll convert everything to the period you want to see.</p>
+        </div>
+      </div>
+
+      <!-- Units -->
+      <div class="card border-glow">
+        <div class="card-head"><span class="chip chip-cash">▣</span><h2>Units sold &amp; flat commission</h2></div>
+        <div class="card-body grid-2">
+          <div><label for="unitsSold">Units sold (<span data-bind="salesInputPeriod">monthly</span>)</label><input id="unitsSold" type="number" min="0" value="25" /></div>
+          <div><label for="perUnit">Commission per unit ($)</label><input id="perUnit" type="number" min="0" value="50" /></div>
+          <div class="muted small col-span-2">= <strong data-out="unitCommissionScaled">$0.00</strong> per <span data-bind="salesPeriod">monthly</span></div>
+        </div>
+      </div>
+
+      <!-- Revenue % -->
+      <div class="card border-green">
+        <div class="card-head"><span class="chip chip-money">↗</span><h2>Revenue % commission</h2></div>
+        <div class="card-body grid-2">
+          <div><label for="totalRevenue">Total revenue ($)</label><input id="totalRevenue" type="number" min="0" value="0" /></div>
+          <div><label for="revenuePct">Commission rate (%)</label><input id="revenuePct" type="number" min="0" step="0.1" value="0" /></div>
+          <div class="muted small col-span-2">= <strong data-out="revenueCommissionScaled">$0.00</strong> per <span data-bind="salesPeriod">monthly</span></div>
+        </div>
+      </div>
+
+      <!-- Add-ons -->
+      <div class="card border-gold">
+        <div class="card-head between">
+          <div class="card-head"><span class="chip chip-gold">🛡</span><h2>Protection plans &amp; add-ons</h2></div>
+          <button class="btn btn-outline" data-add="addon">+ Add</button>
+        </div>
+        <div class="card-body">
+          <div id="addOnsList" class="row-list"></div>
+          <div class="muted small">= <strong data-out="addOnScaled">$0.00</strong> per <span data-bind="salesPeriod">monthly</span></div>
+        </div>
+      </div>
+
+      <!-- Tiered bonuses -->
+      <div class="card border-glow">
+        <div class="card-head between">
+          <div class="card-head"><span class="chip chip-cash">◎</span><h2>Tiered bonuses</h2></div>
+          <button class="btn btn-outline" data-add="tier">+ Add tier</button>
+        </div>
+        <div class="card-body">
+          <p class="muted small">Bonus paid when units sold reaches each threshold. Highest tier reached wins.</p>
+          <div id="tiersList" class="row-list"></div>
+          <div class="muted small">= <strong data-out="tieredBonusScaled">$0.00</strong> per <span data-bind="salesPeriod">monthly</span></div>
+        </div>
+      </div>
+
+      <!-- Spiffs -->
+      <div class="card border-gold">
+        <div class="card-head between">
+          <div class="card-head"><span class="chip chip-gold">✦</span><h2>Spiffs &amp; one-time bonuses</h2></div>
+          <button class="btn btn-outline" data-add="spiff">+ Add</button>
+        </div>
+        <div class="card-body">
+          <div id="spiffsList" class="row-list"></div>
+          <div class="muted small">= <strong data-out="spiffScaled">$0.00</strong> per <span data-bind="salesPeriod">monthly</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <aside class="results">
+      <div class="result-card">
+        <div class="result-head">✦ Your earnings</div>
+        <div class="result-label">Total (<span data-bind="salesPeriod">monthly</span>)</div>
+        <div class="result-total bg-shimmer-gold animate-cash-pulse" data-out="totalForPeriod">$0.00</div>
+        <hr id="totalDivider" hidden />
+        <div id="breakdown" class="breakdown"></div>
+        <div id="taxesPanel" hidden>
+          <hr />
+          <div class="tax-toggle">
+            <span>Estimate take-home (taxes)</span>
+            <button id="toggleTaxes" class="btn btn-ghost-light">Off</button>
+          </div>
+          <div id="taxesBody" hidden>
+            <div id="baseTaxRow" hidden>
+              <label for="baseTaxPct" class="light">Tax % on base pay</label>
+              <input id="baseTaxPct" type="number" min="0" max="100" step="0.1" value="22" class="dark-input" />
+            </div>
+            <div id="commTaxRow" hidden>
+              <label for="commTaxPct" class="light">Tax % on commissions</label>
+              <input id="commTaxPct" type="number" min="0" max="100" step="0.1" value="22" class="dark-input" />
+            </div>
+            <hr />
+            <div id="taxBreakdown" class="breakdown light"></div>
+            <div class="takehome">
+              <div class="takehome-label">Take-home (<span data-bind="salesPeriod">monthly</span>) 🤑</div>
+              <div class="takehome-amount" data-out="takeHome">$0.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="footer">Estimates only. Verify with your actual comp plan and pay stubs.</footer>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
