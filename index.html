@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en" class="">
 <head>
 <meta charset="UTF-8" />
@@ -14,8 +15,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-<!-- Tailwind via CDN -->
+<!-- Google AdSense -->
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5677753426593768" crossorigin="anonymous"></script>
+
+<!-- Tailwind via CDN (warning suppressed for standalone HTML deployment) -->
+
+<script>
+  // Suppress Tailwind CDN production warning for standalone HTML file deployments
+  const _warn = console.warn.bind(console);
+  console.warn = (...args) => {
+    if (typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return;
+    _warn(...args);
+  };
+</script>
+
 <script src="https://cdn.tailwindcss.com"></script>
+
 <script>
   tailwind.config = {
     darkMode: 'class',
@@ -85,15 +101,31 @@ html, body { font-family: Inter, system-ui, sans-serif; }
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 input[type=number] { -moz-appearance: textfield; }
+/* AdSense ad unit wrapper */
+.ad-unit {
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  background: transparent;
+}
 </style>
+
 </head>
 <body class="bg-background text-foreground">
+
 <div id="root"></div>
 
+<!-- Ad unit: Below hero section (leaderboard / responsive) -->
+
+<div id="ad-hero" style="display:none;"></div>
+
+<!-- Ad unit: Below saved scenarios (responsive) -->
+
+<div id="ad-scenarios" style="display:none;"></div>
+
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
-<!-- Google AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5677753426593768" crossorigin="anonymous"></script>
 
 <script>
 const { useState, useEffect, useMemo } = React;
@@ -150,7 +182,6 @@ function NumField({ value, onChange, placeholder = "0", min = 0, max, step }) {
     const [text, setText] = useState(value === 0 ? "" : formatWithCommas(String(value)));
     useEffect(() => {
         setText(value === 0 ? "" : formatWithCommas(String(value)));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
     return (React.createElement("input", { type: "text", inputMode: "decimal", value: text, placeholder: placeholder, onFocus: (e) => { if (e.target.value === "0") setText(""); }, onChange: (e) => {
             const raw = e.target.value.replace(/[^0-9.\-]/g, "");
@@ -159,6 +190,26 @@ function NumField({ value, onChange, placeholder = "0", min = 0, max, step }) {
             onChange(isNaN(v) ? 0 : v);
         }, className: "border-0 outline-none bg-transparent w-full px-3 py-2.5 text-base font-medium text-foreground tabular-nums" }));
 }
+
+/* ── Inline AdSense unit component ── */
+function AdUnit({ slot, format = "auto", style = {} }) {
+    useEffect(() => {
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch(e) {}
+    }, []);
+    return React.createElement("div", { className: "ad-unit my-4 mx-auto max-w-4xl px-5" },
+        React.createElement("ins", {
+            className: "adsbygoogle",
+            style: { display: "block", ...style },
+            "data-ad-client": "ca-pub-5677753426593768",
+            "data-ad-slot": slot,
+            "data-ad-format": format,
+            "data-full-width-responsive": "true"
+        })
+    );
+}
+
 function CalculatorPage() {
     // Theme
     const [theme, setTheme] = useState("light");
@@ -202,7 +253,7 @@ function CalculatorPage() {
     const [otHours, setOtHours] = useState(0);
     const [otMult, setOtMult] = useState(1.5);
     const [dealsPerMonth, setDealsPerMonth] = useState(5);
-    // Detailed (full previous calculator)
+    // Detailed
     const [dInputPeriod, setDInputPeriod] = useState("monthly");
     const [dOutPeriod, setDOutPeriod] = useState("monthly");
     const [dBasePay, setDBasePay] = useState(0);
@@ -220,7 +271,7 @@ function CalculatorPage() {
         { id: uid(), threshold: 25, bonus: 750 },
     ]);
     const [dSpiffs, setDSpiffs] = useState([{ id: uid(), name: "", amount: 0 }]);
-    // Tax estimator (works for any mode)
+    // Tax estimator
     const [taxOn, setTaxOn] = useState(false);
     const [baseTaxPct, setBaseTaxPct] = useState(22);
     const [commTaxPct, setCommTaxPct] = useState(22);
@@ -247,7 +298,7 @@ function CalculatorPage() {
         const cur = mode === "advanced" ? currency : "USD";
         const rows = [];
         let perDeal = 0, total = 0, monthly = 0, quarterly = 0, annual = 0, projection = false;
-        let baseAmt = 0, commAmt = 0; // for tax split
+        let baseAmt = 0, commAmt = 0;
         if (mode === "basic") {
             const c = bSale * (bRate / 100);
             perDeal = c;
@@ -307,16 +358,12 @@ function CalculatorPage() {
                 }
                 quarterly = monthly * 3;
                 annual = monthly * 12 + baseAnnualVal;
-                // For projection mode, base/comm split for taxes uses annualized values
                 baseAmt = baseAnnualVal;
                 commAmt = monthly * 12;
             }
         }
         else {
-            // DETAILED — full previous calculator
-            // Scale = ratio between input frequency and selected output frequency
             const scale = annualizeBase(1, dInputPeriod, dHpw) / annualizeBase(1, dOutPeriod, dHpw);
-            // Base pay (with optional OT) per output period
             let basePerPeriod = 0;
             if (dBasePay > 0) {
                 const baseAnnual = annualizeBase(dBasePay, dBasePeriod, dHpw);
@@ -325,24 +372,20 @@ function CalculatorPage() {
                 if (basePerPeriod > 0)
                     rows.push({ label: `Base pay${dOtHours > 0 && dBasePeriod === "hourly" ? " + OT" : ""}`, value: basePerPeriod });
             }
-            // Units × per-unit
             const unitComm = dUnits * dPerUnit * scale;
             if (unitComm > 0)
-                rows.push({ label: `${(dUnits * scale).toFixed(1)} units × ${fmt(dPerUnit, cur)}`, value: unitComm });
-            // Revenue %
+                rows.push({ label: `${(dUnits * scale).toFixed(1)} units × ${fmt(dPerUnit, "USD")}`, value: unitComm });
             const revComm = dRevenue * (dRevPct / 100) * scale;
             if (revComm > 0)
-                rows.push({ label: `${fmt(dRevenue * scale, cur)} × ${dRevPct}%`, value: revComm });
-            // Add-ons
+                rows.push({ label: `${fmt(dRevenue * scale, "USD")} × ${dRevPct}%`, value: revComm });
             let addonComm = 0;
             dAddons.forEach((a) => {
                 const v = a.qty * a.payout * scale;
                 if (v > 0) {
                     addonComm += v;
-                    rows.push({ label: `${a.name || "Add-on"}: ${(a.qty * scale).toFixed(1)} × ${fmt(a.payout, cur)}`, value: v });
+                    rows.push({ label: `${a.name || "Add-on"}: ${(a.qty * scale).toFixed(1)} × ${fmt(a.payout, "USD")}`, value: v });
                 }
             });
-            // Tiered bonus — highest threshold reached (based on scaled units)
             let bonusComm = 0;
             const scaledUnits = dUnits * scale;
             const sortedT = [...dBonusTiers].sort((a, b) => b.threshold - a.threshold);
@@ -351,7 +394,6 @@ function CalculatorPage() {
                 bonusComm = reached.bonus;
                 rows.push({ label: `Tier bonus (${reached.threshold}+ units)`, value: bonusComm });
             }
-            // Spiffs
             let spiffComm = 0;
             dSpiffs.forEach((s) => {
                 const v = s.amount * scale;
@@ -366,7 +408,6 @@ function CalculatorPage() {
             baseAmt = basePerPeriod;
             commAmt = commPerPeriod;
         }
-        // Tax estimator
         let baseTax = 0, commTax = 0, takeHome = 0;
         if (taxOn) {
             baseTax = baseAmt * (baseTaxPct / 100);
@@ -480,7 +521,6 @@ function CalculatorPage() {
             showToast("Copy failed");
         }
     };
-    // Card classes
     const card = "bg-card border border-border rounded-xl p-6 shadow-sm";
     const inputGroup = "flex items-stretch border border-input rounded-lg bg-card overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition";
     const fix = "inline-flex items-center px-3 bg-muted text-muted-foreground font-semibold text-sm";
@@ -492,9 +532,10 @@ function CalculatorPage() {
                     React.createElement("span", { className: "font-bold text-base sm:text-lg tracking-tight" }, "My Commission Calculator")),
                 React.createElement("div", { className: "flex items-center gap-2" },
                     React.createElement("button", { onClick: toggleTheme, "aria-label": "Toggle theme", className: "h-10 w-10 rounded-lg hover:bg-muted transition flex items-center justify-center text-lg" }, theme === "light" ? "☀️" : "🌙"),
-                    React.createElement("button", { onClick: share, className: "h-10 px-4 rounded-lg hover:bg-muted transition text-sm font-semibold" }, "\uD83D\uDD17 Share")))),
+                    React.createElement("button", { onClick: share, className: "h-10 px-4 rounded-lg hover:bg-muted transition text-sm font-semibold" }, "🔗 Share")))),
+
         React.createElement("section", { className: "text-center py-12 sm:py-16 px-5" },
-            React.createElement("span", { className: "inline-block px-3.5 py-1.5 rounded-full bg-muted text-primary text-xs font-semibold border border-border mb-4" }, "\uD83D\uDCB0 Free \u2022 No signup \u2022 Works offline"),
+            React.createElement("span", { className: "inline-block px-3.5 py-1.5 rounded-full bg-muted text-primary text-xs font-semibold border border-border mb-4" }, "💰 Free • No signup • Works offline"),
             React.createElement("h1", { className: "text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl mx-auto" },
                 "Know exactly ",
                 React.createElement("span", { className: "text-gradient-gold" }, "what you'll earn.")),
@@ -502,6 +543,10 @@ function CalculatorPage() {
                 "The fastest commission calculator on the web. Switch to ",
                 React.createElement("strong", null, "Advanced"),
                 " for tiered rates, splits, accelerators, bonuses and annual projections.")),
+
+        /* ── Ad unit: Below hero, above calculator ── */
+        React.createElement(AdUnit, { slot: "REPLACE_WITH_AD_SLOT_1", format: "auto" }),
+
         React.createElement("main", { className: "max-w-6xl mx-auto px-5 pb-12 grid gap-6 lg:grid-cols-[1.3fr_1fr]" },
             React.createElement("section", { className: card },
                 React.createElement("div", { className: "inline-flex p-1 bg-muted rounded-xl border border-border mb-5 flex-wrap" }, ["basic", "detailed", "advanced"].map((m) => (React.createElement("button", { key: m, onClick: () => setMode(m), className: `px-4 sm:px-5 py-2 rounded-lg font-semibold transition text-sm sm:text-base ${mode === m ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"}` }, m === "basic" ? "⚡ Basic" : m === "detailed" ? "🧮 Detailed" : "🚀 Advanced")))),
@@ -580,12 +625,12 @@ function CalculatorPage() {
                                     React.createElement(NumField, { value: t.min, onChange: (v) => { const u = [...tiers]; u[i] = { ...t, min: v }; setTiers(u); } })),
                                 React.createElement("div", { className: inputGroup },
                                     React.createElement("span", { className: fix }, "$"),
-                                    React.createElement("input", { type: "number", value: (_a = t.max) !== null && _a !== void 0 ? _a : "", placeholder: "\u221E", onChange: (e) => { const u = [...tiers]; u[i] = { ...t, max: e.target.value === "" ? null : parseFloat(e.target.value) }; setTiers(u); }, className: "border-0 outline-none bg-transparent w-full px-3 py-2.5 text-base font-medium tabular-nums" })),
+                                    React.createElement("input", { type: "number", value: (_a = t.max) !== null && _a !== void 0 ? _a : "", placeholder: "∞", onChange: (e) => { const u = [...tiers]; u[i] = { ...t, max: e.target.value === "" ? null : parseFloat(e.target.value) }; setTiers(u); }, className: "border-0 outline-none bg-transparent w-full px-3 py-2.5 text-base font-medium tabular-nums" })),
                                 React.createElement("div", { className: inputGroup },
                                     React.createElement(NumField, { value: t.rate, onChange: (v) => { const u = [...tiers]; u[i] = { ...t, rate: v }; setTiers(u); }, max: 100, step: 0.1 }),
                                     React.createElement("span", { className: fix }, "%")),
                                 React.createElement("button", { onClick: () => { if (tiers.length > 1)
-                                        setTiers(tiers.filter((_, idx) => idx !== i)); }, className: "w-9 h-9 self-center rounded-lg border border-border bg-card text-destructive hover:bg-destructive hover:text-white transition" }, "\u00D7")));
+                                        setTiers(tiers.filter((_, idx) => idx !== i)); }, className: "w-9 h-9 self-center rounded-lg border border-border bg-card text-destructive hover:bg-destructive hover:text-white transition" }, "×")));
                         })),
                         React.createElement("p", { className: "text-xs text-muted-foreground mt-2" }, "Each tier applies its rate only to the portion of the sale within that bracket."))),
                     React.createElement("div", null,
@@ -663,7 +708,7 @@ function CalculatorPage() {
                                 React.createElement("option", { value: "monthly" }, "Monthly"),
                                 React.createElement("option", { value: "annual" }, "Annual")))),
                     React.createElement("div", { className: "border border-border rounded-lg p-4" },
-                        React.createElement("h3", { className: "font-semibold mb-3 flex items-center gap-2" }, "\uD83D\uDCBC Base pay"),
+                        React.createElement("h3", { className: "font-semibold mb-3 flex items-center gap-2" }, "💼 Base pay"),
                         React.createElement("div", { className: "grid sm:grid-cols-2 gap-3" },
                             React.createElement("div", null,
                                 React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "Amount"),
@@ -693,7 +738,7 @@ function CalculatorPage() {
                                     React.createElement(NumField, { value: dOtMult, onChange: setDOtMult, min: 1, step: 0.1 }),
                                     React.createElement("span", { className: fix }, "x")))))),
                     React.createElement("div", { className: "border border-border rounded-lg p-4" },
-                        React.createElement("h3", { className: "font-semibold mb-3 flex items-center gap-2" }, "\uD83D\uDCE6 Units sold"),
+                        React.createElement("h3", { className: "font-semibold mb-3 flex items-center gap-2" }, "📦 Units sold"),
                         React.createElement("div", { className: "grid sm:grid-cols-2 gap-3" },
                             React.createElement("div", null,
                                 React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" },
@@ -707,7 +752,7 @@ function CalculatorPage() {
                                     React.createElement("span", { className: fix }, "$"),
                                     React.createElement(NumField, { value: dPerUnit, onChange: setDPerUnit }))))),
                     React.createElement("div", { className: "border border-border rounded-lg p-4" },
-                        React.createElement("h3", { className: "font-semibold mb-3 flex items-center gap-2" }, "\uD83D\uDCC8 Revenue % commission"),
+                        React.createElement("h3", { className: "font-semibold mb-3 flex items-center gap-2" }, "📈 Revenue % commission"),
                         React.createElement("div", { className: "grid sm:grid-cols-2 gap-3" },
                             React.createElement("div", null,
                                 React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" },
@@ -723,7 +768,7 @@ function CalculatorPage() {
                                     React.createElement("span", { className: fix }, "%"))))),
                     React.createElement("div", { className: "border border-border rounded-lg p-4" },
                         React.createElement("div", { className: "flex justify-between items-center mb-3" },
-                            React.createElement("h3", { className: "font-semibold flex items-center gap-2" }, "\uD83D\uDEE1\uFE0F Add-ons / protection plans"),
+                            React.createElement("h3", { className: "font-semibold flex items-center gap-2" }, "🛡️ Add-ons / protection plans"),
                             React.createElement("button", { onClick: () => setDAddons([...dAddons, { id: uid(), name: "", qty: 0, payout: 0 }]), className: "text-xs px-3 py-1.5 border border-border rounded-lg hover:bg-muted" }, "+ Add")),
                         React.createElement("div", { className: "space-y-2" }, dAddons.map((a, i) => (React.createElement("div", { key: a.id, className: "grid grid-cols-1 sm:grid-cols-[1.4fr_1fr_1fr_auto] gap-2 sm:items-center" },
                             React.createElement("input", { value: a.name, placeholder: "Name", onChange: (e) => { const u = [...dAddons]; u[i] = { ...a, name: e.target.value }; setDAddons(u); }, className: "px-3 py-3 sm:py-2 border border-input rounded-lg bg-card font-medium text-base sm:text-sm min-h-[44px]" }),
@@ -734,10 +779,10 @@ function CalculatorPage() {
                                 React.createElement("div", { className: inputGroup + " min-h-[44px]" },
                                     React.createElement("span", { className: fix }, "$"),
                                     React.createElement(NumField, { value: a.payout, onChange: (v) => { const u = [...dAddons]; u[i] = { ...a, payout: v }; setDAddons(u); } })),
-                                React.createElement("button", { onClick: () => setDAddons(dAddons.filter((_, idx) => idx !== i)), className: "w-11 h-11 sm:w-9 sm:h-9 rounded-lg border border-border bg-card text-destructive hover:bg-destructive hover:text-white text-lg" }, "\u00D7"))))))),
+                                React.createElement("button", { onClick: () => setDAddons(dAddons.filter((_, idx) => idx !== i)), className: "w-11 h-11 sm:w-9 sm:h-9 rounded-lg border border-border bg-card text-destructive hover:bg-destructive hover:text-white text-lg" }, "×"))))))),
                     React.createElement("div", { className: "border border-border rounded-lg p-4" },
                         React.createElement("div", { className: "flex justify-between items-center mb-3" },
-                            React.createElement("h3", { className: "font-semibold flex items-center gap-2" }, "\uD83C\uDFAF Spiffs / one-time bonuses"),
+                            React.createElement("h3", { className: "font-semibold flex items-center gap-2" }, "🎯 Spiffs / one-time bonuses"),
                             React.createElement("button", { onClick: () => setDSpiffs([...dSpiffs, { id: uid(), name: "", amount: 0 }]), className: "text-xs px-3 py-1.5 border border-border rounded-lg hover:bg-muted" }, "+ Add")),
                         React.createElement("div", { className: "space-y-2" }, dSpiffs.map((s, i) => (React.createElement("div", { key: s.id, className: "grid grid-cols-1 sm:grid-cols-[1.4fr_1fr_auto] gap-2 sm:items-center" },
                             React.createElement("input", { value: s.name, placeholder: "Name (optional)", onChange: (e) => { const u = [...dSpiffs]; u[i] = { ...s, name: e.target.value }; setDSpiffs(u); }, className: "px-3 py-3 sm:py-2 border border-input rounded-lg bg-card font-medium text-base sm:text-sm min-h-[44px]" }),
@@ -745,10 +790,11 @@ function CalculatorPage() {
                                 React.createElement("div", { className: inputGroup + " min-h-[44px]" },
                                     React.createElement("span", { className: fix }, "$"),
                                     React.createElement(NumField, { value: s.amount, onChange: (v) => { const u = [...dSpiffs]; u[i] = { ...s, amount: v }; setDSpiffs(u); } })),
-                                React.createElement("button", { onClick: () => setDSpiffs(dSpiffs.filter((_, idx) => idx !== i)), className: "w-11 h-11 sm:w-9 sm:h-9 rounded-lg border border-border bg-card text-destructive hover:bg-destructive hover:text-white text-lg" }, "\u00D7"))))))))),
+                                React.createElement("button", { onClick: () => setDSpiffs(dSpiffs.filter((_, idx) => idx !== i)), className: "w-11 h-11 sm:w-9 sm:h-9 rounded-lg border border-border bg-card text-destructive hover:bg-destructive hover:text-white text-lg" }, "×"))))))))),
                 React.createElement("div", { className: "flex gap-2.5 mt-6 pt-5 border-t border-border" },
-                    React.createElement("button", { onClick: reset, className: "flex-1 h-10 rounded-lg border border-border bg-card hover:bg-muted font-semibold text-sm" }, "\u21BA Reset"),
-                    React.createElement("button", { onClick: saveScenario, className: "flex-1 h-10 rounded-lg bg-gradient-cash text-white font-semibold text-sm shadow-money hover:brightness-105" }, "\uD83D\uDCBE Save scenario"))),
+                    React.createElement("button", { onClick: reset, className: "flex-1 h-10 rounded-lg border border-border bg-card hover:bg-muted font-semibold text-sm" }, "↺ Reset"),
+                    React.createElement("button", { onClick: saveScenario, className: "flex-1 h-10 rounded-lg bg-gradient-cash text-white font-semibold text-sm shadow-money hover:brightness-105" }, "💾 Save scenario"))),
+
             React.createElement("aside", { className: "lg:sticky lg:top-20 self-start bg-gradient-money text-white rounded-xl p-6 shadow-money border-0" },
                 React.createElement("div", { className: "text-xs uppercase tracking-widest opacity-80 font-semibold" }, "Your earnings"),
                 React.createElement("div", { className: "font-extrabold leading-none my-2 whitespace-nowrap overflow-hidden text-ellipsis tabular-nums text-4xl sm:text-5xl lg:text-[3.5rem]", style: { background: "linear-gradient(180deg, #fff 0%, #FFD23F 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" } }, fmt(result.display, result.cur)),
@@ -778,7 +824,7 @@ function CalculatorPage() {
                     React.createElement("div", { className: "flex gap-1 items-end h-20 mt-3" }, Array.from({ length: 12 }).map((_, i) => (React.createElement("div", { key: i, className: "flex-1 bg-white/45 rounded-t", style: { height: "100%", minHeight: 4 }, title: `Month ${i + 1}: ${fmt(result.monthly, result.cur)}` })))))),
                 React.createElement("div", { className: "mt-4 bg-white/10 rounded-lg backdrop-blur-sm overflow-hidden" },
                     React.createElement("button", { onClick: () => setTaxOn(!taxOn), className: "w-full flex justify-between items-center px-4 py-3 hover:bg-white/10 transition text-left" },
-                        React.createElement("span", { className: "font-semibold text-sm flex items-center gap-2" }, "\uD83E\uDDFE Estimate take-home (taxes)"),
+                        React.createElement("span", { className: "font-semibold text-sm flex items-center gap-2" }, "🧾 Estimate take-home (taxes)"),
                         React.createElement("span", { className: "text-xs opacity-80" }, taxOn ? "▲ Hide" : "▼ Show")),
                     taxOn && (React.createElement("div", { className: "px-4 pb-4 space-y-3" },
                         result.baseAmt > 0 && (React.createElement("div", null,
@@ -798,7 +844,7 @@ function CalculatorPage() {
                                     baseTaxPct,
                                     "%)"),
                                 React.createElement("strong", { className: "tabular-nums" },
-                                    "\u2212",
+                                    "−",
                                     fmt(result.baseTax, result.cur)))),
                             result.commAmt > 0 && (React.createElement("div", { className: "flex justify-between" },
                                 React.createElement("span", { className: "opacity-90" },
@@ -806,17 +852,21 @@ function CalculatorPage() {
                                     commTaxPct,
                                     "%)"),
                                 React.createElement("strong", { className: "tabular-nums" },
-                                    "\u2212",
+                                    "−",
                                     fmt(result.commTax, result.cur)))),
                             React.createElement("div", { className: "flex justify-between pt-2 mt-1 border-t border-dashed border-white/30 text-base font-bold" },
                                 React.createElement("span", null, "Take-home"),
                                 React.createElement("strong", { className: "tabular-nums text-[hsl(var(--gold,45_100%_62%))]", style: { color: "#FFD23F" } }, fmt(result.takeHome, result.cur))))))),
                 React.createElement("div", { className: "flex gap-2 mt-4" },
-                    React.createElement("button", { onClick: copyResult, className: "flex-1 h-9 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-sm" }, "\uD83D\uDCCB Copy"),
-                    React.createElement("button", { onClick: () => window.print(), className: "flex-1 h-9 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-sm" }, "\uD83D\uDDA8\uFE0F Print / PDF")))),
+                    React.createElement("button", { onClick: copyResult, className: "flex-1 h-9 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-sm" }, "📋 Copy"),
+                    React.createElement("button", { onClick: () => window.print(), className: "flex-1 h-9 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-sm" }, "🖨️ Print / PDF")))),
+
+        /* ── Ad unit: Between calculator and scenarios ── */
+        React.createElement(AdUnit, { slot: "REPLACE_WITH_AD_SLOT_2", format: "auto" }),
+
         React.createElement("section", { className: "max-w-6xl mx-auto px-5 pb-12" },
             React.createElement("div", { className: "flex justify-between items-center mb-4" },
-                React.createElement("h2", { className: "text-xl sm:text-2xl font-bold tracking-tight" }, "\uD83D\uDCC2 Saved scenarios"),
+                React.createElement("h2", { className: "text-xl sm:text-2xl font-bold tracking-tight" }, "📂 Saved scenarios"),
                 scenarios.length > 0 && (React.createElement("button", { onClick: () => { if (confirm("Delete all saved scenarios?"))
                         persistScenarios([]); }, className: "text-sm px-3 py-1.5 border border-border rounded-lg hover:bg-muted" }, "Clear all"))),
             scenarios.length === 0 ? (React.createElement("p", { className: "text-center text-muted-foreground text-sm py-6 bg-card border border-dashed border-border rounded-xl" }, "No saved scenarios yet. Save one to compare side-by-side.")) : (React.createElement("div", { className: "grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3" }, scenarios.map((s, i) => (React.createElement("div", { key: s.id, className: "bg-card border border-border rounded-xl p-4 shadow-sm" },
@@ -824,11 +874,12 @@ function CalculatorPage() {
                 React.createElement("div", { className: "text-2xl font-extrabold text-primary tabular-nums my-1.5" }, s.display),
                 React.createElement("div", { className: "text-xs text-muted-foreground" },
                     s.mode === "basic" ? "⚡ Basic" : "🚀 Advanced",
-                    " \u00B7 ",
+                    " · ",
                     s.date),
                 React.createElement("div", { className: "flex gap-1.5 mt-2.5" },
                     React.createElement("button", { onClick: () => loadScenario(s), className: "flex-1 h-8 text-xs border border-border rounded-lg hover:bg-muted font-semibold" }, "Load"),
                     React.createElement("button", { onClick: () => persistScenarios(scenarios.filter((_, idx) => idx !== i)), className: "flex-1 h-8 text-xs border border-border rounded-lg hover:bg-muted font-semibold" }, "Delete")))))))),
+
         React.createElement("section", { className: "max-w-6xl mx-auto px-5 pb-16" },
             React.createElement("div", { className: "grid gap-4 sm:grid-cols-3" }, [
                 { icon: "⚡", title: "Lightning fast", body: "Calculations update live as you type. No reloads." },
@@ -838,15 +889,19 @@ function CalculatorPage() {
                 React.createElement("div", { className: "text-3xl mb-2" }, c.icon),
                 React.createElement("h3", { className: "font-bold mb-1" }, c.title),
                 React.createElement("p", { className: "text-sm text-muted-foreground" }, c.body)))))),
+
+        /* ── Ad unit: Above footer ── */
+        React.createElement(AdUnit, { slot: "REPLACE_WITH_AD_SLOT_3", format: "auto" }),
+
         React.createElement("footer", { className: "border-t border-border py-6 text-center text-sm text-muted-foreground" },
-            "\u00A9 ",
+            "© ",
             new Date().getFullYear(),
-            " My Commission Calculator \u00B7 Built for sales pros \uD83D\uDCBC"),
+            " My Commission Calculator · Built for sales pros 📼"),
         toast && (React.createElement("div", { className: "fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background px-5 py-3 rounded-full font-semibold text-sm shadow-2xl z-50" }, toast))));
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(CalculatorPage, null));
-
 </script>
+
 </body>
 </html>
