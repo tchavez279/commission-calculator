@@ -897,7 +897,7 @@ function CalculatorPage() {
 
 
         /* ── Privacy Policy Modal ── */
-        privacyOpen && React.createElement("div", {
+        privacyOpen ? React.createElement("div", {
             className: "fixed inset-0 z-50 flex items-center justify-center p-4",
             onClick: () => setPrivacyOpen(false)
         },
@@ -957,7 +957,7 @@ function CalculatorPage() {
                     React.createElement("button", {
                         onClick: () => setPrivacyOpen(false),
                         className: "w-full h-10 rounded-lg bg-gradient-cash text-white font-semibold text-sm"
-                    }, "Close")))),
+                    }, "Close")))) : null,
 
         React.createElement("footer", { className: "border-t border-border py-6 text-center text-sm text-muted-foreground" },
             "\u00A9 ",
