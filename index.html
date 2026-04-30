@@ -289,6 +289,8 @@ function CalculatorPage() {
     };
     // Toast
     const [toast, setToast] = useState(null);
+    // Privacy modal
+    const [privacyOpen, setPrivacyOpen] = useState(false);
     const showToast = (m) => {
         setToast(m);
         setTimeout(() => setToast(null), 1800);
@@ -893,59 +895,80 @@ function CalculatorPage() {
         /* ── Ad unit: Above footer ── */
         React.createElement(AdUnit, { slot: "REPLACE_WITH_AD_SLOT_3", format: "auto" }),
 
-        /* ── Privacy Policy ── */
-        React.createElement("section", { id: "privacy-policy", className: "max-w-4xl mx-auto px-5 pb-16" },
-            React.createElement("div", { className: "bg-card border border-border rounded-xl p-8 shadow-sm" },
-                React.createElement("h2", { className: "text-2xl sm:text-3xl font-extrabold tracking-tight mb-2" }, "Privacy Policy"),
-                React.createElement("p", { className: "text-xs text-muted-foreground mb-8" },
-                    "Last updated: ",
-                    new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })),
-                React.createElement("div", { className: "space-y-8 text-sm leading-relaxed" },
+
+        /* ── Privacy Policy Modal ── */
+        privacyOpen && React.createElement("div", {
+            className: "fixed inset-0 z-50 flex items-center justify-center p-4",
+            onClick: () => setPrivacyOpen(false)
+        },
+            React.createElement("div", { className: "absolute inset-0 bg-black/60 backdrop-blur-sm" }),
+            React.createElement("div", {
+                className: "relative bg-card border border-border rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col",
+                onClick: e => e.stopPropagation()
+            },
+                React.createElement("div", { className: "flex items-center justify-between px-6 py-4 border-b border-border shrink-0" },
                     React.createElement("div", null,
-                        React.createElement("h3", { className: "font-bold text-base mb-2" }, "1. Overview"),
-                        React.createElement("p", { className: "text-muted-foreground" }, "My Commission Calculator (\"we\", \"our\", or \"the site\") is a free, browser-based tool. We are committed to protecting your privacy. This policy explains what information is collected, how it is used, and your choices regarding that information.")),
+                        React.createElement("h2", { className: "text-xl font-extrabold tracking-tight" }, "Privacy Policy"),
+                        React.createElement("p", { className: "text-xs text-muted-foreground mt-0.5" },
+                            "Last updated: ",
+                            new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }))),
+                    React.createElement("button", {
+                        onClick: () => setPrivacyOpen(false),
+                        className: "w-9 h-9 rounded-lg hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition text-xl font-bold"
+                    }, "\u00D7")),
+                React.createElement("div", { className: "overflow-y-auto px-6 py-5 space-y-6 text-sm leading-relaxed" },
                     React.createElement("div", null,
-                        React.createElement("h3", { className: "font-bold text-base mb-2" }, "2. Information We Collect"),
-                        React.createElement("p", { className: "text-muted-foreground mb-3" }, "We do not collect, store, or transmit any personal or financial data you enter into the calculator. All calculations run entirely in your browser. Your numbers never leave your device."),
-                        React.createElement("p", { className: "text-muted-foreground" }, "Like most websites, we do receive standard server logs when you visit, which may include your IP address, browser type, referring page, and the date and time of your visit. This data is used only for security and operational purposes and is not sold or shared.")),
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "1. Overview"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "My Commission Calculator is a free, browser-based tool. We are committed to protecting your privacy. This policy explains what information is collected, how it is used, and your choices regarding that information.")),
                     React.createElement("div", null,
-                        React.createElement("h3", { className: "font-bold text-base mb-2" }, "3. Cookies & Local Storage"),
-                        React.createElement("p", { className: "text-muted-foreground mb-3" }, "We use your browser's ", React.createElement("strong", null, "localStorage"), " solely to remember your theme preference (light or dark mode) and any scenarios you choose to save. This data stays on your device and is never sent to any server."),
-                        React.createElement("p", { className: "text-muted-foreground" }, "Third-party services on this site (see Section 4) may set their own cookies. You can control or disable cookies through your browser settings at any time.")),
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "2. Information We Collect"),
+                        React.createElement("p", { className: "text-muted-foreground mb-2" }, "We do not collect, store, or transmit any personal or financial data you enter into the calculator. All calculations run entirely in your browser. Your numbers never leave your device."),
+                        React.createElement("p", { className: "text-muted-foreground" }, "Like most websites, we receive standard server logs when you visit, which may include your IP address, browser type, referring page, and visit timestamp. This data is used only for security and operations and is not sold or shared.")),
                     React.createElement("div", null,
-                        React.createElement("h3", { className: "font-bold text-base mb-2" }, "4. Advertising — Google AdSense"),
-                        React.createElement("p", { className: "text-muted-foreground mb-3" }, "This site uses ", React.createElement("strong", null, "Google AdSense"), " to display advertisements. Google, as a third-party vendor, uses cookies (including the DoubleClick cookie) to serve ads based on your prior visits to this and other websites."),
-                        React.createElement("ul", { className: "list-disc list-inside space-y-2 text-muted-foreground" },
-                            React.createElement("li", null, "Google's use of advertising cookies enables it and its partners to serve ads based on your visit to this site and/or other sites on the internet."),
-                            React.createElement("li", null, "You may opt out of personalised advertising by visiting ",
-                                React.createElement("a", { href: "https://www.google.com/settings/ads", target: "_blank", rel: "noopener noreferrer", className: "text-primary underline underline-offset-2 hover:opacity-80" }, "Google Ads Settings"), "."),
-                            React.createElement("li", null, "You may also opt out via the ",
-                                React.createElement("a", { href: "https://optout.networkadvertising.org/", target: "_blank", rel: "noopener noreferrer", className: "text-primary underline underline-offset-2 hover:opacity-80" }, "Network Advertising Initiative opt-out page"), "."),
-                            React.createElement("li", null, "For more information on how Google uses data, visit: ",
-                                React.createElement("a", { href: "https://policies.google.com/technologies/partner-sites", target: "_blank", rel: "noopener noreferrer", className: "text-primary underline underline-offset-2 hover:opacity-80" }, "How Google uses information from sites that use our services"), "."))),
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "3. Cookies & Local Storage"),
+                        React.createElement("p", { className: "text-muted-foreground mb-2" }, "We use your browser's ", React.createElement("strong", null, "localStorage"), " solely to remember your theme preference and any scenarios you save. This data stays on your device and is never sent to any server."),
+                        React.createElement("p", { className: "text-muted-foreground" }, "Third-party services (see Section 4) may set their own cookies. You can control or disable cookies in your browser settings at any time.")),
                     React.createElement("div", null,
-                        React.createElement("h3", { className: "font-bold text-base mb-2" }, "5. Third-Party Links & Services"),
-                        React.createElement("p", { className: "text-muted-foreground" }, "This site loads fonts from Google Fonts. Google Fonts requests may log your IP address per Google's own privacy policy. We do not control and are not responsible for the privacy practices of third-party services.")),
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "4. Advertising \u2014 Google AdSense"),
+                        React.createElement("p", { className: "text-muted-foreground mb-2" }, "This site uses ", React.createElement("strong", null, "Google AdSense"), " to display advertisements. Google uses cookies (including the DoubleClick cookie) to serve ads based on your prior visits to this and other websites."),
+                        React.createElement("ul", { className: "list-disc list-inside space-y-1.5 text-muted-foreground" },
+                            React.createElement("li", null, "You may opt out of personalised ads at ",
+                                React.createElement("a", { href: "https://www.google.com/settings/ads", target: "_blank", rel: "noopener noreferrer", className: "text-primary underline underline-offset-2" }, "Google Ads Settings"), "."),
+                            React.createElement("li", null, "Or via the ",
+                                React.createElement("a", { href: "https://optout.networkadvertising.org/", target: "_blank", rel: "noopener noreferrer", className: "text-primary underline underline-offset-2" }, "NAI opt-out page"), "."),
+                            React.createElement("li", null,
+                                React.createElement("a", { href: "https://policies.google.com/technologies/partner-sites", target: "_blank", rel: "noopener noreferrer", className: "text-primary underline underline-offset-2" }, "How Google uses data from partner sites"), "."))),
                     React.createElement("div", null,
-                        React.createElement("h3", { className: "font-bold text-base mb-2" }, "6. Children's Privacy"),
-                        React.createElement("p", { className: "text-muted-foreground" }, "This site is not directed to children under the age of 13. We do not knowingly collect personal information from children. If you believe a child has provided personal information through this site, please contact us so we can remove it.")),
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "5. Third-Party Services"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "This site loads fonts from Google Fonts, which may log your IP address per Google's own privacy policy. We are not responsible for third-party privacy practices.")),
                     React.createElement("div", null,
-                        React.createElement("h3", { className: "font-bold text-base mb-2" }, "7. Your Rights & Choices"),
-                        React.createElement("p", { className: "text-muted-foreground" }, "Because we do not collect personal data, there is typically nothing to access, correct, or delete. You can clear your locally saved scenarios and preferences at any time by clearing your browser's localStorage for this site (browser Settings \u2192 Privacy \u2192 Clear site data).")),
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "6. Children's Privacy"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "This site is not directed to children under 13. We do not knowingly collect personal information from children.")),
                     React.createElement("div", null,
-                        React.createElement("h3", { className: "font-bold text-base mb-2" }, "8. Changes to This Policy"),
-                        React.createElement("p", { className: "text-muted-foreground" }, "We may update this Privacy Policy from time to time. Any changes will be reflected by an updated date at the top of this page. Continued use of the site after changes are posted constitutes your acceptance of those changes.")),
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "7. Your Rights & Choices"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "You can clear locally saved data at any time via browser Settings \u2192 Privacy \u2192 Clear site data.")),
                     React.createElement("div", null,
-                        React.createElement("h3", { className: "font-bold text-base mb-2" }, "9. Contact"),
-                        React.createElement("p", { className: "text-muted-foreground" }, "If you have any questions about this Privacy Policy, please reach out via the contact information listed on this site."))))),
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "8. Changes to This Policy"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "We may update this policy from time to time. Changes are reflected by an updated date above. Continued use of the site constitutes acceptance.")),
+                    React.createElement("div", null,
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "9. Contact"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "If you have questions about this Privacy Policy, please reach out via the contact information listed on this site."))),
+                React.createElement("div", { className: "px-6 py-4 border-t border-border shrink-0" },
+                    React.createElement("button", {
+                        onClick: () => setPrivacyOpen(false),
+                        className: "w-full h-10 rounded-lg bg-gradient-cash text-white font-semibold text-sm"
+                    }, "Close")))),
 
         React.createElement("footer", { className: "border-t border-border py-6 text-center text-sm text-muted-foreground" },
             "\u00A9 ",
             new Date().getFullYear(),
             " My Commission Calculator \u00B7 Built for sales pros \uD83D\uDCBC",
             React.createElement("span", { className: "mx-2 opacity-40" }, "\u00B7"),
-            React.createElement("a", { href: "#privacy-policy", className: "underline underline-offset-2 hover:text-foreground transition" }, "Privacy Policy")),
-        toast && (React.createElement("div", { className: "fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background px-5 py-3 rounded-full font-semibold text-sm shadow-2xl z-50" }, toast))));
+            React.createElement("button", {
+                onClick: () => setPrivacyOpen(true),
+                className: "underline underline-offset-2 hover:text-foreground transition"
+            }, "Privacy Policy")),
+        toast && (React.createElement("div", { className: "fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background px-5 py-3 rounded-full font-semibold text-sm shadow-2xl z-50" }, toast)));
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(CalculatorPage, null));
