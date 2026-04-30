@@ -968,7 +968,7 @@ function CalculatorPage() {
                 onClick: () => setPrivacyOpen(true),
                 className: "underline underline-offset-2 hover:text-foreground transition"
             }, "Privacy Policy")),
-        toast && (React.createElement("div", { className: "fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background px-5 py-3 rounded-full font-semibold text-sm shadow-2xl z-50" }, toast)));
+        toast && React.createElement("div", { className: "fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background px-5 py-3 rounded-full font-semibold text-sm shadow-2xl z-50" }, toast)));
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(CalculatorPage, null));
