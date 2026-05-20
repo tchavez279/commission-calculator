@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en" class="">
 <head>
 <meta charset="UTF-8" />
@@ -16,11 +15,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
 <!-- Google AdSense -->
-
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5677753426593768" crossorigin="anonymous"></script>
 
 <!-- Tailwind via CDN (warning suppressed for standalone HTML deployment) -->
-
 <script>
   // Suppress Tailwind CDN production warning for standalone HTML file deployments
   const _warn = console.warn.bind(console);
@@ -29,9 +26,7 @@
     _warn(...args);
   };
 </script>
-
 <script src="https://cdn.tailwindcss.com"></script>
-
 <script>
   tailwind.config = {
     darkMode: 'class',
@@ -109,22 +104,18 @@ input[type=number] { -moz-appearance: textfield; }
   background: transparent;
 }
 </style>
-
 </head>
 <body class="bg-background text-foreground">
 
 <div id="root"></div>
 
 <!-- Ad unit: Below hero section (leaderboard / responsive) -->
-
 <div id="ad-hero" style="display:none;"></div>
 
 <!-- Ad unit: Below saved scenarios (responsive) -->
-
 <div id="ad-scenarios" style="display:none;"></div>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
-
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
 
 <script>
@@ -892,6 +883,90 @@ function CalculatorPage() {
                 React.createElement("h3", { className: "font-bold mb-1" }, c.title),
                 React.createElement("p", { className: "text-sm text-muted-foreground" }, c.body)))))),
 
+        /* ── Rich Content: How Commission Works ── */
+        React.createElement("section", { className: "max-w-4xl mx-auto px-5 pb-16" },
+            React.createElement("h2", { className: "text-2xl sm:text-3xl font-extrabold tracking-tight mb-8 text-center" }, "How Sales Commission Works"),
+            React.createElement("div", { className: "prose-style space-y-6 text-muted-foreground leading-relaxed" },
+                React.createElement("p", null, "Sales commission is a performance-based form of compensation paid to salespeople based on the value of the deals they close. It is one of the most powerful motivators in business — directly linking a rep's earnings to their results. Understanding how commission is calculated can help you negotiate better pay, forecast your income, and make smarter career decisions."),
+                React.createElement("p", null, "At its simplest, commission is calculated by multiplying the sale amount by the commission rate. For example, if you close a $20,000 deal at a 10% commission rate, you earn $2,000. But in the real world, most commission structures are more nuanced — involving base salaries, tiered rates, quota accelerators, team splits, bonuses, and more."),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "Types of Commission Structures"),
+                React.createElement("p", null, "There is no single standard for how commissions are paid. Different industries and companies use different models depending on their sales cycle, average deal size, and team structure. Here are the most common types:"),
+                React.createElement("div", { className: "grid sm:grid-cols-2 gap-4 my-6" },
+                    [
+                        { title: "Flat Rate", desc: "A single percentage applied to every sale regardless of size. Simple, transparent, and easy to calculate. Common in retail and inside sales." },
+                        { title: "Tiered Commission", desc: "Different rates apply to different revenue brackets. For example, 5% on the first $50k, 8% on the next $50k, and 12% above $100k. Rewards high performers." },
+                        { title: "Base + Commission", desc: "A guaranteed base salary combined with commission earnings. Provides financial security while still incentivising performance. The most common structure in B2B sales." },
+                        { title: "Quota Accelerators", desc: "Once a rep hits 100% of their quota, the commission rate increases — sometimes dramatically. This is designed to push top performers to keep going." },
+                        { title: "Commission Splits", desc: "Used when multiple people contribute to a sale — for example, a field rep, a sales engineer, and an SDR. The total commission is divided among them by agreed percentages." },
+                        { title: "Residual Commission", desc: "Common in insurance and SaaS. The rep earns ongoing commission as long as the customer keeps paying. Rewards customer retention alongside acquisition." },
+                    ].map(item => React.createElement("div", { key: item.title, className: "bg-card border border-border rounded-xl p-5" },
+                        React.createElement("h4", { className: "font-bold text-foreground mb-2" }, item.title),
+                        React.createElement("p", { className: "text-sm" }, item.desc)))),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "What Is a Good Commission Rate?"),
+                React.createElement("p", null, "Commission rates vary enormously by industry. There is no universal \"good\" rate — what matters is your total on-target earnings (OTE) and how achievable the quota is. That said, here are typical ranges you can expect:"),
+                React.createElement("div", { className: "overflow-x-auto my-4" },
+                    React.createElement("table", { className: "w-full text-sm border-collapse" },
+                        React.createElement("thead", null,
+                            React.createElement("tr", { className: "bg-muted" },
+                                React.createElement("th", { className: "text-left p-3 font-semibold text-foreground border border-border rounded-tl-lg" }, "Industry"),
+                                React.createElement("th", { className: "text-left p-3 font-semibold text-foreground border border-border" }, "Typical Rate"),
+                                React.createElement("th", { className: "text-left p-3 font-semibold text-foreground border border-border rounded-tr-lg" }, "Notes"))),
+                        React.createElement("tbody", null,
+                            [
+                                ["Real Estate", "2.5% – 3%", "Split between buyer/seller agents and brokerage"],
+                                ["SaaS / Software", "8% – 12%", "Often on Annual Contract Value (ACV)"],
+                                ["Insurance", "10% – 20%", "Higher for life insurance; residuals common"],
+                                ["Automotive", "20% – 30%", "On gross profit, not total sale price"],
+                                ["Retail", "3% – 7%", "Often lower due to high volume and base pay"],
+                                ["Financial Services", "0.5% – 2%", "Regulated; lower rate but high ticket sizes"],
+                                ["Recruitment", "15% – 25%", "Percentage of placed candidate's first-year salary"],
+                            ].map(([ind, rate, note]) => React.createElement("tr", { key: ind, className: "border-b border-border hover:bg-muted/50 transition" },
+                                React.createElement("td", { className: "p-3 font-medium text-foreground border border-border" }, ind),
+                                React.createElement("td", { className: "p-3 text-primary font-bold border border-border" }, rate),
+                                React.createElement("td", { className: "p-3 border border-border" }, note)))))),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "How to Use This Commission Calculator"),
+                React.createElement("p", null, "This calculator is designed to handle everything from simple one-off commission calculations to complex annual projections. Here's how to get the most out of each mode:"),
+                React.createElement("ul", { className: "space-y-3 list-none my-4" },
+                    [
+                        ["⚡ Basic Mode", "Enter your sale amount, commission rate, and number of deals. Instant result. Perfect for a quick sanity check mid-negotiation or before a call."],
+                        ["🧮 Detailed Mode", "Built for retail, automotive, and hourly workers. Combine base pay, overtime, units sold, revenue percentages, add-on products, tiered bonuses, and spiffs into one total. Switch the output period to see hourly, weekly, monthly, or annual earnings."],
+                        ["🚀 Advanced Mode", "The full picture. Set up tiered commission brackets, quota accelerators, team splits, and a base salary — then enter your average deals per month to get a monthly, quarterly, and annual projection."],
+                    ].map(([title, desc]) => React.createElement("li", { key: title, className: "flex gap-3 bg-card border border-border rounded-xl p-4" },
+                        React.createElement("div", null,
+                            React.createElement("span", { className: "font-bold text-foreground" }, title, " — "),
+                            desc)))),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "Tips for Negotiating Your Commission Structure"),
+                React.createElement("p", null, "Understanding the mechanics of commission is only half the battle. Knowing how to negotiate a structure that works in your favour is what separates average earners from top performers. Here are some practical tips:"),
+                React.createElement("ul", { className: "space-y-2 list-disc list-inside mt-3" },
+                    [
+                        "Always negotiate OTE (On-Target Earnings), not just the commission rate. A 15% rate on an unachievable quota is worth less than a 10% rate on a realistic one.",
+                        "Ask what percentage of reps hit quota last year. If fewer than 60% did, the quota may be inflated.",
+                        "Push for accelerators. If you're confident in your ability, uncapped accelerators above quota can dramatically increase your upside.",
+                        "Understand the clawback policy. Some employers require repayment of commission if a customer cancels within 90–180 days.",
+                        "Clarify when commission is paid — on contract signature, invoice, or customer payment. Cash flow matters.",
+                        "Get the full comp plan in writing before accepting an offer. Verbal agreements on commission are hard to enforce.",
+                    ].map(tip => React.createElement("li", { key: tip, className: "text-sm py-1" }, tip))),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "Commission vs. Salary: Which Is Better?"),
+                React.createElement("p", null, "Whether a commission-heavy or salary-heavy structure suits you depends on your risk tolerance, experience level, and the product you're selling. Pure commission roles offer unlimited upside but zero safety net — ideal for experienced closers selling a proven product in a hot market. A base-plus-commission structure offers balance: you cover your bills while still having meaningful upside tied to performance."),
+                React.createElement("p", { className: "mt-3" }, "For most salespeople, the sweet spot is a base salary covering 50–60% of OTE, with commission making up the rest. This gives you enough stability to focus on long-term deals rather than chasing short-term wins just to pay rent."),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "Frequently Asked Questions"),
+                React.createElement("div", { className: "space-y-4 mt-4" },
+                    [
+                        ["How is commission taxed?", "In most countries, commission is taxed as ordinary income — the same as your salary. In the US, employers are required to withhold federal income tax on supplemental wages (including commission) at either the 22% flat rate or your normal withholding rate. Use the tax estimator in this calculator to get a rough take-home figure."],
+                        ["What is a draw against commission?", "A draw is an advance on future commission earnings. It gives a rep income stability while ramping up. Draws can be recoverable (you pay it back from future commission) or non-recoverable (it's effectively a guaranteed minimum). Always clarify which type you're being offered."],
+                        ["What does 'OTE' mean?", "On-Target Earnings is the total compensation a salesperson can expect to earn if they hit 100% of their quota. It includes base salary plus expected commission. OTE is the standard benchmark used when comparing sales job offers."],
+                        ["Can commission be taken away?", "Yes, under certain conditions. Most comp plans include clawback provisions allowing the employer to recover commission if a deal falls through, a customer cancels, or fraud is discovered. Always read the clawback clause before signing."],
+                        ["How do tiered commissions work?", "With tiered (progressive) commission, different rates apply to different portions of your sales. Only the revenue within each tier is taxed at that tier's rate — similar to how income tax brackets work. Our Advanced mode calculator handles this automatically."],
+                    ].map(([q, a]) => React.createElement("div", { key: q, className: "border border-border rounded-xl p-5 bg-card" },
+                        React.createElement("h4", { className: "font-bold text-foreground mb-2" }, q),
+                        React.createElement("p", { className: "text-sm" }, a)))))),
+
         /* ── Ad unit: Above footer ── */
         React.createElement(AdUnit, { slot: "REPLACE_WITH_AD_SLOT_3", format: "auto" }),
 
@@ -973,6 +1048,5 @@ function CalculatorPage() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(CalculatorPage, null));
 </script>
-
 </body>
 </html>
