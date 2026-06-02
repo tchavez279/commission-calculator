@@ -4,103 +4,120 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How Commission Income Is Taxed in the US — My Commission Calculator</title>
-<meta name="description" content="Commission is taxed differently to regular salary — and most reps don't realise until they see a smaller paycheck than expected. Here's how withholding works, when to pay quarterly estimates, and how to keep more of what you earn." />
+<meta name="description" content="Commission is taxed differently to regular salary. Here's how withholding works, when to pay quarterly estimates, and how to keep more of what you earn." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5677753426593768" crossorigin="anonymous"></script>
 <script>
-  const _warn = console.warn.bind(console);
-  console.warn = (...args) => {
-    if (typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return;
-    _warn(...args);
-  };
+  (function(){
+    const t=localStorage.getItem('mcc-theme')||'light';
+    if(t==='dark') document.documentElement.classList.add('dark');
+  })();
+  const _warn=console.warn.bind(console);
+  console.warn=(...a)=>{if(typeof a[0]==='string'&&a[0].includes('cdn.tailwindcss.com'))return;_warn(...a);};
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 html,body{font-family:Inter,system-ui,sans-serif;}
-.article-body p{color:hsl(215,16%,40%);line-height:1.8;margin-bottom:1.1rem;font-size:1rem;}
-.article-body h2{font-size:1.5rem;font-weight:800;color:hsl(222,47%,11%);margin:2.5rem 0 0.875rem;letter-spacing:-0.02em;}
-.article-body h3{font-size:1.15rem;font-weight:700;color:hsl(222,47%,11%);margin:1.75rem 0 0.5rem;}
-.article-body ul{color:hsl(215,16%,40%);line-height:1.8;margin-bottom:1.1rem;padding-left:1.5rem;}
+:root{
+  --bg:hsl(0,0%,100%);--fg:hsl(222,47%,11%);--card:hsl(0,0%,100%);
+  --muted:hsl(210,40%,96%);--muted-fg:hsl(215,16%,47%);--primary:hsl(142,71%,32%);
+  --border:hsl(214,32%,91%);--header-bg:hsla(0,0%,100%,0.85);
+}
+html.dark{
+  --bg:hsl(222,47%,8%);--fg:hsl(210,40%,98%);--card:hsl(222,47%,11%);
+  --muted:hsl(217,33%,17%);--muted-fg:hsl(215,20%,65%);--primary:hsl(142,71%,45%);
+  --border:hsl(217,33%,22%);--header-bg:hsla(222,47%,8%,0.85);
+}
+body{background:var(--bg);color:var(--fg);min-height:100vh;}
+.site-header{position:sticky;top:0;z-index:50;background:var(--header-bg);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-link{padding:0.4rem 0.85rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;text-decoration:none;color:var(--muted-fg);}
+.nav-link:hover{background:var(--muted);}
+.nav-link-active{color:var(--primary);background:var(--muted);}
+.badge{display:inline-block;padding:0.3rem 0.75rem;border-radius:9999px;background:var(--muted);color:var(--primary);font-size:0.75rem;font-weight:600;margin-bottom:1rem;}
+.article-body p{color:var(--muted-fg);line-height:1.8;margin-bottom:1.1rem;font-size:1rem;}
+.article-body h2{font-size:1.5rem;font-weight:800;color:var(--fg);margin:2.5rem 0 0.875rem;letter-spacing:-0.02em;}
+.article-body h3{font-size:1.15rem;font-weight:700;color:var(--fg);margin:1.75rem 0 0.5rem;}
+.article-body ul{color:var(--muted-fg);line-height:1.8;margin-bottom:1.1rem;padding-left:1.5rem;}
 .article-body li{margin-bottom:0.4rem;}
-.article-body strong{color:hsl(222,47%,11%);font-weight:700;}
-.callout{background:hsl(210,40%,96%);border-left:4px solid hsl(142,71%,32%);border-radius:0 0.75rem 0.75rem 0;padding:1.25rem 1.5rem;margin:1.75rem 0;}
-.callout p{margin:0;color:hsl(222,47%,20%);}
-.warning{background:hsl(45,100%,96%);border-left:4px solid hsl(38,92%,50%);border-radius:0 0.75rem 0.75rem 0;padding:1.25rem 1.5rem;margin:1.75rem 0;}
-.warning p{margin:0;color:hsl(222,47%,20%);}
+.article-body strong{color:var(--fg);font-weight:700;}
+.article-body a{color:var(--primary);}
+.callout{background:var(--muted);border-left:4px solid var(--primary);border-radius:0 0.75rem 0.75rem 0;padding:1.25rem 1.5rem;margin:1.75rem 0;}
+.callout p{margin:0;color:var(--fg);}
+.warning{background:var(--muted);border-left:4px solid hsl(38,92%,50%);border-radius:0 0.75rem 0.75rem 0;padding:1.25rem 1.5rem;margin:1.75rem 0;}
+.warning p{margin:0;color:var(--fg);}
 table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:0.9rem;}
-th{background:hsl(210,40%,96%);padding:0.75rem 1rem;text-align:left;font-weight:700;border:1px solid hsl(214,32%,91%);}
-td{padding:0.75rem 1rem;border:1px solid hsl(214,32%,91%);color:hsl(215,16%,40%);}
-tr:hover td{background:hsl(210,40%,98%);}
+th{background:var(--muted);padding:0.75rem 1rem;text-align:left;font-weight:700;border:1px solid var(--border);color:var(--fg);}
+td{padding:0.75rem 1rem;border:1px solid var(--border);color:var(--muted-fg);}
+tr:hover td{background:var(--muted);}
+.related-card{text-decoration:none;background:var(--muted);border-radius:0.75rem;padding:1.25rem;color:inherit;display:block;}
+.related-card:hover{opacity:0.85;}
+.related-title{font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;}
+.related-sub{font-size:0.8rem;color:var(--muted-fg);}
+.site-footer{border-top:1px solid var(--border);padding:1.5rem 1.25rem;text-align:center;font-size:0.875rem;color:var(--muted-fg);}
+.site-footer a{color:var(--muted-fg);text-decoration:underline;}
+#theme-toggle{background:transparent;border:none;cursor:pointer;font-size:1.2rem;padding:0.4rem 0.5rem;border-radius:0.5rem;line-height:1;}
+#theme-toggle:hover{background:var(--muted);}
 </style>
 </head>
-<body style="background:hsl(0,0%,100%);color:hsl(222,47%,11%);min-height:100vh;">
+<body>
 
-<!-- Header -->
-<header style="position:sticky;top:0;z-index:50;border-bottom:1px solid hsl(214,32%,91%);backdrop-filter:blur(8px);background:hsla(0,0%,100%,0.85);">
+<header class="site-header">
   <div style="max-width:72rem;margin:0 auto;padding:0 1.25rem;height:4rem;display:flex;align-items:center;justify-content:space-between;">
-    <a href="/" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;color:inherit;">
+    <a href="/" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;color:var(--fg);">
       <span style="width:2.5rem;height:2.5rem;border-radius:0.75rem;background:linear-gradient(135deg,#FFD23F,#FFA500);font-family:Georgia,serif;font-weight:900;font-size:1.25rem;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.5);">$</span>
       <span style="font-weight:700;font-size:1.05rem;letter-spacing:-0.02em;">My Commission Calculator</span>
     </a>
     <nav style="display:flex;align-items:center;gap:0.25rem;">
-      <a href="/" style="padding:0.4rem 0.85rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;text-decoration:none;color:hsl(215,16%,47%);" onmouseover="this.style.background='hsl(210,40%,96%)'" onmouseout="this.style.background='transparent'">Calculator</a>
-      <a href="/about.html" style="padding:0.4rem 0.85rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;text-decoration:none;color:hsl(215,16%,47%);" onmouseover="this.style.background='hsl(210,40%,96%)'" onmouseout="this.style.background='transparent'">About</a>
-      <a href="/blog.html" style="padding:0.4rem 0.85rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;text-decoration:none;color:hsl(142,71%,32%);background:hsl(210,40%,96%);">Blog</a>
+      <a href="/" class="nav-link">Calculator</a>
+      <a href="/about.html" class="nav-link">About</a>
+      <a href="/blog.html" class="nav-link nav-link-active">Blog</a>
+      <button id="theme-toggle" aria-label="Toggle theme">☀️</button>
     </nav>
   </div>
 </header>
 
-<!-- Article header -->
 <div style="max-width:48rem;margin:0 auto;padding:3rem 1.25rem 2rem;">
-  <a href="/blog.html" style="display:inline-flex;align-items:center;gap:0.5rem;color:hsl(142,71%,32%);font-size:0.875rem;font-weight:600;text-decoration:none;margin-bottom:1.5rem;">← Back to Blog</a>
-  <span style="display:inline-block;padding:0.3rem 0.75rem;border-radius:9999px;background:hsl(210,40%,96%);color:hsl(142,71%,32%);font-size:0.75rem;font-weight:600;margin-bottom:1rem;">Tax & Finance</span>
+  <a href="/blog.html" style="display:inline-flex;align-items:center;gap:0.5rem;color:var(--primary);font-size:0.875rem;font-weight:600;text-decoration:none;margin-bottom:1.5rem;">← Back to Blog</a>
+  <span class="badge">Tax & Finance</span>
   <h1 style="font-size:clamp(1.75rem,4vw,2.75rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:1rem;">How Commission Income Is Taxed in the US</h1>
-  <p style="color:hsl(215,16%,47%);font-size:1.05rem;line-height:1.65;margin-bottom:1.5rem;">Commission is taxed as ordinary income — but the way it's withheld, reported, and estimated is different from a regular salary. Understanding the rules helps you avoid a surprise tax bill and keep more of what you earn.</p>
-  <div style="display:flex;align-items:center;gap:1rem;font-size:0.85rem;color:hsl(215,16%,47%);padding-bottom:1.5rem;border-bottom:1px solid hsl(214,32%,91%);">
+  <p style="color:var(--muted-fg);font-size:1.05rem;line-height:1.65;margin-bottom:1.5rem;">Commission is taxed as ordinary income — but how it's withheld and estimated is different from a regular salary. Understanding the rules helps you avoid a surprise tax bill.</p>
+  <div style="display:flex;align-items:center;gap:1rem;font-size:0.85rem;color:var(--muted-fg);padding-bottom:1.5rem;border-bottom:1px solid var(--border);">
     <span>📅 April 2025</span><span>·</span><span>⏱ 7 min read</span><span>·</span><span>🧾 Tax & Finance</span>
   </div>
 </div>
 
-<!-- AdSense -->
 <div style="max-width:48rem;margin:0 auto 1.5rem;padding:0 1.25rem;">
   <ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-5677753426593768" data-ad-slot="REPLACE_WITH_AD_SLOT_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
 </div>
 
-<!-- Article body -->
 <main style="max-width:48rem;margin:0 auto;padding:0 1.25rem 5rem;" class="article-body">
 
   <div class="warning">
-    <p><strong>Disclaimer:</strong> This article provides general educational information about how commission income is typically taxed in the US. It is not tax advice. Tax situations vary — consult a qualified CPA or tax professional for guidance specific to your circumstances.</p>
+    <p><strong>Disclaimer:</strong> This article provides general educational information. It is not tax advice. Consult a qualified CPA or tax professional for guidance specific to your situation.</p>
   </div>
 
-  <p>One of the most common shocks for salespeople in their first big commission month is opening their paycheck and finding far less than they expected. "Where did my money go?" The answer is usually taxes — specifically, the way supplemental income like commission is withheld by employers.</p>
-
-  <p>Understanding the rules means you can plan your finances accurately, avoid underpaying the IRS, and make smart decisions about when to defer income and how to use deductions. Here's a clear, practical guide.</p>
+  <p>One of the most common shocks for salespeople in their first big commission month is opening their paycheck and finding far less than expected. The answer is usually taxes — specifically, how supplemental income like commission is withheld by employers.</p>
 
   <h2>Is Commission Taxed Differently Than Salary?</h2>
-  <p>In terms of what you ultimately owe the IRS at year-end — no. Commission income is classified as ordinary income and taxed at your marginal federal income tax rate, just like your salary.</p>
-  <p>Where commission <em>is</em> different is in how it is <strong>withheld</strong> by your employer throughout the year. The IRS classifies commission as "supplemental wages" and allows employers to withhold federal income tax using one of two methods.</p>
+  <p>At year-end — no. Commission is ordinary income, taxed at your marginal federal rate. Where it differs is in <strong>withholding</strong>. The IRS classifies commission as "supplemental wages" and allows two withholding methods.</p>
 
-  <h2>The Two Withholding Methods</h2>
+  <h3>Method 1: Flat Rate (22%)</h3>
+  <p>If commission is paid separately from your salary, employers can withhold a flat 22% federal income tax. This is the most common approach. If your actual marginal rate is 32%, you'll be under-withheld all year and face a large tax bill in April.</p>
 
-  <h3>Method 1: The Flat Rate Method (22%)</h3>
-  <p>If your commission is paid separately from your regular salary (as a distinct payment), your employer can withhold a flat 22% federal income tax. This is the most common approach because it's simple to administer.</p>
-  <p>The 22% flat rate is fine if your marginal tax rate is around 22% — but if you're a high earner in the 32% or 37% bracket, you'll be under-withheld all year and face a large tax bill in April. Conversely, if you're in the 12% bracket, you're over-paying throughout the year.</p>
-
-  <h3>Method 2: The Aggregate Method</h3>
-  <p>If your commission is paid together with your regular salary in the same paycheck, your employer must use the aggregate method — calculating withholding as if the combined amount is a single paycheck at your normal withholding rate. This tends to result in more accurate withholding but can cause a spike in taxes in months with large commissions.</p>
+  <h3>Method 2: Aggregate Method</h3>
+  <p>If commission is paid in the same paycheck as your salary, employers must withhold as if the combined amount is one paycheck at your normal rate. This causes a spike in withholding in big commission months but tends to be more accurate over the year.</p>
 
   <div class="callout">
-    <p><strong>What this means for you:</strong> If your commission is withheld at 22% but your actual marginal rate is 32%, you're building up a tax deficit all year. Set aside an additional 8–12% of every commission payment yourself to avoid a shock in April.</p>
+    <p><strong>What this means:</strong> If your commission is withheld at 22% but your marginal rate is 32%, set aside an additional 8–12% of every commission payment yourself to avoid a shock at tax time.</p>
   </div>
 
   <h2>Federal Income Tax Brackets (2024)</h2>
-  <p>Your commission income stacks on top of your salary when determining which bracket applies. Here are the 2024 federal brackets for single filers:</p>
+  <p>Commission stacks on top of your salary when determining which bracket applies. Only the income within each bracket is taxed at that rate — the same as how tiered commission works.</p>
   <table>
-    <thead><tr><th>Taxable Income</th><th>Rate</th></tr></thead>
+    <thead><tr><th>Taxable Income (Single)</th><th>Rate</th></tr></thead>
     <tbody>
       <tr><td>$0 – $11,600</td><td>10%</td></tr>
       <tr><td>$11,601 – $47,150</td><td>12%</td></tr>
@@ -111,87 +128,89 @@ tr:hover td{background:hsl(210,40%,98%);}
       <tr><td>Over $609,350</td><td>37%</td></tr>
     </tbody>
   </table>
-  <p>Remember: these are marginal rates. Only the income within each bracket is taxed at that rate. If you earn $120,000 total (salary + commission), you don't pay 24% on all of it — only on the portion above $100,525.</p>
 
-  <h2>FICA Taxes: Social Security and Medicare</h2>
-  <p>In addition to federal income tax, commission income is also subject to FICA taxes:</p>
+  <h2>FICA: Social Security & Medicare</h2>
   <ul>
-    <li><strong>Social Security tax:</strong> 6.2% on wages up to $168,600 (2024 limit). Your employer matches this.</li>
-    <li><strong>Medicare tax:</strong> 1.45% on all wages, no cap. Again, employer matched.</li>
-    <li><strong>Additional Medicare tax:</strong> 0.9% on earned income above $200,000 for single filers. This is not matched by employers.</li>
+    <li><strong>Social Security:</strong> 6.2% on wages up to $168,600 (2024). Employer matched.</li>
+    <li><strong>Medicare:</strong> 1.45% on all wages, no cap. Employer matched.</li>
+    <li><strong>Additional Medicare:</strong> 0.9% on earned income above $200,000 for single filers. Not matched.</li>
   </ul>
-  <p>Combined, FICA adds roughly 7.65% to your tax burden on commission income (up to the Social Security wage base).</p>
+  <p>Combined, FICA adds roughly 7.65% to your effective tax rate on commission income up to the Social Security wage base.</p>
 
   <h2>State Income Tax</h2>
-  <p>Most states also tax commission income as ordinary income at the state level. Rates vary significantly:</p>
+  <p>Most states also tax commission as ordinary income. Rates vary widely:</p>
   <ul>
-    <li><strong>No state income tax:</strong> Texas, Florida, Nevada, Washington, Tennessee, South Dakota, Wyoming, Alaska, New Hampshire (on earned income)</li>
-    <li><strong>Low rates (under 5%):</strong> Arizona (2.5%), North Dakota (2.5%), Indiana (3.05%)</li>
+    <li><strong>No state income tax:</strong> Texas, Florida, Nevada, Washington, Tennessee, South Dakota, Wyoming, Alaska</li>
+    <li><strong>Low rates (under 5%):</strong> Arizona (2.5%), Indiana (3.05%), North Dakota (2.5%)</li>
     <li><strong>High rates:</strong> California (up to 13.3%), New York (up to 10.9%), New Jersey (up to 10.75%)</li>
   </ul>
-  <p>If you live in a high-tax state and earn significant commission, state tax can add another 8–13% to your overall tax burden — making effective total tax rates on commission income of 45–50% possible for high earners in California or New York.</p>
 
-  <h2>Self-Employed Commission Earners: Quarterly Estimates</h2>
-  <p>If you receive commission as an independent contractor (receiving a 1099 rather than a W-2), no tax is withheld for you automatically. You're responsible for paying both the employee and employer share of FICA (15.3% combined, known as self-employment tax) plus federal and state income taxes.</p>
-  <p>The IRS requires self-employed people to pay quarterly estimated taxes if they expect to owe more than $1,000 for the year. The deadlines are:</p>
+  <h2>Self-Employed: Quarterly Estimates</h2>
+  <p>If you receive commission as a 1099 contractor, no tax is withheld automatically. You owe both the employee and employer share of FICA (15.3% self-employment tax) plus income taxes. The IRS requires quarterly estimated payments if you expect to owe more than $1,000 for the year:</p>
   <ul>
-    <li>April 15 — for income earned January 1 to March 31</li>
-    <li>June 17 — for income earned April 1 to May 31</li>
-    <li>September 16 — for income earned June 1 to August 31</li>
-    <li>January 15 — for income earned September 1 to December 31</li>
+    <li>April 15 — income earned Jan 1 – Mar 31</li>
+    <li>June 17 — income earned Apr 1 – May 31</li>
+    <li>September 16 — income earned Jun 1 – Aug 31</li>
+    <li>January 15 — income earned Sep 1 – Dec 31</li>
   </ul>
-  <p>Missing these payments results in underpayment penalties, even if you pay the full amount owed at tax time.</p>
 
   <div class="callout">
-    <p><strong>Practical tip for 1099 earners:</strong> Set aside 25–30% of every commission payment into a dedicated savings account. This covers self-employment tax plus federal and most state income taxes for the majority of earners. Adjust up if you're in a high-tax state or high income bracket.</p>
+    <p><strong>Practical tip for 1099 earners:</strong> Set aside 25–30% of every commission payment into a dedicated savings account. This covers self-employment tax plus federal and most state income taxes for most earners.</p>
   </div>
 
-  <h2>Deductions Commission Earners Can Claim</h2>
-  <p>If you're a W-2 employee, your ability to deduct unreimbursed work expenses was largely eliminated by the 2017 Tax Cuts and Jobs Act. However, there are still meaningful deductions available:</p>
+  <h2>Key Deductions for Commission Earners</h2>
   <ul>
-    <li><strong>Home office deduction</strong> (self-employed only) — if you work from a dedicated space in your home</li>
-    <li><strong>Vehicle mileage</strong> (self-employed) — $0.67 per mile for business driving in 2024</li>
+    <li><strong>Home office</strong> (self-employed only) — dedicated workspace deduction</li>
+    <li><strong>Vehicle mileage</strong> (self-employed) — $0.67/mile for business driving in 2024</li>
     <li><strong>Health insurance premiums</strong> (self-employed) — 100% deductible above the line</li>
-    <li><strong>Retirement contributions</strong> — SEP-IRA contributions of up to 25% of net self-employment income (max $69,000 in 2024) are fully deductible</li>
-    <li><strong>Professional development</strong> — courses, books, and subscriptions directly related to your sales role (self-employed)</li>
+    <li><strong>SEP-IRA contributions</strong> — up to 25% of net self-employment income (max $69,000 in 2024)</li>
+    <li><strong>Professional development</strong> — courses and subscriptions directly related to your sales role</li>
   </ul>
 
-  <h2>Using the Take-Home Estimator in Our Calculator</h2>
-  <p>Our <a href="/" style="color:hsl(142,71%,32%);font-weight:600;">commission calculator</a> includes a built-in tax estimator that lets you set separate tax rates for base pay and commission income. While it doesn't replace professional tax advice, it's a useful tool for understanding roughly how much of your gross commission you'll actually take home — and for comparing offers where the base/commission split differs.</p>
-  <p>For a quick estimate, most W-2 employees in moderate tax states can use 28–32% as a combined federal + state effective rate on commission income. High earners in high-tax states should use 38–45%.</p>
-
-  <!-- CTA -->
   <div style="margin-top:3rem;background:linear-gradient(135deg,#0E5C29,#1B7F3A,#34C759);border-radius:1rem;padding:2rem;color:white;text-align:center;">
     <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:0.5rem;color:white;">Estimate your take-home commission</h3>
     <p style="opacity:0.85;margin-bottom:1.25rem;font-size:0.9rem;">Use the tax estimator in our free calculator to see what you'll actually pocket.</p>
     <a href="/" style="display:inline-block;background:white;color:hsl(142,71%,32%);font-weight:700;padding:0.65rem 1.75rem;border-radius:0.75rem;text-decoration:none;font-size:0.9rem;">Open the Calculator →</a>
   </div>
 
-  <!-- AdSense -->
   <div style="margin-top:2.5rem;">
     <ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-5677753426593768" data-ad-slot="REPLACE_WITH_AD_SLOT_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
   </div>
 
-  <!-- Related -->
-  <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid hsl(214,32%,91%);">
-    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;color:hsl(222,47%,11%);">Related Articles</h3>
+  <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);">
+    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Related Articles</h3>
     <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));">
-      <a href="/blog/how-to-negotiate-commission.html" style="text-decoration:none;background:hsl(210,40%,96%);border-radius:0.75rem;padding:1.25rem;color:inherit;">
-        <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;">Negotiate Your Commission</div>
-        <div style="font-size:0.8rem;color:hsl(215,16%,47%);">Tactics that actually work →</div>
+      <a href="/blog/how-to-negotiate-commission.html" class="related-card">
+        <div class="related-title">Negotiate Your Commission</div>
+        <div class="related-sub">Tactics that actually work →</div>
       </a>
-      <a href="/blog/understanding-tiered-commission.html" style="text-decoration:none;background:hsl(210,40%,96%);border-radius:0.75rem;padding:1.25rem;color:inherit;">
-        <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;">Tiered Commission Explained</div>
-        <div style="font-size:0.8rem;color:hsl(215,16%,47%);">How brackets really work →</div>
+      <a href="/blog/understanding-tiered-commission.html" class="related-card">
+        <div class="related-title">Tiered Commission Explained</div>
+        <div class="related-sub">How brackets really work →</div>
       </a>
     </div>
   </div>
 </main>
 
-<footer style="border-top:1px solid hsl(214,32%,91%);padding:1.5rem 1.25rem;text-align:center;font-size:0.875rem;color:hsl(215,16%,47%);">
-  © <span id="yr"></span> My Commission Calculator · <a href="/about.html" style="color:inherit;text-decoration:underline;">About</a> · <a href="/blog.html" style="color:inherit;text-decoration:underline;">Blog</a> · <a href="/" style="color:inherit;text-decoration:underline;">Calculator</a>
+<footer class="site-footer">
+  © <span id="yr"></span> My Commission Calculator ·
+  <a href="/about.html">About</a> · <a href="/blog.html">Blog</a> · <a href="/">Calculator</a>
 </footer>
-<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const btn = document.getElementById('theme-toggle');
+  function applyTheme(t) {
+    document.documentElement.classList.toggle('dark', t === 'dark');
+    btn.textContent = t === 'dark' ? '🌙' : '☀️';
+  }
+  applyTheme(localStorage.getItem('mcc-theme') || 'light');
+  btn.addEventListener('click', () => {
+    const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+    localStorage.setItem('mcc-theme', next);
+    applyTheme(next);
+  });
+</script>
 </body>
 </html>
