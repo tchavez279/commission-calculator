@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Commission Calculator — Free Sales Commission Tool</title>
+<meta name="description" content="Free, beautiful commission calculator. Basic mode for quick math, Detailed mode with base+OT and add-ons, Advanced mode for tiered, splits, accelerators and annual projections." />
+<meta property="og:title" content="My Commission Calculator" />
+<meta property="og:description" content="Calculate sales commissions in seconds — Basic, Detailed and Advanced modes with tiers, splits, accelerators and projections." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5677753426593768" crossorigin="anonymous"></script>
+
+<!-- Tailwind via CDN (warning suppressed for standalone HTML deployment) -->
+<script>
+  // Suppress Tailwind CDN production warning for standalone HTML file deployments
+  const _warn = console.warn.bind(console);
+  console.warn = (...args) => {
+    if (typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return;
+    _warn(...args);
+  };
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        colors: {
+          background: 'hsl(var(--background))',
+          foreground: 'hsl(var(--foreground))',
+          card: 'hsl(var(--card))',
+          'card-foreground': 'hsl(var(--card-foreground))',
+          muted: 'hsl(var(--muted))',
+          'muted-foreground': 'hsl(var(--muted-foreground))',
+          primary: 'hsl(var(--primary))',
+          'primary-foreground': 'hsl(var(--primary-foreground))',
+          border: 'hsl(var(--border))',
+          input: 'hsl(var(--input))',
+          ring: 'hsl(var(--ring))',
+          destructive: 'hsl(var(--destructive))',
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+:root{
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --primary: 142 71% 32%;
+  --primary-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 142 71% 32%;
+  --destructive: 0 84% 60%;
+}
+.dark{
+  --background: 222 47% 8%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 11%;
+  --card-foreground: 210 40% 98%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  --primary: 142 71% 45%;
+  --primary-foreground: 222 47% 11%;
+  --border: 217 33% 22%;
+  --input: 217 33% 22%;
+  --ring: 142 71% 45%;
+  --destructive: 0 75% 55%;
+}
+html, body { font-family: Inter, system-ui, sans-serif; }
+.bg-gradient-money { background: linear-gradient(135deg,#0E5C29 0%,#1B7F3A 50%,#34C759 100%); }
+.bg-gradient-cash  { background: linear-gradient(135deg,#1B7F3A 0%,#34C759 100%); }
+.bg-gradient-gold  { background: linear-gradient(135deg,#FFD23F 0%,#FFA500 100%); }
+.shadow-money { box-shadow: 0 10px 30px -10px rgba(27,127,58,.4); }
+.shadow-gold  { box-shadow: 0 8px 24px -8px rgba(255,210,63,.5); }
+.text-gradient-gold {
+  background: linear-gradient(135deg,#FFD23F 0%,#FFA500 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+/* AdSense ad unit wrapper */
+.ad-unit {
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  background: transparent;
+}
+</style>
+</head>
+<body class="bg-background text-foreground">
+
+<div id="root"></div>
+
+<!-- Ad unit: Below hero section (leaderboard / responsive) -->
+<div id="ad-hero" style="display:none;"></div>
+
+<!-- Ad unit: Below saved scenarios (responsive) -->
+<div id="ad-scenarios" style="display:none;"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+
+<script>
+const { useState, useEffect, useMemo } = React;
+const WEEKS_PER_YEAR = 52;
+const HOURS_PER_WEEK_DEFAULT = 40;
+function annualizeBase(amount, period, hpw = HOURS_PER_WEEK_DEFAULT) {
+    switch (period) {
+        case "hourly": return amount * hpw * WEEKS_PER_YEAR;
+        case "weekly": return amount * WEEKS_PER_YEAR;
+        case "biweekly": return amount * 26;
+        case "monthly": return amount * 12;
+        case "annual": return amount;
+    }
+}
+function deAnnualize(annual, period, hpw = HOURS_PER_WEEK_DEFAULT) {
+    switch (period) {
+        case "hourly": return annual / (hpw * WEEKS_PER_YEAR);
+        case "weekly": return annual / WEEKS_PER_YEAR;
+        case "biweekly": return annual / 26;
+        case "monthly": return annual / 12;
+        case "annual": return annual;
+    }
+}
+function uid() { return Math.random().toString(36).slice(2, 9); }
+const currencySymbols = { USD: "$", EUR: "€", GBP: "£", CAD: "$", AUD: "$", INR: "₹" };
+const presets = {
+    realestate: { rate: 3, label: "Real Estate 3%", emoji: "🏡" },
+    saas: { rate: 10, label: "SaaS 10%", emoji: "💻" },
+    retail: { rate: 5, label: "Retail 5%", emoji: "🛍️" },
+    insurance: { rate: 15, label: "Insurance 15%", emoji: "🛡️" },
+    auto: { rate: 25, label: "Auto 25%", emoji: "🚗" },
+};
+const fmt = (n, currency = "USD") => {
+    if (!isFinite(n))
+        n = 0;
+    try {
+        return new Intl.NumberFormat(undefined, { style: "currency", currency, maximumFractionDigits: 2 }).format(n);
+    }
+    catch (_a) {
+        return "$" + n.toFixed(2);
+    }
+};
+function formatWithCommas(raw) {
+    if (raw === "" || raw === "-") return raw;
+    const neg = raw.startsWith("-");
+    const body = neg ? raw.slice(1) : raw;
+    const [intPart, decPart] = body.split(".");
+    const cleanInt = (intPart || "").replace(/^0+(?=\d)/, "") || "0";
+    const withCommas = cleanInt.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const result = decPart !== undefined ? `${withCommas}.${decPart}` : withCommas;
+    return neg ? `-${result}` : result;
+}
+function NumField({ value, onChange, placeholder = "0", min = 0, max, step }) {
+    const [text, setText] = useState(value === 0 ? "" : formatWithCommas(String(value)));
+    useEffect(() => {
+        setText(value === 0 ? "" : formatWithCommas(String(value)));
+    }, [value]);
+    return (React.createElement("input", { type: "text", inputMode: "decimal", value: text, placeholder: placeholder, onFocus: (e) => { if (e.target.value === "0") setText(""); }, onChange: (e) => {
+            const raw = e.target.value.replace(/[^0-9.\-]/g, "");
+            setText(formatWithCommas(raw));
+            const v = raw === "" || raw === "-" ? 0 : parseFloat(raw);
+            onChange(isNaN(v) ? 0 : v);
+        }, className: "border-0 outline-none bg-transparent w-full px-3 py-2.5 text-base font-medium text-foreground tabular-nums" }));
+}
+
+/* ── Inline AdSense unit component ── */
+function AdUnit({ slot, format = "auto", style = {} }) {
+    useEffect(() => {
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch(e) {}
+    }, []);
+    return React.createElement("div", { className: "ad-unit my-4 mx-auto max-w-4xl px-5" },
+        React.createElement("ins", {
+            className: "adsbygoogle",
+            style: { display: "block", ...style },
+            "data-ad-client": "ca-pub-5677753426593768",
+            "data-ad-slot": slot,
+            "data-ad-format": format,
+            "data-full-width-responsive": "true"
+        })
+    );
+}
+
+function CalculatorPage() {
+    // Theme
+    const [theme, setTheme] = useState("light");
+    useEffect(() => {
+        const saved = localStorage.getItem("mcc-theme") || "light";
+        setTheme(saved);
+        document.documentElement.classList.toggle("dark", saved === "dark");
+    }, []);
+    const toggleTheme = () => {
+        const next = theme === "light" ? "dark" : "light";
+        setTheme(next);
+        document.documentElement.classList.toggle("dark", next === "dark");
+        localStorage.setItem("mcc-theme", next);
+    };
+    const [mode, setMode] = useState("basic");
+    // Basic
+    const [bSale, setBSale] = useState(0);
+    const [bRate, setBRate] = useState(10);
+    const [bDeals, setBDeals] = useState(1);
+    // Advanced
+    const [aSale, setASale] = useState(0);
+    const [currency, setCurrency] = useState("USD");
+    const [planType, setPlanType] = useState("flat");
+    const [aRate, setARate] = useState(10);
+    const [tiers, setTiers] = useState([
+        { min: 0, max: 50000, rate: 5 },
+        { min: 50000, max: 100000, rate: 8 },
+        { min: 100000, max: null, rate: 12 },
+    ]);
+    const [splitOn, setSplitOn] = useState(false);
+    const [splitYou, setSplitYou] = useState(70);
+    const [splitMgr, setSplitMgr] = useState(20);
+    const [splitHouse, setSplitHouse] = useState(10);
+    const [accelOn, setAccelOn] = useState(false);
+    const [quotaAtt, setQuotaAtt] = useState(100);
+    const [accelMult, setAccelMult] = useState(1.5);
+    const [bonus, setBonus] = useState(0);
+    const [baseOn, setBaseOn] = useState(false);
+    const [hourly, setHourly] = useState(20);
+    const [hpw, setHpw] = useState(40);
+    const [otHours, setOtHours] = useState(0);
+    const [otMult, setOtMult] = useState(1.5);
+    const [dealsPerMonth, setDealsPerMonth] = useState(5);
+    // Detailed
+    const [dInputPeriod, setDInputPeriod] = useState("monthly");
+    const [dOutPeriod, setDOutPeriod] = useState("monthly");
+    const [dBasePay, setDBasePay] = useState(0);
+    const [dBasePeriod, setDBasePeriod] = useState("hourly");
+    const [dHpw, setDHpw] = useState(40);
+    const [dOtHours, setDOtHours] = useState(0);
+    const [dOtMult, setDOtMult] = useState(1.5);
+    const [dUnits, setDUnits] = useState(0);
+    const [dPerUnit, setDPerUnit] = useState(0);
+    const [dRevenue, setDRevenue] = useState(0);
+    const [dRevPct, setDRevPct] = useState(0);
+    const [dAddons, setDAddons] = useState([{ id: uid(), name: "Protection plan", qty: 0, payout: 0 }]);
+    const [dBonusTiers, setDBonusTiers] = useState([
+        { id: uid(), threshold: 10, bonus: 250 },
+        { id: uid(), threshold: 25, bonus: 750 },
+    ]);
+    const [dSpiffs, setDSpiffs] = useState([{ id: uid(), name: "", amount: 0 }]);
+    // Tax estimator
+    const [taxOn, setTaxOn] = useState(false);
+    const [baseTaxPct, setBaseTaxPct] = useState(22);
+    const [commTaxPct, setCommTaxPct] = useState(22);
+    // Scenarios
+    const [scenarios, setScenarios] = useState([]);
+    useEffect(() => {
+        try {
+            setScenarios(JSON.parse(localStorage.getItem("mcc-scenarios") || "[]"));
+        }
+        catch (_a) { }
+    }, []);
+    const persistScenarios = (s) => {
+        setScenarios(s);
+        localStorage.setItem("mcc-scenarios", JSON.stringify(s));
+    };
+    // Toast
+    const [toast, setToast] = useState(null);
+    // Privacy modal
+    const [privacyOpen, setPrivacyOpen] = useState(false);
+    const showToast = (m) => {
+        setToast(m);
+        setTimeout(() => setToast(null), 1800);
+    };
+    // Compute
+    const result = useMemo(() => {
+        const cur = mode === "advanced" ? currency : "USD";
+        const rows = [];
+        let perDeal = 0, total = 0, monthly = 0, quarterly = 0, annual = 0, projection = false;
+        let baseAmt = 0, commAmt = 0;
+        if (mode === "basic") {
+            const c = bSale * (bRate / 100);
+            perDeal = c;
+            total = c * (bDeals || 1);
+            commAmt = total;
+            rows.push({ label: "Sale × rate", value: c });
+            if ((bDeals || 1) > 1)
+                rows.push({ label: `× ${bDeals} deals`, value: total, divider: true });
+        }
+        else if (mode === "advanced") {
+            let baseComm = 0;
+            if (planType === "tiered") {
+                const sorted = [...tiers].sort((a, b) => a.min - b.min);
+                for (const t of sorted) {
+                    const upper = t.max == null ? Infinity : t.max;
+                    if (aSale <= t.min)
+                        continue;
+                    const portion = Math.min(aSale, upper) - t.min;
+                    if (portion <= 0)
+                        continue;
+                    const c = portion * (t.rate / 100);
+                    baseComm += c;
+                    rows.push({ label: `${fmt(t.min, cur)} – ${t.max == null ? "∞" : fmt(t.max, cur)} @ ${t.rate}%`, value: c });
+                }
+            }
+            else {
+                baseComm = aSale * (aRate / 100);
+                rows.push({ label: `Sale × ${aRate}%`, value: baseComm });
+            }
+            if (accelOn && quotaAtt > 100) {
+                const extra = baseComm * (accelMult - 1);
+                baseComm += extra;
+                rows.push({ label: `Accelerator @ ${accelMult}x (over quota)`, value: extra });
+            }
+            let yourCut = baseComm;
+            if (splitOn) {
+                const totalSplit = (splitYou + splitMgr + splitHouse) || 100;
+                yourCut = baseComm * (splitYou / totalSplit);
+                rows.push({ label: `Your split (${splitYou}/${totalSplit})`, value: yourCut });
+            }
+            if (bonus > 0) {
+                yourCut += bonus;
+                rows.push({ label: "Bonus / SPIF", value: bonus });
+            }
+            perDeal = yourCut;
+            total = yourCut;
+            commAmt = total;
+            if (dealsPerMonth > 0 || baseOn) {
+                projection = true;
+                monthly = perDeal * dealsPerMonth;
+                let baseAnnualVal = 0;
+                if (baseOn) {
+                    const reg = hourly * hpw * 52;
+                    const ot = hourly * otMult * otHours * 52;
+                    baseAnnualVal = reg + ot;
+                    rows.push({ label: "Annual base + OT", value: baseAnnualVal });
+                }
+                quarterly = monthly * 3;
+                annual = monthly * 12 + baseAnnualVal;
+                baseAmt = baseAnnualVal;
+                commAmt = monthly * 12;
+            }
+        }
+        else {
+            const scale = annualizeBase(1, dInputPeriod, dHpw) / annualizeBase(1, dOutPeriod, dHpw);
+            let basePerPeriod = 0;
+            if (dBasePay > 0) {
+                const baseAnnual = annualizeBase(dBasePay, dBasePeriod, dHpw);
+                const otAnnual = dBasePeriod === "hourly" ? (dBasePay * dOtMult * dOtHours * WEEKS_PER_YEAR) : 0;
+                basePerPeriod = deAnnualize(baseAnnual + otAnnual, dOutPeriod, dHpw);
+                if (basePerPeriod > 0)
+                    rows.push({ label: `Base pay${dOtHours > 0 && dBasePeriod === "hourly" ? " + OT" : ""}`, value: basePerPeriod });
+            }
+            const unitComm = dUnits * dPerUnit * scale;
+            if (unitComm > 0)
+                rows.push({ label: `${(dUnits * scale).toFixed(1)} units × ${fmt(dPerUnit, "USD")}`, value: unitComm });
+            const revComm = dRevenue * (dRevPct / 100) * scale;
+            if (revComm > 0)
+                rows.push({ label: `${fmt(dRevenue * scale, "USD")} × ${dRevPct}%`, value: revComm });
+            let addonComm = 0;
+            dAddons.forEach((a) => {
+                const v = a.qty * a.payout * scale;
+                if (v > 0) {
+                    addonComm += v;
+                    rows.push({ label: `${a.name || "Add-on"}: ${(a.qty * scale).toFixed(1)} × ${fmt(a.payout, "USD")}`, value: v });
+                }
+            });
+            let bonusComm = 0;
+            const scaledUnits = dUnits * scale;
+            const sortedT = [...dBonusTiers].sort((a, b) => b.threshold - a.threshold);
+            const reached = sortedT.find((t) => scaledUnits >= t.threshold && t.threshold > 0);
+            if (reached && reached.bonus > 0) {
+                bonusComm = reached.bonus;
+                rows.push({ label: `Tier bonus (${reached.threshold}+ units)`, value: bonusComm });
+            }
+            let spiffComm = 0;
+            dSpiffs.forEach((s) => {
+                const v = s.amount * scale;
+                if (v > 0) {
+                    spiffComm += v;
+                    rows.push({ label: `Spiff${s.name ? `: ${s.name}` : ""}`, value: v });
+                }
+            });
+            const commPerPeriod = unitComm + revComm + addonComm + bonusComm + spiffComm;
+            total = basePerPeriod + commPerPeriod;
+            perDeal = total;
+            baseAmt = basePerPeriod;
+            commAmt = commPerPeriod;
+        }
+        let baseTax = 0, commTax = 0, takeHome = 0;
+        if (taxOn) {
+            baseTax = baseAmt * (baseTaxPct / 100);
+            commTax = commAmt * (commTaxPct / 100);
+            takeHome = (baseAmt + commAmt) - baseTax - commTax;
+        }
+        const display = mode === "advanced" && projection ? annual : total;
+        return { cur, rows, perDeal, total, monthly, quarterly, annual, projection, display, baseAmt, commAmt, baseTax, commTax, takeHome };
+    }, [mode, bSale, bRate, bDeals, aSale, currency, planType, aRate, tiers, accelOn, quotaAtt, accelMult, splitOn, splitYou, splitMgr, splitHouse, bonus, baseOn, hourly, hpw, otHours, otMult, dealsPerMonth,
+        dInputPeriod, dOutPeriod, dBasePay, dBasePeriod, dHpw, dOtHours, dOtMult, dUnits, dPerUnit, dRevenue, dRevPct, dAddons, dBonusTiers, dSpiffs,
+        taxOn, baseTaxPct, commTaxPct]);
+    const applyPreset = (key) => {
+        const p = presets[key];
+        if (!p)
+            return;
+        if (mode === "basic")
+            setBRate(p.rate);
+        else {
+            setPlanType("flat");
+            setARate(p.rate);
+        }
+    };
+    const reset = () => {
+        if (mode === "basic") {
+            setBSale(0);
+            setBRate(10);
+            setBDeals(1);
+        }
+        else {
+            setASale(0);
+            setPlanType("flat");
+            setARate(10);
+            setSplitOn(false);
+            setAccelOn(false);
+            setBaseOn(false);
+            setBonus(0);
+            setDealsPerMonth(5);
+        }
+        showToast("Reset ✓");
+    };
+    const saveScenario = () => {
+        const name = window.prompt("Name this scenario:", `Scenario ${scenarios.length + 1}`);
+        if (!name)
+            return;
+        const data = mode === "basic"
+            ? { sale: bSale, rate: bRate, deals: bDeals }
+            : { sale: aSale, currency, planType, rate: aRate, tiers, splitOn, splitYou, splitMgr, splitHouse,
+                accelOn, quotaAtt, accelMult, bonus, baseOn, hourly, hpw, otHours, otMult, dealsPerMonth };
+        const next = [{
+                id: Math.random().toString(36).slice(2),
+                name, mode, data,
+                display: fmt(result.display, result.cur),
+                date: new Date().toLocaleDateString(),
+            }, ...scenarios].slice(0, 24);
+        persistScenarios(next);
+        showToast("Saved ✓");
+    };
+    const loadScenario = (s) => {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        setMode(s.mode);
+        if (s.mode === "basic") {
+            setBSale(s.data.sale || 0);
+            setBRate(s.data.rate || 10);
+            setBDeals(s.data.deals || 1);
+        }
+        else {
+            const d = s.data;
+            setASale(d.sale || 0);
+            setCurrency(d.currency || "USD");
+            setPlanType(d.planType || "flat");
+            setARate(d.rate || 10);
+            setTiers(d.tiers || tiers);
+            setSplitOn(!!d.splitOn);
+            setSplitYou((_a = d.splitYou) !== null && _a !== void 0 ? _a : 70);
+            setSplitMgr((_b = d.splitMgr) !== null && _b !== void 0 ? _b : 20);
+            setSplitHouse((_c = d.splitHouse) !== null && _c !== void 0 ? _c : 10);
+            setAccelOn(!!d.accelOn);
+            setQuotaAtt((_d = d.quotaAtt) !== null && _d !== void 0 ? _d : 100);
+            setAccelMult((_e = d.accelMult) !== null && _e !== void 0 ? _e : 1.5);
+            setBonus(d.bonus || 0);
+            setBaseOn(!!d.baseOn);
+            setHourly((_f = d.hourly) !== null && _f !== void 0 ? _f : 20);
+            setHpw((_g = d.hpw) !== null && _g !== void 0 ? _g : 40);
+            setOtHours(d.otHours || 0);
+            setOtMult((_h = d.otMult) !== null && _h !== void 0 ? _h : 1.5);
+            setDealsPerMonth((_j = d.dealsPerMonth) !== null && _j !== void 0 ? _j : 5);
+        }
+        showToast("Loaded ✓");
+    };
+    const share = async () => {
+        const payload = btoa(encodeURIComponent(JSON.stringify({
+            m: mode,
+            b: { sale: bSale, rate: bRate, deals: bDeals },
+            a: { sale: aSale, currency, planType, rate: aRate, dealsPerMonth },
+        })));
+        const url = `${location.origin}${location.pathname}#s=${payload}`;
+        try {
+            await navigator.clipboard.writeText(url);
+            showToast("Link copied! 🔗");
+        }
+        catch (_a) {
+            window.prompt("Copy this link:", url);
+        }
+    };
+    const copyResult = async () => {
+        try {
+            await navigator.clipboard.writeText(`My commission: ${fmt(result.display, result.cur)}`);
+            showToast("Copied! 📋");
+        }
+        catch (_a) {
+            showToast("Copy failed");
+        }
+    };
+    const card = "bg-card border border-border rounded-xl p-6 shadow-sm";
+    const inputGroup = "flex items-stretch border border-input rounded-lg bg-card overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition";
+    const fix = "inline-flex items-center px-3 bg-muted text-muted-foreground font-semibold text-sm";
+    return (React.createElement("div", { className: "min-h-screen bg-background text-foreground" },
+        React.createElement("header", { className: "sticky top-0 z-50 border-b border-border backdrop-blur bg-background/80" },
+            React.createElement("div", { className: "max-w-6xl mx-auto px-5 h-16 flex items-center justify-between" },
+                React.createElement("div", { className: "flex items-center gap-3" },
+                    React.createElement("span", { className: "w-10 h-10 rounded-xl bg-gradient-gold text-foreground font-extrabold text-xl shadow-gold border-2 border-white/50 flex items-center justify-center", style: { fontFamily: "Georgia, 'Times New Roman', serif" } }, "$"),
+                    React.createElement("span", { className: "font-bold text-base sm:text-lg tracking-tight" }, "My Commission Calculator")),
+                React.createElement("div", { className: "flex items-center gap-1" },
+                    React.createElement("a", { href: "/about.html", className: "h-10 px-3 rounded-lg hover:bg-muted transition text-sm font-semibold hidden sm:flex items-center text-muted-foreground" }, "About"),
+                    React.createElement("a", { href: "/blog.html", className: "h-10 px-3 rounded-lg hover:bg-muted transition text-sm font-semibold hidden sm:flex items-center text-muted-foreground" }, "Blog"),
+                    React.createElement("button", { onClick: toggleTheme, "aria-label": "Toggle theme", className: "h-10 w-10 rounded-lg hover:bg-muted transition flex items-center justify-center text-lg" }, theme === "light" ? "☀️" : "🌙"),
+                    React.createElement("button", { onClick: share, className: "h-10 px-4 rounded-lg hover:bg-muted transition text-sm font-semibold" }, "🔗 Share")))),
+
+        React.createElement("section", { className: "text-center py-12 sm:py-16 px-5" },
+            React.createElement("span", { className: "inline-block px-3.5 py-1.5 rounded-full bg-muted text-primary text-xs font-semibold border border-border mb-4" }, "💰 Free • No signup • Works offline"),
+            React.createElement("h1", { className: "text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl mx-auto" },
+                "Know exactly ",
+                React.createElement("span", { className: "text-gradient-gold" }, "what you'll earn.")),
+            React.createElement("p", { className: "text-muted-foreground text-base sm:text-lg mt-4 max-w-xl mx-auto" },
+                "The fastest commission calculator on the web. Switch to ",
+                React.createElement("strong", null, "Advanced"),
+                " for tiered rates, splits, accelerators, bonuses and annual projections.")),
+
+        /* ── Ad unit: Below hero, above calculator ── */
+        React.createElement(AdUnit, { slot: "REPLACE_WITH_AD_SLOT_1", format: "auto" }),
+
+        React.createElement("main", { className: "max-w-6xl mx-auto px-5 pb-12 grid gap-6 lg:grid-cols-[1.3fr_1fr]" },
+            React.createElement("section", { className: card },
+                React.createElement("div", { className: "inline-flex p-1 bg-muted rounded-xl border border-border mb-5 flex-wrap" }, ["basic", "detailed", "advanced"].map((m) => (React.createElement("button", { key: m, onClick: () => setMode(m), className: `px-4 sm:px-5 py-2 rounded-lg font-semibold transition text-sm sm:text-base ${mode === m ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"}` }, m === "basic" ? "⚡ Basic" : m === "detailed" ? "🧮 Detailed" : "🚀 Advanced")))),
+                mode !== "detailed" && (React.createElement("div", { className: "flex flex-wrap gap-2 items-center pb-5 mb-5 border-b border-dashed border-border" },
+                    React.createElement("span", { className: "text-sm text-muted-foreground mr-1" }, "Quick presets:"),
+                    Object.entries(presets).map(([k, p]) => (React.createElement("button", { key: k, onClick: () => applyPreset(k), className: "px-3 py-1.5 rounded-full border border-border bg-card text-sm font-medium hover:border-primary hover:bg-muted transition" },
+                        p.emoji,
+                        " ",
+                        p.label))))),
+                mode === "basic" && (React.createElement("div", { className: "space-y-4" },
+                    React.createElement("div", null,
+                        React.createElement("label", { className: "block text-sm font-semibold mb-2" }, "Sale amount"),
+                        React.createElement("div", { className: inputGroup },
+                            React.createElement("span", { className: fix }, "$"),
+                            React.createElement(NumField, { value: bSale, onChange: setBSale }))),
+                    React.createElement("div", null,
+                        React.createElement("div", { className: "flex justify-between items-center mb-2" },
+                            React.createElement("label", { className: "text-sm font-semibold" }, "Commission rate"),
+                            React.createElement("span", { className: "bg-gradient-cash text-white text-xs font-bold px-2.5 py-0.5 rounded-full" },
+                                bRate,
+                                "%")),
+                        React.createElement("input", { type: "range", min: 0, max: 50, step: 0.5, value: bRate, onChange: (e) => setBRate(parseFloat(e.target.value)), className: "w-full accent-primary" }),
+                        React.createElement("div", { className: `${inputGroup} mt-2` },
+                            React.createElement(NumField, { value: bRate, onChange: setBRate, max: 100, step: 0.1 }),
+                            React.createElement("span", { className: fix }, "%"))),
+                    React.createElement("div", null,
+                        React.createElement("label", { className: "block text-sm font-semibold mb-2" }, "Number of deals"),
+                        React.createElement("div", { className: inputGroup },
+                            React.createElement(NumField, { value: bDeals, onChange: (n) => setBDeals(Math.max(1, n)), min: 1, step: 1 }),
+                            React.createElement("span", { className: fix }, "deals"))))),
+                mode === "advanced" && (React.createElement("div", { className: "space-y-4" },
+                    React.createElement("div", { className: "grid sm:grid-cols-2 gap-4" },
+                        React.createElement("div", null,
+                            React.createElement("label", { className: "block text-sm font-semibold mb-2" }, "Sale amount"),
+                            React.createElement("div", { className: inputGroup },
+                                React.createElement("span", { className: fix }, currencySymbols[currency]),
+                                React.createElement(NumField, { value: aSale, onChange: setASale }))),
+                        React.createElement("div", null,
+                            React.createElement("label", { className: "block text-sm font-semibold mb-2" }, "Currency"),
+                            React.createElement("select", { value: currency, onChange: (e) => setCurrency(e.target.value), className: "w-full px-3 py-2.5 border border-input rounded-lg bg-card font-medium" }, Object.keys(currencySymbols).map(c => React.createElement("option", { key: c, value: c },
+                                c,
+                                " (",
+                                currencySymbols[c],
+                                ")"))))),
+                    React.createElement("div", null,
+                        React.createElement("label", { className: "block text-sm font-semibold mb-2" }, "Plan type"),
+                        React.createElement("select", { value: planType, onChange: (e) => setPlanType(e.target.value), className: "w-full px-3 py-2.5 border border-input rounded-lg bg-card font-medium" },
+                            React.createElement("option", { value: "flat" }, "Flat rate"),
+                            React.createElement("option", { value: "tiered" }, "Tiered (different rate per bracket)"))),
+                    planType === "flat" ? (React.createElement("div", null,
+                        React.createElement("div", { className: "flex justify-between items-center mb-2" },
+                            React.createElement("label", { className: "text-sm font-semibold" }, "Commission rate"),
+                            React.createElement("span", { className: "bg-gradient-cash text-white text-xs font-bold px-2.5 py-0.5 rounded-full" },
+                                aRate,
+                                "%")),
+                        React.createElement("input", { type: "range", min: 0, max: 50, step: 0.5, value: aRate, onChange: (e) => setARate(parseFloat(e.target.value)), className: "w-full accent-primary" }),
+                        React.createElement("div", { className: `${inputGroup} mt-2` },
+                            React.createElement(NumField, { value: aRate, onChange: setARate, max: 100, step: 0.1 }),
+                            React.createElement("span", { className: fix }, "%")))) : (React.createElement("div", null,
+                        React.createElement("div", { className: "flex justify-between items-center mb-2" },
+                            React.createElement("label", { className: "text-sm font-semibold" }, "Tiers (progressive)"),
+                            React.createElement("button", { onClick: () => {
+                                    var _a;
+                                    const last = tiers[tiers.length - 1];
+                                    const newMin = (_a = last.max) !== null && _a !== void 0 ? _a : last.min + 50000;
+                                    const updated = [...tiers];
+                                    if (last.max == null)
+                                        updated[updated.length - 1] = { ...last, max: newMin };
+                                    setTiers([...updated, { min: newMin, max: null, rate: (last.rate || 5) + 2 }]);
+                                }, className: "text-xs px-3 py-1.5 border border-border rounded-lg hover:bg-muted" }, "+ Add tier")),
+                        React.createElement("div", { className: "space-y-2" }, tiers.map((t, i) => {
+                            var _a;
+                            return (React.createElement("div", { key: i, className: "grid grid-cols-[1fr_1fr_1fr_auto] gap-2 p-2.5 bg-muted rounded-lg border border-border" },
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement("span", { className: fix }, "$"),
+                                    React.createElement(NumField, { value: t.min, onChange: (v) => { const u = [...tiers]; u[i] = { ...t, min: v }; setTiers(u); } })),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement("span", { className: fix }, "$"),
+                                    React.createElement("input", { type: "number", value: (_a = t.max) !== null && _a !== void 0 ? _a : "", placeholder: "∞", onChange: (e) => { const u = [...tiers]; u[i] = { ...t, max: e.target.value === "" ? null : parseFloat(e.target.value) }; setTiers(u); }, className: "border-0 outline-none bg-transparent w-full px-3 py-2.5 text-base font-medium tabular-nums" })),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: t.rate, onChange: (v) => { const u = [...tiers]; u[i] = { ...t, rate: v }; setTiers(u); }, max: 100, step: 0.1 }),
+                                    React.createElement("span", { className: fix }, "%")),
+                                React.createElement("button", { onClick: () => { if (tiers.length > 1)
+                                        setTiers(tiers.filter((_, idx) => idx !== i)); }, className: "w-9 h-9 self-center rounded-lg border border-border bg-card text-destructive hover:bg-destructive hover:text-white transition" }, "×")));
+                        })),
+                        React.createElement("p", { className: "text-xs text-muted-foreground mt-2" }, "Each tier applies its rate only to the portion of the sale within that bracket."))),
+                    React.createElement("div", null,
+                        React.createElement("label", { className: "flex items-center gap-2.5 font-medium cursor-pointer" },
+                            React.createElement("input", { type: "checkbox", checked: splitOn, onChange: (e) => setSplitOn(e.target.checked), className: "w-[18px] h-[18px] accent-primary" }),
+                            React.createElement("span", null, "Split commission with team")),
+                        splitOn && (React.createElement("div", { className: "grid grid-cols-3 gap-3 mt-3" }, [
+                            { label: "You", v: splitYou, set: setSplitYou },
+                            { label: "Manager", v: splitMgr, set: setSplitMgr },
+                            { label: "House", v: splitHouse, set: setSplitHouse },
+                        ].map((f) => (React.createElement("div", { key: f.label },
+                            React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, f.label),
+                            React.createElement("div", { className: inputGroup },
+                                React.createElement(NumField, { value: f.v, onChange: f.set, max: 100 }),
+                                React.createElement("span", { className: fix }, "%")))))))),
+                    React.createElement("div", null,
+                        React.createElement("label", { className: "flex items-center gap-2.5 font-medium cursor-pointer" },
+                            React.createElement("input", { type: "checkbox", checked: accelOn, onChange: (e) => setAccelOn(e.target.checked), className: "w-[18px] h-[18px] accent-primary" }),
+                            React.createElement("span", null, "Quota accelerator")),
+                        accelOn && (React.createElement("div", { className: "grid sm:grid-cols-2 gap-3 mt-3" },
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "Quota attainment"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: quotaAtt, onChange: setQuotaAtt, step: 1 }),
+                                    React.createElement("span", { className: fix }, "%"))),
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "Multiplier above 100%"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: accelMult, onChange: setAccelMult, min: 1, step: 0.1 }),
+                                    React.createElement("span", { className: fix }, "x")))))),
+                    React.createElement("div", null,
+                        React.createElement("label", { className: "flex items-center gap-2.5 font-medium cursor-pointer" },
+                            React.createElement("input", { type: "checkbox", checked: baseOn, onChange: (e) => setBaseOn(e.target.checked), className: "w-[18px] h-[18px] accent-primary" }),
+                            React.createElement("span", null, "Add base pay & overtime (annual projection)")),
+                        baseOn && (React.createElement("div", { className: "grid sm:grid-cols-2 gap-3 mt-3" },
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "Hourly rate"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement("span", { className: fix }, "$"),
+                                    React.createElement(NumField, { value: hourly, onChange: setHourly }))),
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "Hours / week"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: hpw, onChange: setHpw }))),
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "OT hours / week"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: otHours, onChange: setOtHours }))),
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "OT multiplier"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: otMult, onChange: setOtMult, min: 1, step: 0.1 }),
+                                    React.createElement("span", { className: fix }, "x")))))),
+                    React.createElement("div", null,
+                        React.createElement("div", { className: "flex justify-between items-center mb-2" },
+                            React.createElement("label", { className: "text-sm font-semibold" }, "Avg deals per month (for projection)"),
+                            React.createElement("span", { className: "bg-gradient-cash text-white text-xs font-bold px-2.5 py-0.5 rounded-full" }, dealsPerMonth)),
+                        React.createElement("input", { type: "range", min: 0, max: 50, step: 1, value: dealsPerMonth, onChange: (e) => setDealsPerMonth(parseInt(e.target.value, 10)), className: "w-full accent-primary" })))),
+                mode === "detailed" && (React.createElement("div", { className: "space-y-5" },
+                    React.createElement("div", { className: "grid sm:grid-cols-2 gap-3 p-3.5 bg-muted rounded-lg border border-border" },
+                        React.createElement("div", null,
+                            React.createElement("label", { className: "text-xs font-semibold text-muted-foreground block mb-1.5" }, "I'm entering numbers as"),
+                            React.createElement("select", { value: dInputPeriod, onChange: (e) => setDInputPeriod(e.target.value), className: "w-full px-3 py-2 border border-input rounded-lg bg-card font-medium text-sm" },
+                                React.createElement("option", { value: "hourly" }, "Hourly"),
+                                React.createElement("option", { value: "weekly" }, "Weekly"),
+                                React.createElement("option", { value: "biweekly" }, "Bi-weekly"),
+                                React.createElement("option", { value: "monthly" }, "Monthly"),
+                                React.createElement("option", { value: "annual" }, "Annual"))),
+                        React.createElement("div", null,
+                            React.createElement("label", { className: "text-xs font-semibold text-muted-foreground block mb-1.5" }, "Show my earnings as"),
+                            React.createElement("select", { value: dOutPeriod, onChange: (e) => setDOutPeriod(e.target.value), className: "w-full px-3 py-2 border border-input rounded-lg bg-card font-medium text-sm" },
+                                React.createElement("option", { value: "hourly" }, "Hourly"),
+                                React.createElement("option", { value: "weekly" }, "Weekly"),
+                                React.createElement("option", { value: "biweekly" }, "Bi-weekly"),
+                                React.createElement("option", { value: "monthly" }, "Monthly"),
+                                React.createElement("option", { value: "annual" }, "Annual")))),
+                    React.createElement("div", { className: "border border-border rounded-lg p-4" },
+                        React.createElement("h3", { className: "font-semibold mb-3 flex items-center gap-2" }, "💼 Base pay"),
+                        React.createElement("div", { className: "grid sm:grid-cols-2 gap-3" },
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "Amount"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement("span", { className: fix }, "$"),
+                                    React.createElement(NumField, { value: dBasePay, onChange: setDBasePay }))),
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "Per"),
+                                React.createElement("select", { value: dBasePeriod, onChange: (e) => setDBasePeriod(e.target.value), className: "w-full px-3 py-2.5 border border-input rounded-lg bg-card font-medium" },
+                                    React.createElement("option", { value: "hourly" }, "Hour"),
+                                    React.createElement("option", { value: "weekly" }, "Week"),
+                                    React.createElement("option", { value: "biweekly" }, "Bi-week"),
+                                    React.createElement("option", { value: "monthly" }, "Month"),
+                                    React.createElement("option", { value: "annual" }, "Year")))),
+                        dBasePeriod === "hourly" && (React.createElement("div", { className: "grid sm:grid-cols-3 gap-3 mt-3" },
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "Hours / week"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: dHpw, onChange: setDHpw }))),
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "OT hours / week"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: dOtHours, onChange: setDOtHours }))),
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "OT multiplier"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: dOtMult, onChange: setDOtMult, min: 1, step: 0.1 }),
+                                    React.createElement("span", { className: fix }, "x")))))),
+                    React.createElement("div", { className: "border border-border rounded-lg p-4" },
+                        React.createElement("h3", { className: "font-semibold mb-3 flex items-center gap-2" }, "📦 Units sold"),
+                        React.createElement("div", { className: "grid sm:grid-cols-2 gap-3" },
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" },
+                                    "Units / ",
+                                    dInputPeriod),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: dUnits, onChange: setDUnits }))),
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "$ per unit"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement("span", { className: fix }, "$"),
+                                    React.createElement(NumField, { value: dPerUnit, onChange: setDPerUnit }))))),
+                    React.createElement("div", { className: "border border-border rounded-lg p-4" },
+                        React.createElement("h3", { className: "font-semibold mb-3 flex items-center gap-2" }, "📈 Revenue % commission"),
+                        React.createElement("div", { className: "grid sm:grid-cols-2 gap-3" },
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" },
+                                    "Total revenue / ",
+                                    dInputPeriod),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement("span", { className: fix }, "$"),
+                                    React.createElement(NumField, { value: dRevenue, onChange: setDRevenue }))),
+                            React.createElement("div", null,
+                                React.createElement("label", { className: "text-xs font-medium text-muted-foreground block mb-1.5" }, "Rate"),
+                                React.createElement("div", { className: inputGroup },
+                                    React.createElement(NumField, { value: dRevPct, onChange: setDRevPct, max: 100, step: 0.1 }),
+                                    React.createElement("span", { className: fix }, "%"))))),
+                    React.createElement("div", { className: "border border-border rounded-lg p-4" },
+                        React.createElement("div", { className: "flex justify-between items-center mb-3" },
+                            React.createElement("h3", { className: "font-semibold flex items-center gap-2" }, "🛡️ Add-ons / protection plans"),
+                            React.createElement("button", { onClick: () => setDAddons([...dAddons, { id: uid(), name: "", qty: 0, payout: 0 }]), className: "text-xs px-3 py-1.5 border border-border rounded-lg hover:bg-muted" }, "+ Add")),
+                        React.createElement("div", { className: "space-y-2" }, dAddons.map((a, i) => (React.createElement("div", { key: a.id, className: "grid grid-cols-1 sm:grid-cols-[1.4fr_1fr_1fr_auto] gap-2 sm:items-center" },
+                            React.createElement("input", { value: a.name, placeholder: "Name", onChange: (e) => { const u = [...dAddons]; u[i] = { ...a, name: e.target.value }; setDAddons(u); }, className: "px-3 py-3 sm:py-2 border border-input rounded-lg bg-card font-medium text-base sm:text-sm min-h-[44px]" }),
+                            React.createElement("div", { className: "grid grid-cols-[1fr_1fr_auto] sm:contents gap-2 items-center" },
+                                React.createElement("div", { className: inputGroup + " min-h-[44px]" },
+                                    React.createElement("span", { className: fix }, "Qty"),
+                                    React.createElement(NumField, { value: a.qty, onChange: (v) => { const u = [...dAddons]; u[i] = { ...a, qty: v }; setDAddons(u); } })),
+                                React.createElement("div", { className: inputGroup + " min-h-[44px]" },
+                                    React.createElement("span", { className: fix }, "$"),
+                                    React.createElement(NumField, { value: a.payout, onChange: (v) => { const u = [...dAddons]; u[i] = { ...a, payout: v }; setDAddons(u); } })),
+                                React.createElement("button", { onClick: () => setDAddons(dAddons.filter((_, idx) => idx !== i)), className: "w-11 h-11 sm:w-9 sm:h-9 rounded-lg border border-border bg-card text-destructive hover:bg-destructive hover:text-white text-lg" }, "×"))))))),
+                    React.createElement("div", { className: "border border-border rounded-lg p-4" },
+                        React.createElement("div", { className: "flex justify-between items-center mb-3" },
+                            React.createElement("h3", { className: "font-semibold flex items-center gap-2" }, "🎯 Spiffs / one-time bonuses"),
+                            React.createElement("button", { onClick: () => setDSpiffs([...dSpiffs, { id: uid(), name: "", amount: 0 }]), className: "text-xs px-3 py-1.5 border border-border rounded-lg hover:bg-muted" }, "+ Add")),
+                        React.createElement("div", { className: "space-y-2" }, dSpiffs.map((s, i) => (React.createElement("div", { key: s.id, className: "grid grid-cols-1 sm:grid-cols-[1.4fr_1fr_auto] gap-2 sm:items-center" },
+                            React.createElement("input", { value: s.name, placeholder: "Name (optional)", onChange: (e) => { const u = [...dSpiffs]; u[i] = { ...s, name: e.target.value }; setDSpiffs(u); }, className: "px-3 py-3 sm:py-2 border border-input rounded-lg bg-card font-medium text-base sm:text-sm min-h-[44px]" }),
+                            React.createElement("div", { className: "grid grid-cols-[1fr_auto] sm:contents gap-2 items-center" },
+                                React.createElement("div", { className: inputGroup + " min-h-[44px]" },
+                                    React.createElement("span", { className: fix }, "$"),
+                                    React.createElement(NumField, { value: s.amount, onChange: (v) => { const u = [...dSpiffs]; u[i] = { ...s, amount: v }; setDSpiffs(u); } })),
+                                React.createElement("button", { onClick: () => setDSpiffs(dSpiffs.filter((_, idx) => idx !== i)), className: "w-11 h-11 sm:w-9 sm:h-9 rounded-lg border border-border bg-card text-destructive hover:bg-destructive hover:text-white text-lg" }, "×"))))))))),
+                React.createElement("div", { className: "flex gap-2.5 mt-6 pt-5 border-t border-border" },
+                    React.createElement("button", { onClick: reset, className: "flex-1 h-10 rounded-lg border border-border bg-card hover:bg-muted font-semibold text-sm" }, "↺ Reset"),
+                    React.createElement("button", { onClick: saveScenario, className: "flex-1 h-10 rounded-lg bg-gradient-cash text-white font-semibold text-sm shadow-money hover:brightness-105" }, "💾 Save scenario"))),
+
+            React.createElement("aside", { className: "lg:sticky lg:top-20 self-start bg-gradient-money text-white rounded-xl p-6 shadow-money border-0" },
+                React.createElement("div", { className: "text-xs uppercase tracking-widest opacity-80 font-semibold" }, "Your earnings"),
+                React.createElement("div", { className: "font-extrabold leading-none my-2 whitespace-nowrap overflow-hidden text-ellipsis tabular-nums text-4xl sm:text-5xl lg:text-[3.5rem]", style: { background: "linear-gradient(180deg, #fff 0%, #FFD23F 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" } }, fmt(result.display, result.cur)),
+                React.createElement("div", { className: "text-sm opacity-85 mb-4" }, result.total > 0 || result.annual > 0
+                    ? (mode === "detailed"
+                        ? `Per ${dOutPeriod}`
+                        : (mode === "advanced" && result.projection
+                            ? `Annual estimate · ${fmt(result.perDeal, result.cur)} per deal`
+                            : `Per deal: ${fmt(result.perDeal, result.cur)}`))
+                    : "Enter values to see your earnings"),
+                result.rows.length > 0 && (React.createElement("div", { className: "bg-white/10 rounded-lg p-3.5 backdrop-blur-sm" }, result.rows.map((r, i) => (React.createElement("div", { key: i, className: `flex justify-between gap-3 py-1.5 text-sm ${r.divider ? "border-t border-white/30 border-dashed mt-1.5 pt-2.5 font-bold" : ""}` },
+                    React.createElement("span", { className: "opacity-90" }, r.label),
+                    React.createElement("strong", { className: "tabular-nums" }, fmt(r.value, result.cur))))))),
+                mode === "advanced" && result.projection && (React.createElement("div", { className: "mt-4 bg-white/10 rounded-lg p-3.5" },
+                    React.createElement("div", { className: "flex justify-between text-sm py-1" },
+                        React.createElement("span", null, "Per deal"),
+                        React.createElement("strong", { className: "tabular-nums" }, fmt(result.perDeal, result.cur))),
+                    React.createElement("div", { className: "flex justify-between text-sm py-1" },
+                        React.createElement("span", null, "Monthly"),
+                        React.createElement("strong", { className: "tabular-nums" }, fmt(result.monthly, result.cur))),
+                    React.createElement("div", { className: "flex justify-between text-sm py-1" },
+                        React.createElement("span", null, "Quarterly"),
+                        React.createElement("strong", { className: "tabular-nums" }, fmt(result.quarterly, result.cur))),
+                    React.createElement("div", { className: "flex justify-between text-base pt-2.5 mt-1.5 border-t border-dashed border-white/30 font-bold" },
+                        React.createElement("span", null, "Annual"),
+                        React.createElement("strong", { className: "tabular-nums" }, fmt(result.annual, result.cur))),
+                    React.createElement("div", { className: "flex gap-1 items-end h-20 mt-3" }, Array.from({ length: 12 }).map((_, i) => (React.createElement("div", { key: i, className: "flex-1 bg-white/45 rounded-t", style: { height: "100%", minHeight: 4 }, title: `Month ${i + 1}: ${fmt(result.monthly, result.cur)}` })))))),
+                React.createElement("div", { className: "mt-4 bg-white/10 rounded-lg backdrop-blur-sm overflow-hidden" },
+                    React.createElement("button", { onClick: () => setTaxOn(!taxOn), className: "w-full flex justify-between items-center px-4 py-3 hover:bg-white/10 transition text-left" },
+                        React.createElement("span", { className: "font-semibold text-sm flex items-center gap-2" }, "🧾 Estimate take-home (taxes)"),
+                        React.createElement("span", { className: "text-xs opacity-80" }, taxOn ? "▲ Hide" : "▼ Show")),
+                    taxOn && (React.createElement("div", { className: "px-4 pb-4 space-y-3" },
+                        result.baseAmt > 0 && (React.createElement("div", null,
+                            React.createElement("label", { className: "text-xs font-medium opacity-90 block mb-1.5" }, "Tax % on base pay"),
+                            React.createElement("div", { className: "flex items-stretch border border-white/30 rounded-lg overflow-hidden bg-white/15" },
+                                React.createElement(NumField, { value: baseTaxPct, onChange: setBaseTaxPct, max: 100, step: 0.1 }),
+                                React.createElement("span", { className: "inline-flex items-center px-3 bg-white/15 text-white font-semibold text-sm" }, "%")))),
+                        result.commAmt > 0 && (React.createElement("div", null,
+                            React.createElement("label", { className: "text-xs font-medium opacity-90 block mb-1.5" }, "Tax % on commissions"),
+                            React.createElement("div", { className: "flex items-stretch border border-white/30 rounded-lg overflow-hidden bg-white/15" },
+                                React.createElement(NumField, { value: commTaxPct, onChange: setCommTaxPct, max: 100, step: 0.1 }),
+                                React.createElement("span", { className: "inline-flex items-center px-3 bg-white/15 text-white font-semibold text-sm" }, "%")))),
+                        React.createElement("div", { className: "pt-2 border-t border-white/20 space-y-1 text-sm" },
+                            result.baseAmt > 0 && (React.createElement("div", { className: "flex justify-between" },
+                                React.createElement("span", { className: "opacity-90" },
+                                    "Base tax (",
+                                    baseTaxPct,
+                                    "%)"),
+                                React.createElement("strong", { className: "tabular-nums" },
+                                    "−",
+                                    fmt(result.baseTax, result.cur)))),
+                            result.commAmt > 0 && (React.createElement("div", { className: "flex justify-between" },
+                                React.createElement("span", { className: "opacity-90" },
+                                    "Commission tax (",
+                                    commTaxPct,
+                                    "%)"),
+                                React.createElement("strong", { className: "tabular-nums" },
+                                    "−",
+                                    fmt(result.commTax, result.cur)))),
+                            React.createElement("div", { className: "flex justify-between pt-2 mt-1 border-t border-dashed border-white/30 text-base font-bold" },
+                                React.createElement("span", null, "Take-home"),
+                                React.createElement("strong", { className: "tabular-nums text-[hsl(var(--gold,45_100%_62%))]", style: { color: "#FFD23F" } }, fmt(result.takeHome, result.cur))))))),
+                React.createElement("div", { className: "flex gap-2 mt-4" },
+                    React.createElement("button", { onClick: copyResult, className: "flex-1 h-9 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-sm" }, "📋 Copy"),
+                    React.createElement("button", { onClick: () => window.print(), className: "flex-1 h-9 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-sm" }, "🖨️ Print / PDF")))),
+
+        /* ── Ad unit: Between calculator and scenarios ── */
+        React.createElement(AdUnit, { slot: "REPLACE_WITH_AD_SLOT_2", format: "auto" }),
+
+        React.createElement("section", { className: "max-w-6xl mx-auto px-5 pb-12" },
+            React.createElement("div", { className: "flex justify-between items-center mb-4" },
+                React.createElement("h2", { className: "text-xl sm:text-2xl font-bold tracking-tight" }, "📂 Saved scenarios"),
+                scenarios.length > 0 && (React.createElement("button", { onClick: () => { if (confirm("Delete all saved scenarios?"))
+                        persistScenarios([]); }, className: "text-sm px-3 py-1.5 border border-border rounded-lg hover:bg-muted" }, "Clear all"))),
+            scenarios.length === 0 ? (React.createElement("p", { className: "text-center text-muted-foreground text-sm py-6 bg-card border border-dashed border-border rounded-xl" }, "No saved scenarios yet. Save one to compare side-by-side.")) : (React.createElement("div", { className: "grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3" }, scenarios.map((s, i) => (React.createElement("div", { key: s.id, className: "bg-card border border-border rounded-xl p-4 shadow-sm" },
+                React.createElement("h4", { className: "font-semibold" }, s.name),
+                React.createElement("div", { className: "text-2xl font-extrabold text-primary tabular-nums my-1.5" }, s.display),
+                React.createElement("div", { className: "text-xs text-muted-foreground" },
+                    s.mode === "basic" ? "⚡ Basic" : "🚀 Advanced",
+                    " · ",
+                    s.date),
+                React.createElement("div", { className: "flex gap-1.5 mt-2.5" },
+                    React.createElement("button", { onClick: () => loadScenario(s), className: "flex-1 h-8 text-xs border border-border rounded-lg hover:bg-muted font-semibold" }, "Load"),
+                    React.createElement("button", { onClick: () => persistScenarios(scenarios.filter((_, idx) => idx !== i)), className: "flex-1 h-8 text-xs border border-border rounded-lg hover:bg-muted font-semibold" }, "Delete")))))))),
+
+        React.createElement("section", { className: "max-w-6xl mx-auto px-5 pb-16" },
+            React.createElement("div", { className: "grid gap-4 sm:grid-cols-3" }, [
+                { icon: "⚡", title: "Lightning fast", body: "Calculations update live as you type. No reloads." },
+                { icon: "🔒", title: "100% private", body: "Everything runs in your browser. Nothing sent to a server." },
+                { icon: "🚀", title: "Pro-grade math", body: "Tiered, splits, accelerators, bonuses, draw and projection." },
+            ].map((c) => (React.createElement("div", { key: c.title, className: "bg-card border border-border rounded-xl p-6 text-center" },
+                React.createElement("div", { className: "text-3xl mb-2" }, c.icon),
+                React.createElement("h3", { className: "font-bold mb-1" }, c.title),
+                React.createElement("p", { className: "text-sm text-muted-foreground" }, c.body)))))),
+
+        /* ── Rich Content: How Commission Works ── */
+        React.createElement("section", { className: "max-w-4xl mx-auto px-5 pb-16" },
+            React.createElement("h2", { className: "text-2xl sm:text-3xl font-extrabold tracking-tight mb-8 text-center" }, "How Sales Commission Works"),
+            React.createElement("div", { className: "prose-style space-y-6 text-muted-foreground leading-relaxed" },
+                React.createElement("p", null, "Sales commission is a performance-based form of compensation paid to salespeople based on the value of the deals they close. It is one of the most powerful motivators in business — directly linking a rep's earnings to their results. Understanding how commission is calculated can help you negotiate better pay, forecast your income, and make smarter career decisions."),
+                React.createElement("p", null, "At its simplest, commission is calculated by multiplying the sale amount by the commission rate. For example, if you close a $20,000 deal at a 10% commission rate, you earn $2,000. But in the real world, most commission structures are more nuanced — involving base salaries, tiered rates, quota accelerators, team splits, bonuses, and more."),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "Types of Commission Structures"),
+                React.createElement("p", null, "There is no single standard for how commissions are paid. Different industries and companies use different models depending on their sales cycle, average deal size, and team structure. Here are the most common types:"),
+                React.createElement("div", { className: "grid sm:grid-cols-2 gap-4 my-6" },
+                    [
+                        { title: "Flat Rate", desc: "A single percentage applied to every sale regardless of size. Simple, transparent, and easy to calculate. Common in retail and inside sales." },
+                        { title: "Tiered Commission", desc: "Different rates apply to different revenue brackets. For example, 5% on the first $50k, 8% on the next $50k, and 12% above $100k. Rewards high performers." },
+                        { title: "Base + Commission", desc: "A guaranteed base salary combined with commission earnings. Provides financial security while still incentivising performance. The most common structure in B2B sales." },
+                        { title: "Quota Accelerators", desc: "Once a rep hits 100% of their quota, the commission rate increases — sometimes dramatically. This is designed to push top performers to keep going." },
+                        { title: "Commission Splits", desc: "Used when multiple people contribute to a sale — for example, a field rep, a sales engineer, and an SDR. The total commission is divided among them by agreed percentages." },
+                        { title: "Residual Commission", desc: "Common in insurance and SaaS. The rep earns ongoing commission as long as the customer keeps paying. Rewards customer retention alongside acquisition." },
+                    ].map(item => React.createElement("div", { key: item.title, className: "bg-card border border-border rounded-xl p-5" },
+                        React.createElement("h4", { className: "font-bold text-foreground mb-2" }, item.title),
+                        React.createElement("p", { className: "text-sm" }, item.desc)))),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "What Is a Good Commission Rate?"),
+                React.createElement("p", null, "Commission rates vary enormously by industry. There is no universal \"good\" rate — what matters is your total on-target earnings (OTE) and how achievable the quota is. That said, here are typical ranges you can expect:"),
+                React.createElement("div", { className: "overflow-x-auto my-4" },
+                    React.createElement("table", { className: "w-full text-sm border-collapse" },
+                        React.createElement("thead", null,
+                            React.createElement("tr", { className: "bg-muted" },
+                                React.createElement("th", { className: "text-left p-3 font-semibold text-foreground border border-border rounded-tl-lg" }, "Industry"),
+                                React.createElement("th", { className: "text-left p-3 font-semibold text-foreground border border-border" }, "Typical Rate"),
+                                React.createElement("th", { className: "text-left p-3 font-semibold text-foreground border border-border rounded-tr-lg" }, "Notes"))),
+                        React.createElement("tbody", null,
+                            [
+                                ["Real Estate", "2.5% – 3%", "Split between buyer/seller agents and brokerage"],
+                                ["SaaS / Software", "8% – 12%", "Often on Annual Contract Value (ACV)"],
+                                ["Insurance", "10% – 20%", "Higher for life insurance; residuals common"],
+                                ["Automotive", "20% – 30%", "On gross profit, not total sale price"],
+                                ["Retail", "3% – 7%", "Often lower due to high volume and base pay"],
+                                ["Financial Services", "0.5% – 2%", "Regulated; lower rate but high ticket sizes"],
+                                ["Recruitment", "15% – 25%", "Percentage of placed candidate's first-year salary"],
+                            ].map(([ind, rate, note]) => React.createElement("tr", { key: ind, className: "border-b border-border hover:bg-muted/50 transition" },
+                                React.createElement("td", { className: "p-3 font-medium text-foreground border border-border" }, ind),
+                                React.createElement("td", { className: "p-3 text-primary font-bold border border-border" }, rate),
+                                React.createElement("td", { className: "p-3 border border-border" }, note)))))),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "How to Use This Commission Calculator"),
+                React.createElement("p", null, "This calculator is designed to handle everything from simple one-off commission calculations to complex annual projections. Here's how to get the most out of each mode:"),
+                React.createElement("ul", { className: "space-y-3 list-none my-4" },
+                    [
+                        ["⚡ Basic Mode", "Enter your sale amount, commission rate, and number of deals. Instant result. Perfect for a quick sanity check mid-negotiation or before a call."],
+                        ["🧮 Detailed Mode", "Built for retail, automotive, and hourly workers. Combine base pay, overtime, units sold, revenue percentages, add-on products, tiered bonuses, and spiffs into one total. Switch the output period to see hourly, weekly, monthly, or annual earnings."],
+                        ["🚀 Advanced Mode", "The full picture. Set up tiered commission brackets, quota accelerators, team splits, and a base salary — then enter your average deals per month to get a monthly, quarterly, and annual projection."],
+                    ].map(([title, desc]) => React.createElement("li", { key: title, className: "flex gap-3 bg-card border border-border rounded-xl p-4" },
+                        React.createElement("div", null,
+                            React.createElement("span", { className: "font-bold text-foreground" }, title, " — "),
+                            desc)))),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "Tips for Negotiating Your Commission Structure"),
+                React.createElement("p", null, "Understanding the mechanics of commission is only half the battle. Knowing how to negotiate a structure that works in your favour is what separates average earners from top performers. Here are some practical tips:"),
+                React.createElement("ul", { className: "space-y-2 list-disc list-inside mt-3" },
+                    [
+                        "Always negotiate OTE (On-Target Earnings), not just the commission rate. A 15% rate on an unachievable quota is worth less than a 10% rate on a realistic one.",
+                        "Ask what percentage of reps hit quota last year. If fewer than 60% did, the quota may be inflated.",
+                        "Push for accelerators. If you're confident in your ability, uncapped accelerators above quota can dramatically increase your upside.",
+                        "Understand the clawback policy. Some employers require repayment of commission if a customer cancels within 90–180 days.",
+                        "Clarify when commission is paid — on contract signature, invoice, or customer payment. Cash flow matters.",
+                        "Get the full comp plan in writing before accepting an offer. Verbal agreements on commission are hard to enforce.",
+                    ].map(tip => React.createElement("li", { key: tip, className: "text-sm py-1" }, tip))),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "Commission vs. Salary: Which Is Better?"),
+                React.createElement("p", null, "Whether a commission-heavy or salary-heavy structure suits you depends on your risk tolerance, experience level, and the product you're selling. Pure commission roles offer unlimited upside but zero safety net — ideal for experienced closers selling a proven product in a hot market. A base-plus-commission structure offers balance: you cover your bills while still having meaningful upside tied to performance."),
+                React.createElement("p", { className: "mt-3" }, "For most salespeople, the sweet spot is a base salary covering 50–60% of OTE, with commission making up the rest. This gives you enough stability to focus on long-term deals rather than chasing short-term wins just to pay rent."),
+
+                React.createElement("h3", { className: "text-xl font-bold text-foreground mt-8 mb-3" }, "Frequently Asked Questions"),
+                React.createElement("div", { className: "space-y-4 mt-4" },
+                    [
+                        ["How is commission taxed?", "In most countries, commission is taxed as ordinary income — the same as your salary. In the US, employers are required to withhold federal income tax on supplemental wages (including commission) at either the 22% flat rate or your normal withholding rate. Use the tax estimator in this calculator to get a rough take-home figure."],
+                        ["What is a draw against commission?", "A draw is an advance on future commission earnings. It gives a rep income stability while ramping up. Draws can be recoverable (you pay it back from future commission) or non-recoverable (it's effectively a guaranteed minimum). Always clarify which type you're being offered."],
+                        ["What does 'OTE' mean?", "On-Target Earnings is the total compensation a salesperson can expect to earn if they hit 100% of their quota. It includes base salary plus expected commission. OTE is the standard benchmark used when comparing sales job offers."],
+                        ["Can commission be taken away?", "Yes, under certain conditions. Most comp plans include clawback provisions allowing the employer to recover commission if a deal falls through, a customer cancels, or fraud is discovered. Always read the clawback clause before signing."],
+                        ["How do tiered commissions work?", "With tiered (progressive) commission, different rates apply to different portions of your sales. Only the revenue within each tier is taxed at that tier's rate — similar to how income tax brackets work. Our Advanced mode calculator handles this automatically."],
+                    ].map(([q, a]) => React.createElement("div", { key: q, className: "border border-border rounded-xl p-5 bg-card" },
+                        React.createElement("h4", { className: "font-bold text-foreground mb-2" }, q),
+                        React.createElement("p", { className: "text-sm" }, a)))))),
+
+        /* ── Ad unit: Above footer ── */
+        React.createElement(AdUnit, { slot: "REPLACE_WITH_AD_SLOT_3", format: "auto" }),
+
+
+        /* ── Privacy Policy Modal ── */
+        privacyOpen ? React.createElement("div", {
+            className: "fixed inset-0 z-50 flex items-center justify-center p-4",
+            onClick: () => setPrivacyOpen(false)
+        },
+            React.createElement("div", { className: "absolute inset-0 bg-black/60 backdrop-blur-sm" }),
+            React.createElement("div", {
+                className: "relative bg-card border border-border rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col",
+                onClick: e => e.stopPropagation()
+            },
+                React.createElement("div", { className: "flex items-center justify-between px-6 py-4 border-b border-border shrink-0" },
+                    React.createElement("div", null,
+                        React.createElement("h2", { className: "text-xl font-extrabold tracking-tight" }, "Privacy Policy"),
+                        React.createElement("p", { className: "text-xs text-muted-foreground mt-0.5" },
+                            "Last updated: ",
+                            new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }))),
+                    React.createElement("button", {
+                        onClick: () => setPrivacyOpen(false),
+                        className: "w-9 h-9 rounded-lg hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition text-xl font-bold"
+                    }, "\u00D7")),
+                React.createElement("div", { className: "overflow-y-auto px-6 py-5 space-y-6 text-sm leading-relaxed" },
+                    React.createElement("div", null,
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "1. Overview"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "My Commission Calculator is a free, browser-based tool. We are committed to protecting your privacy. This policy explains what information is collected, how it is used, and your choices regarding that information.")),
+                    React.createElement("div", null,
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "2. Information We Collect"),
+                        React.createElement("p", { className: "text-muted-foreground mb-2" }, "We do not collect, store, or transmit any personal or financial data you enter into the calculator. All calculations run entirely in your browser. Your numbers never leave your device."),
+                        React.createElement("p", { className: "text-muted-foreground" }, "Like most websites, we receive standard server logs when you visit, which may include your IP address, browser type, referring page, and visit timestamp. This data is used only for security and operations and is not sold or shared.")),
+                    React.createElement("div", null,
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "3. Cookies & Local Storage"),
+                        React.createElement("p", { className: "text-muted-foreground mb-2" }, "We use your browser's ", React.createElement("strong", null, "localStorage"), " solely to remember your theme preference and any scenarios you save. This data stays on your device and is never sent to any server."),
+                        React.createElement("p", { className: "text-muted-foreground" }, "Third-party services (see Section 4) may set their own cookies. You can control or disable cookies in your browser settings at any time.")),
+                    React.createElement("div", null,
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "4. Advertising \u2014 Google AdSense"),
+                        React.createElement("p", { className: "text-muted-foreground mb-2" }, "This site uses ", React.createElement("strong", null, "Google AdSense"), " to display advertisements. Google uses cookies (including the DoubleClick cookie) to serve ads based on your prior visits to this and other websites."),
+                        React.createElement("ul", { className: "list-disc list-inside space-y-1.5 text-muted-foreground" },
+                            React.createElement("li", null, "You may opt out of personalised ads at ",
+                                React.createElement("a", { href: "https://www.google.com/settings/ads", target: "_blank", rel: "noopener noreferrer", className: "text-primary underline underline-offset-2" }, "Google Ads Settings"), "."),
+                            React.createElement("li", null, "Or via the ",
+                                React.createElement("a", { href: "https://optout.networkadvertising.org/", target: "_blank", rel: "noopener noreferrer", className: "text-primary underline underline-offset-2" }, "NAI opt-out page"), "."),
+                            React.createElement("li", null,
+                                React.createElement("a", { href: "https://policies.google.com/technologies/partner-sites", target: "_blank", rel: "noopener noreferrer", className: "text-primary underline underline-offset-2" }, "How Google uses data from partner sites"), "."))),
+                    React.createElement("div", null,
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "5. Third-Party Services"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "This site loads fonts from Google Fonts, which may log your IP address per Google's own privacy policy. We are not responsible for third-party privacy practices.")),
+                    React.createElement("div", null,
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "6. Children's Privacy"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "This site is not directed to children under 13. We do not knowingly collect personal information from children.")),
+                    React.createElement("div", null,
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "7. Your Rights & Choices"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "You can clear locally saved data at any time via browser Settings \u2192 Privacy \u2192 Clear site data.")),
+                    React.createElement("div", null,
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "8. Changes to This Policy"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "We may update this policy from time to time. Changes are reflected by an updated date above. Continued use of the site constitutes acceptance.")),
+                    React.createElement("div", null,
+                        React.createElement("h3", { className: "font-bold mb-1.5" }, "9. Contact"),
+                        React.createElement("p", { className: "text-muted-foreground" }, "If you have questions about this Privacy Policy, please reach out via the contact information listed on this site."))),
+                React.createElement("div", { className: "px-6 py-4 border-t border-border shrink-0" },
+                    React.createElement("button", {
+                        onClick: () => setPrivacyOpen(false),
+                        className: "w-full h-10 rounded-lg bg-gradient-cash text-white font-semibold text-sm"
+                    }, "Close")))) : null,
+
+        React.createElement("footer", { className: "border-t border-border py-6 text-center text-sm text-muted-foreground" },
+            "\u00A9 ",
+            new Date().getFullYear(),
+            " My Commission Calculator \u00B7 Built for sales pros \uD83D\uDCBC",
+            React.createElement("span", { className: "mx-2 opacity-40" }, "\u00B7"),
+            React.createElement("button", {
+                onClick: () => setPrivacyOpen(true),
+                className: "underline underline-offset-2 hover:text-foreground transition"
+            }, "Privacy Policy")),
+        toast && React.createElement("div", { className: "fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background px-5 py-3 rounded-full font-semibold text-sm shadow-2xl z-50" }, toast)));
+}
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(CalculatorPage, null));
+</script>
+</body>
+</html>
