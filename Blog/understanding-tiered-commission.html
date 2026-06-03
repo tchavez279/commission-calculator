@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Understanding Tiered Commission Structures — My Commission Calculator</title>
+<meta name="description" content="Tiered commission structures can dramatically boost your earnings — but only if you understand how the brackets work. Real examples, common mistakes, and how to calculate your exact payout." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5677753426593768" crossorigin="anonymous"></script>
+<script>
+  (function(){
+    const t=localStorage.getItem('mcc-theme')||'light';
+    if(t==='dark') document.documentElement.classList.add('dark');
+  })();
+  const _warn=console.warn.bind(console);
+  console.warn=(...a)=>{if(typeof a[0]==='string'&&a[0].includes('cdn.tailwindcss.com'))return;_warn(...a);};
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+html,body{font-family:Inter,system-ui,sans-serif;}
+:root{
+  --bg:hsl(0,0%,100%);--fg:hsl(222,47%,11%);--card:hsl(0,0%,100%);
+  --muted:hsl(210,40%,96%);--muted-fg:hsl(215,16%,47%);--primary:hsl(142,71%,32%);
+  --border:hsl(214,32%,91%);--header-bg:hsla(0,0%,100%,0.85);
+}
+html.dark{
+  --bg:hsl(222,47%,8%);--fg:hsl(210,40%,98%);--card:hsl(222,47%,11%);
+  --muted:hsl(217,33%,17%);--muted-fg:hsl(215,20%,65%);--primary:hsl(142,71%,45%);
+  --border:hsl(217,33%,22%);--header-bg:hsla(222,47%,8%,0.85);
+}
+body{background:var(--bg);color:var(--fg);min-height:100vh;}
+.site-header{position:sticky;top:0;z-index:50;background:var(--header-bg);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-link{padding:0.4rem 0.85rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;text-decoration:none;color:var(--muted-fg);}
+.nav-link:hover{background:var(--muted);}
+.nav-link-active{color:var(--primary);background:var(--muted);}
+.badge{display:inline-block;padding:0.3rem 0.75rem;border-radius:9999px;background:var(--muted);color:var(--primary);font-size:0.75rem;font-weight:600;margin-bottom:1rem;}
+.article-body p{color:var(--muted-fg);line-height:1.8;margin-bottom:1.1rem;font-size:1rem;}
+.article-body h2{font-size:1.5rem;font-weight:800;color:var(--fg);margin:2.5rem 0 0.875rem;letter-spacing:-0.02em;}
+.article-body h3{font-size:1.15rem;font-weight:700;color:var(--fg);margin:1.75rem 0 0.5rem;}
+.article-body ul{color:var(--muted-fg);line-height:1.8;margin-bottom:1.1rem;padding-left:1.5rem;}
+.article-body li{margin-bottom:0.4rem;}
+.article-body strong{color:var(--fg);font-weight:700;}
+.article-body a{color:var(--primary);}
+.callout{background:var(--muted);border-left:4px solid var(--primary);border-radius:0 0.75rem 0.75rem 0;padding:1.25rem 1.5rem;margin:1.75rem 0;}
+.callout p{margin:0;color:var(--fg);}
+table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:0.9rem;}
+th{background:var(--muted);padding:0.75rem 1rem;text-align:left;font-weight:700;border:1px solid var(--border);color:var(--fg);}
+td{padding:0.75rem 1rem;border:1px solid var(--border);color:var(--muted-fg);}
+tr:hover td{background:var(--muted);}
+.related-card{text-decoration:none;background:var(--muted);border-radius:0.75rem;padding:1.25rem;color:inherit;display:block;}
+.related-card:hover{opacity:0.85;}
+.related-title{font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;}
+.related-sub{font-size:0.8rem;color:var(--muted-fg);}
+.site-footer{border-top:1px solid var(--border);padding:1.5rem 1.25rem;text-align:center;font-size:0.875rem;color:var(--muted-fg);}
+.site-footer a{color:var(--muted-fg);text-decoration:underline;}
+#theme-toggle{background:transparent;border:none;cursor:pointer;font-size:1.2rem;padding:0.4rem 0.5rem;border-radius:0.5rem;line-height:1;}
+#theme-toggle:hover{background:var(--muted);}
+
+/* Mobile responsive nav */
+@media(max-width:600px){
+  .site-logo-text{font-size:0.85rem;}
+  .nav-link{padding:0.35rem 0.55rem;font-size:0.78rem;}
+  #theme-toggle{padding:0.35rem 0.4rem;font-size:1rem;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div style="max-width:72rem;margin:0 auto;padding:0 1.25rem;min-height:4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;padding-top:0.5rem;padding-bottom:0.5rem;">
+    <a href="/" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;color:var(--fg);">
+      <span style="width:2.5rem;height:2.5rem;border-radius:0.75rem;background:linear-gradient(135deg,#FFD23F,#FFA500);font-family:Georgia,serif;font-weight:900;font-size:1.25rem;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.5);">$</span>
+      <span style="font-weight:700;font-size:1.05rem;letter-spacing:-0.02em;">My Commission Calculator</span>
+    </a>
+    <nav style="display:flex;align-items:center;gap:0.25rem;">
+      <a href="/" class="nav-link">Calculator</a>
+      <a href="/about.html" class="nav-link">About</a>
+      <a href="/blog.html" class="nav-link nav-link-active">Blog</a>
+      <button id="theme-toggle" aria-label="Toggle theme">☀️</button>
+    </nav>
+  </div>
+</header>
+
+<div style="max-width:48rem;margin:0 auto;padding:3rem 1.25rem 2rem;">
+  <a href="/blog.html" style="display:inline-flex;align-items:center;gap:0.5rem;color:var(--primary);font-size:0.875rem;font-weight:600;text-decoration:none;margin-bottom:1.5rem;">← Back to Blog</a>
+  <span class="badge">Education</span>
+  <h1 style="font-size:clamp(1.75rem,4vw,2.75rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:1rem;">Understanding Tiered Commission Structures</h1>
+  <p style="color:var(--muted-fg);font-size:1.05rem;line-height:1.65;margin-bottom:1.5rem;">Tiered commission can dramatically increase your earnings if you understand how the brackets work — or leave you badly underpaid if you don't. Here's everything you need to know, with real examples.</p>
+  <div style="display:flex;align-items:center;gap:1rem;font-size:0.85rem;color:var(--muted-fg);padding-bottom:1.5rem;border-bottom:1px solid var(--border);">
+    <span>📅 May 2025</span><span>·</span><span>⏱ 6 min read</span><span>·</span><span>📊 Education</span>
+  </div>
+</div>
+
+<div style="max-width:48rem;margin:0 auto 1.5rem;padding:0 1.25rem;">
+  <ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-5677753426593768" data-ad-slot="REPLACE_WITH_AD_SLOT_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div>
+
+<main style="max-width:48rem;margin:0 auto;padding:0 1.25rem 5rem;" class="article-body">
+
+  <p>If your compensation plan includes tiered commission, you're in one of the most powerful — and most misunderstood — pay structures in sales. Done right, tiers reward your best months disproportionately. Done poorly, they can quietly suppress your earnings while looking generous on paper.</p>
+
+  <div class="callout">
+    <p><strong>The most important thing to understand:</strong> In a tiered structure, higher rates apply only to the portion of revenue <em>within</em> each bracket — not to your total sales. Crossing a tier boundary never reduces your total commission.</p>
+  </div>
+
+  <h2>A Worked Example</h2>
+  <p>Let's say your plan has three tiers:</p>
+  <table>
+    <thead><tr><th>Tier</th><th>Revenue Range</th><th>Commission Rate</th></tr></thead>
+    <tbody>
+      <tr><td>Tier 1</td><td>$0 – $50,000</td><td>5%</td></tr>
+      <tr><td>Tier 2</td><td>$50,001 – $100,000</td><td>8%</td></tr>
+      <tr><td>Tier 3</td><td>Above $100,000</td><td>12%</td></tr>
+    </tbody>
+  </table>
+  <p>If you close $130,000 in revenue this month, here's how your commission breaks down:</p>
+  <table>
+    <thead><tr><th>Portion</th><th>Revenue</th><th>Rate</th><th>Commission</th></tr></thead>
+    <tbody>
+      <tr><td>First $50,000</td><td>$50,000</td><td>5%</td><td>$2,500</td></tr>
+      <tr><td>Next $50,000</td><td>$50,000</td><td>8%</td><td>$4,000</td></tr>
+      <tr><td>Remaining $30,000</td><td>$30,000</td><td>12%</td><td>$3,600</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>$130,000</strong></td><td>—</td><td><strong style="color:var(--primary);">$10,100</strong></td></tr>
+    </tbody>
+  </table>
+  <p>Your effective commission rate is 7.77% — even though your top-tier rate is 12%. That's normal: the 12% only applies to the $30,000 above the $100,000 threshold.</p>
+
+  <h2>The Common Misconception</h2>
+  <p>Many salespeople incorrectly believe that crossing a tier threshold applies the new rate to all their revenue. Under this mistaken reading, the example above would yield $130,000 × 12% = $15,600. That's a $5,500 overestimate — a shock when the paycheck arrives.</p>
+
+  <h2>Flat vs. Retroactive Tiered Plans</h2>
+  <p>Not all tiered plans are progressive. Some companies use a <strong>retroactive</strong> model, where crossing a tier applies the new rate to all your revenue — including what you already sold. This model is much rarer and far more lucrative, so always confirm which type you have.</p>
+  <table>
+    <thead><tr><th>Type</th><th>How It Works</th><th>Common In</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Progressive (standard)</strong></td><td>Higher rate applies only to revenue within that bracket</td><td>Most B2B, SaaS, insurance</td></tr>
+      <tr><td><strong>Retroactive</strong></td><td>Crossing a tier applies the new rate to all revenue</td><td>Some retail, real estate</td></tr>
+      <tr><td><strong>Flat accelerator</strong></td><td>Rate changes only after hitting quota</td><td>Most quota-based plans</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Red Flags in Tiered Plans</h2>
+  <ul>
+    <li><strong>Tier resets that aren't calendar-based:</strong> If tiers reset per deal, you rarely accumulate enough in a single transaction to reach the higher tiers.</li>
+    <li><strong>Overly wide first brackets:</strong> If Tier 1 runs from $0 to $200,000 at 3% and your average monthly revenue is $180,000, the higher tiers are essentially decorative.</li>
+    <li><strong>No clarity on reset periods:</strong> When do the tiers reset — monthly, quarterly, annually? Always ask.</li>
+    <li><strong>Team-based tiers:</strong> Some plans tier based on team performance. Your commission then depends on your colleagues' results, which you can't control.</li>
+  </ul>
+
+  <div style="margin-top:3rem;background:linear-gradient(135deg,#0E5C29,#1B7F3A,#34C759);border-radius:1rem;padding:2rem;color:white;text-align:center;">
+    <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:0.5rem;color:white;">Calculate your tiered commission now</h3>
+    <p style="opacity:0.85;margin-bottom:1.25rem;font-size:0.9rem;">Set up your exact brackets in Advanced mode and see a full breakdown.</p>
+    <a href="/" style="display:inline-block;background:white;color:hsl(142,71%,32%);font-weight:700;padding:0.65rem 1.75rem;border-radius:0.75rem;text-decoration:none;font-size:0.9rem;">Open the Calculator →</a>
+  </div>
+
+  <div style="margin-top:2.5rem;">
+    <ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-5677753426593768" data-ad-slot="REPLACE_WITH_AD_SLOT_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+  </div>
+
+  <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);">
+    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Related Articles</h3>
+    <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));">
+      <a href="/blog/how-to-negotiate-commission.html" class="related-card">
+        <div class="related-title">Negotiate Your Commission</div>
+        <div class="related-sub">Tactics that actually work →</div>
+      </a>
+      <a href="/blog/commission-tax-guide.html" class="related-card">
+        <div class="related-title">How Commission Is Taxed</div>
+        <div class="related-sub">Withholding & take-home guide →</div>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  © <span id="yr"></span> My Commission Calculator ·
+  <a href="/about.html">About</a> · <a href="/blog.html">Blog</a> · <a href="/">Calculator</a>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const btn = document.getElementById('theme-toggle');
+  function applyTheme(t) {
+    document.documentElement.classList.toggle('dark', t === 'dark');
+    btn.textContent = t === 'dark' ? '🌙' : '☀️';
+  }
+  applyTheme(localStorage.getItem('mcc-theme') || 'light');
+  btn.addEventListener('click', () => {
+    const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+    localStorage.setItem('mcc-theme', next);
+    applyTheme(next);
+  });
+</script>
+</body>
+</html>
