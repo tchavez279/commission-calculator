@@ -45,12 +45,19 @@ body{background:var(--bg);color:var(--fg);min-height:100vh;}
 .site-footer a{color:var(--muted-fg);text-decoration:underline;}
 #theme-toggle{background:transparent;border:none;cursor:pointer;font-size:1.2rem;padding:0.4rem 0.5rem;border-radius:0.5rem;line-height:1;}
 #theme-toggle:hover{background:var(--muted);}
+
+/* Mobile responsive nav */
+@media(max-width:600px){
+  .site-logo-text{font-size:0.85rem;}
+  .nav-link{padding:0.35rem 0.55rem;font-size:0.78rem;}
+  #theme-toggle{padding:0.35rem 0.4rem;font-size:1rem;}
+}
 </style>
 </head>
 <body>
 
 <header class="site-header">
-  <div style="max-width:72rem;margin:0 auto;padding:0 1.25rem;height:4rem;display:flex;align-items:center;justify-content:space-between;">
+  <div style="max-width:72rem;margin:0 auto;padding:0 1.25rem;min-height:4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;padding-top:0.5rem;padding-bottom:0.5rem;">
     <a href="/" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;color:var(--fg);">
       <span style="width:2.5rem;height:2.5rem;border-radius:0.75rem;background:linear-gradient(135deg,#FFD23F,#FFA500);font-family:Georgia,serif;font-weight:900;font-size:1.25rem;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.5);">$</span>
       <span style="font-weight:700;font-size:1.05rem;letter-spacing:-0.02em;">My Commission Calculator</span>
@@ -78,7 +85,7 @@ body{background:var(--bg);color:var(--fg);min-height:100vh;}
 <main style="max-width:64rem;margin:0 auto;padding:0 1.25rem 5rem;">
   <div style="display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));">
 
-    <a href="/blog/how-to-negotiate-commission.html" class="post-card">
+    <a href="blog/how-to-negotiate-commission.html" class="post-card">
       <div style="background:linear-gradient(135deg,#0E5C29,#34C759);padding:2rem 1.5rem;">
         <span style="font-size:2.5rem;">💼</span>
       </div>
@@ -92,7 +99,7 @@ body{background:var(--bg);color:var(--fg);min-height:100vh;}
       </div>
     </a>
 
-    <a href="/blog/understanding-tiered-commission.html" class="post-card">
+    <a href="blog/understanding-tiered-commission.html" class="post-card">
       <div style="background:linear-gradient(135deg,#1B7F3A,#FFD23F);padding:2rem 1.5rem;">
         <span style="font-size:2.5rem;">📊</span>
       </div>
@@ -106,7 +113,7 @@ body{background:var(--bg);color:var(--fg);min-height:100vh;}
       </div>
     </a>
 
-    <a href="/blog/commission-tax-guide.html" class="post-card">
+    <a href="blog/commission-tax-guide.html" class="post-card">
       <div style="background:linear-gradient(135deg,#FFD23F,#FFA500);padding:2rem 1.5rem;">
         <span style="font-size:2.5rem;">🧾</span>
       </div>
