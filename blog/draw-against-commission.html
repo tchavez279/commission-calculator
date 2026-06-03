@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Draw Against Commission Explained — My Commission Calculator</title>
+<meta name="description" content="A draw against commission gives sales reps income while ramping up. But recoverable vs non-recoverable draws work very differently. Here's everything you need to know before signing." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5677753426593768" crossorigin="anonymous"></script>
+<script>
+  (function(){const t=localStorage.getItem('mcc-theme')||'light';if(t==='dark')document.documentElement.classList.add('dark');})();
+  const _warn=console.warn.bind(console);console.warn=(...a)=>{if(typeof a[0]==='string'&&a[0].includes('cdn.tailwindcss.com'))return;_warn(...a);};
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+html,body{font-family:Inter,system-ui,sans-serif;}
+:root{--bg:hsl(0,0%,100%);--fg:hsl(222,47%,11%);--card:hsl(0,0%,100%);--muted:hsl(210,40%,96%);--muted-fg:hsl(215,16%,47%);--primary:hsl(142,71%,32%);--border:hsl(214,32%,91%);--header-bg:hsla(0,0%,100%,0.85);}
+html.dark{--bg:hsl(222,47%,8%);--fg:hsl(210,40%,98%);--card:hsl(222,47%,11%);--muted:hsl(217,33%,17%);--muted-fg:hsl(215,20%,65%);--primary:hsl(142,71%,45%);--border:hsl(217,33%,22%);--header-bg:hsla(222,47%,8%,0.85);}
+body{background:var(--bg);color:var(--fg);min-height:100vh;}
+.site-header{position:sticky;top:0;z-index:50;background:var(--header-bg);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-link{padding:0.4rem 0.85rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;text-decoration:none;color:var(--muted-fg);}
+.nav-link:hover{background:var(--muted);}
+.nav-link-active{color:var(--primary);background:var(--muted);}
+.badge{display:inline-block;padding:0.3rem 0.75rem;border-radius:9999px;background:var(--muted);color:var(--primary);font-size:0.75rem;font-weight:600;margin-bottom:1rem;}
+.article-body p{color:var(--muted-fg);line-height:1.8;margin-bottom:1.1rem;font-size:1rem;}
+.article-body h2{font-size:1.5rem;font-weight:800;color:var(--fg);margin:2.5rem 0 0.875rem;letter-spacing:-0.02em;}
+.article-body h3{font-size:1.15rem;font-weight:700;color:var(--fg);margin:1.75rem 0 0.5rem;}
+.article-body ul{color:var(--muted-fg);line-height:1.8;margin-bottom:1.1rem;padding-left:1.5rem;}
+.article-body li{margin-bottom:0.4rem;}
+.article-body strong{color:var(--fg);font-weight:700;}
+.article-body a{color:var(--primary);}
+.callout{background:var(--muted);border-left:4px solid var(--primary);border-radius:0 0.75rem 0.75rem 0;padding:1.25rem 1.5rem;margin:1.75rem 0;}
+.callout p{margin:0;color:var(--fg);}
+.warning{background:var(--muted);border-left:4px solid hsl(38,92%,50%);border-radius:0 0.75rem 0.75rem 0;padding:1.25rem 1.5rem;margin:1.75rem 0;}
+.warning p{margin:0;color:var(--fg);}
+table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:0.9rem;}
+th{background:var(--muted);padding:0.75rem 1rem;text-align:left;font-weight:700;border:1px solid var(--border);color:var(--fg);}
+td{padding:0.75rem 1rem;border:1px solid var(--border);color:var(--muted-fg);}
+tr:hover td{background:var(--muted);}
+.related-card{text-decoration:none;background:var(--muted);border-radius:0.75rem;padding:1.25rem;color:inherit;display:block;}
+.related-card:hover{opacity:0.85;}
+.related-title{font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;color:var(--fg);}
+.related-sub{font-size:0.8rem;color:var(--muted-fg);}
+.site-footer{border-top:1px solid var(--border);padding:1.5rem 1.25rem;text-align:center;font-size:0.875rem;color:var(--muted-fg);}
+.site-footer a{color:var(--muted-fg);text-decoration:underline;}
+#theme-toggle{background:transparent;border:none;cursor:pointer;font-size:1.2rem;padding:0.4rem 0.5rem;border-radius:0.5rem;line-height:1;}
+#theme-toggle:hover{background:var(--muted);}
+@media(max-width:600px){.nav-link{padding:0.35rem 0.55rem;font-size:0.78rem;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div style="max-width:72rem;margin:0 auto;padding:0.5rem 1.25rem;min-height:4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;">
+    <a href="/" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;color:var(--fg);">
+      <span style="width:2.5rem;height:2.5rem;border-radius:0.75rem;background:linear-gradient(135deg,#FFD23F,#FFA500);font-family:Georgia,serif;font-weight:900;font-size:1.25rem;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.5);">$</span>
+      <span style="font-weight:700;font-size:1.05rem;letter-spacing:-0.02em;">My Commission Calculator</span>
+    </a>
+    <nav style="display:flex;align-items:center;gap:0.25rem;flex-wrap:wrap;">
+      <a href="/" class="nav-link">Calculator</a>
+      <a href="/about.html" class="nav-link">About</a>
+      <a href="/blog.html" class="nav-link nav-link-active">Blog</a>
+      <button id="theme-toggle" aria-label="Toggle theme">☀️</button>
+    </nav>
+  </div>
+</header>
+
+<div style="max-width:48rem;margin:0 auto;padding:3rem 1.25rem 2rem;">
+  <a href="/blog.html" style="display:inline-flex;align-items:center;gap:0.5rem;color:var(--primary);font-size:0.875rem;font-weight:600;text-decoration:none;margin-bottom:1.5rem;">← Back to Blog</a>
+  <span class="badge">Sales Education</span>
+  <h1 style="font-size:clamp(1.75rem,4vw,2.75rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:1rem;">Draw Against Commission Explained</h1>
+  <p style="color:var(--muted-fg);font-size:1.05rem;line-height:1.65;margin-bottom:1.5rem;">A draw gives you income while you're building your pipeline — but recoverable and non-recoverable draws work very differently. Understanding which type you have could save you thousands of dollars.</p>
+  <div style="display:flex;align-items:center;gap:1rem;font-size:0.85rem;color:var(--muted-fg);padding-bottom:1.5rem;border-bottom:1px solid var(--border);">
+    <span>📅 June 2025</span><span>·</span><span>⏱ 7 min read</span>
+  </div>
+</div>
+
+<div style="max-width:48rem;margin:0 auto 1.5rem;padding:0 1.25rem;">
+  <ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-5677753426593768" data-ad-slot="REPLACE_WITH_AD_SLOT_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div>
+
+<main style="max-width:48rem;margin:0 auto;padding:0 1.25rem 5rem;" class="article-body">
+
+  <p>Starting a new sales job is exciting — but the first 60 to 90 days are usually the hardest. You're still building relationships, learning the product, and working deals that haven't closed yet. A draw against commission is designed to bridge that gap, giving you a predictable income while your pipeline develops.</p>
+  <p>But not all draws are created equal. The difference between a recoverable and non-recoverable draw can mean the difference between a smooth start and ending up in financial debt to your employer. Here's everything you need to know.</p>
+
+  <h2>What Is a Draw Against Commission?</h2>
+  <p>A draw is an advance on future commission earnings. Your employer pays you a set amount each pay period — say $3,000 a month — and that amount is later reconciled against the commission you earn. Think of it as a loan from your future commissions.</p>
+  <p>Draws are most common in:</p>
+  <ul>
+    <li>New rep onboarding and ramp periods (typically the first 3–6 months)</li>
+    <li>Industries with long sales cycles where commissions are infrequent</li>
+    <li>Real estate, insurance, and financial services</li>
+    <li>Any role where income would otherwise be irregular or unpredictable</li>
+  </ul>
+
+  <h2>Recoverable vs. Non-Recoverable Draws</h2>
+  <p>This is the most important distinction you need to understand before accepting any draw arrangement.</p>
+
+  <h3>Recoverable Draw</h3>
+  <p>A recoverable draw is essentially a loan. Each pay period you receive the draw amount, and it is tracked as a balance you owe against future commissions. When you earn commission, the draw balance is deducted first — you only receive the surplus.</p>
+  <div class="callout">
+    <p><strong>Example:</strong> You receive a $4,000/month recoverable draw. In month 3 you earn $6,000 in commission. You receive $6,000 − $4,000 = $2,000. Your draw balance resets. But if you only earn $2,000 in commission, you receive nothing and still owe $2,000 in carried draw balance.</p>
+  </div>
+  <p>The risk with a recoverable draw is that a deficit can accumulate. If you have several low-commission months in a row, you can end up owing your employer a significant amount — which they may deduct from future paychecks or, in some cases, pursue after termination.</p>
+
+  <h3>Non-Recoverable Draw</h3>
+  <p>A non-recoverable draw is effectively a guaranteed minimum. You receive the draw amount regardless of your commission earnings, and any deficit does not carry forward or need to be repaid. It functions more like a base salary floor.</p>
+  <div class="callout">
+    <p><strong>Example:</strong> You receive a $4,000/month non-recoverable draw. In month 3 you earn $6,000 in commission — you receive $6,000 (the draw was already paid). In a slow month where you only earn $1,500, you still received $4,000 and owe nothing back.</p>
+  </div>
+  <p>Non-recoverable draws are far more favorable to the rep. Always clarify which type you're being offered before signing.</p>
+
+  <h2>Side-by-Side Comparison</h2>
+  <table>
+    <thead><tr><th>Feature</th><th>Recoverable</th><th>Non-Recoverable</th></tr></thead>
+    <tbody>
+      <tr><td>Deficit carries forward?</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Must be repaid if you leave?</td><td>Sometimes</td><td>No</td></tr>
+      <tr><td>Functions like a loan?</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Risk to rep</td><td>High</td><td>Low</td></tr>
+      <tr><td>Risk to employer</td><td>Low</td><td>Higher</td></tr>
+      <tr><td>Common in</td><td>High-volume sales, real estate</td><td>New rep ramp periods</td></tr>
+    </tbody>
+  </table>
+
+  <h2>What Happens to a Draw Deficit When You Leave?</h2>
+  <p>This is where recoverable draws can get messy. If you have an outstanding draw balance when you resign or are terminated, your employer may:</p>
+  <ul>
+    <li>Deduct the deficit from your final paycheck (subject to state laws)</li>
+    <li>Pursue the balance as a civil debt</li>
+    <li>Write it off entirely (common in practice, even if the contract suggests otherwise)</li>
+  </ul>
+  <div class="warning">
+    <p><strong>Important:</strong> Some states limit an employer's ability to recover draw deficits from departing employees. California, for example, has strong employee protections around wage deductions. Always check your state's labor laws and get the repayment terms in writing before accepting a recoverable draw arrangement.</p>
+  </div>
+
+  <h2>How to Negotiate Your Draw</h2>
+  <ul>
+    <li><strong>Push for non-recoverable.</strong> Especially during your ramp period. The argument is simple: you can't control how long deals take to close when you're new.</li>
+    <li><strong>Negotiate the draw amount.</strong> It should be enough to cover your essential monthly expenses. Calculate your minimum comfortable living costs and use that as your floor.</li>
+    <li><strong>Clarify the draw period.</strong> How long does the draw last? 3 months? 6 months? What happens at the end — does it convert to a base salary or does income become fully commission-based?</li>
+    <li><strong>Get the deficit repayment terms in writing.</strong> Specifically: does a deficit carry over indefinitely, or does it reset at the end of each month or quarter?</li>
+  </ul>
+
+  <h2>Draw vs. Base Salary: What's the Difference?</h2>
+  <p>A base salary is guaranteed compensation paid regardless of commission performance, with no reconciliation or repayment obligation. A draw — even a non-recoverable one — is technically an advance on commissions. In practice, non-recoverable draws function very similarly to a low base salary, but they may affect how your compensation is classified for benefits, overtime eligibility, and tax purposes.</p>
+  <p>If a company offers you a "draw" instead of a base salary, always ask why — and make sure you understand the implications for your employment classification.</p>
+
+  <div style="margin-top:3rem;background:linear-gradient(135deg,#0E5C29,#1B7F3A,#34C759);border-radius:1rem;padding:2rem;color:white;text-align:center;">
+    <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:0.5rem;color:white;">Calculate your commission earnings</h3>
+    <p style="opacity:0.85;margin-bottom:1.25rem;font-size:0.9rem;">Model your draw, base, and commission together in one place.</p>
+    <a href="/" style="display:inline-block;background:white;color:hsl(142,71%,32%);font-weight:700;padding:0.65rem 1.75rem;border-radius:0.75rem;text-decoration:none;font-size:0.9rem;">Open the Calculator →</a>
+  </div>
+
+  <div style="margin-top:2.5rem;">
+    <ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-5677753426593768" data-ad-slot="REPLACE_WITH_AD_SLOT_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+  </div>
+
+  <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);">
+    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Related Articles</h3>
+    <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));">
+      <a href="/blog/what-is-ote.html" class="related-card"><div class="related-title">What Is OTE in Sales?</div><div class="related-sub">On-target earnings explained →</div></a>
+      <a href="/blog/how-to-negotiate-commission.html" class="related-card"><div class="related-title">Negotiate Your Commission</div><div class="related-sub">Tactics that actually work →</div></a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">© <span id="yr"></span> My Commission Calculator · <a href="/about.html">About</a> · <a href="/blog.html">Blog</a> · <a href="/">Calculator</a></footer>
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  const btn=document.getElementById('theme-toggle');
+  function applyTheme(t){document.documentElement.classList.toggle('dark',t==='dark');btn.textContent=t==='dark'?'🌙':'☀️';}
+  applyTheme(localStorage.getItem('mcc-theme')||'light');
+  btn.addEventListener('click',()=>{const n=document.documentElement.classList.contains('dark')?'light':'dark';localStorage.setItem('mcc-theme',n);applyTheme(n);});
+</script>
+</body>
+</html>

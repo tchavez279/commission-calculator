@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Commission vs Salary: Which Sales Job Should You Take? — My Commission Calculator</title>
+<meta name="description" content="Choosing between a commission-heavy and salary-heavy sales role is one of the most important career decisions you'll make. Here's a practical framework for making the right choice." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5677753426593768" crossorigin="anonymous"></script>
+<script>
+  (function(){const t=localStorage.getItem('mcc-theme')||'light';if(t==='dark')document.documentElement.classList.add('dark');})();
+  const _warn=console.warn.bind(console);console.warn=(...a)=>{if(typeof a[0]==='string'&&a[0].includes('cdn.tailwindcss.com'))return;_warn(...a);};
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+html,body{font-family:Inter,system-ui,sans-serif;}
+:root{--bg:hsl(0,0%,100%);--fg:hsl(222,47%,11%);--card:hsl(0,0%,100%);--muted:hsl(210,40%,96%);--muted-fg:hsl(215,16%,47%);--primary:hsl(142,71%,32%);--border:hsl(214,32%,91%);--header-bg:hsla(0,0%,100%,0.85);}
+html.dark{--bg:hsl(222,47%,8%);--fg:hsl(210,40%,98%);--card:hsl(222,47%,11%);--muted:hsl(217,33%,17%);--muted-fg:hsl(215,20%,65%);--primary:hsl(142,71%,45%);--border:hsl(217,33%,22%);--header-bg:hsla(222,47%,8%,0.85);}
+body{background:var(--bg);color:var(--fg);min-height:100vh;}
+.site-header{position:sticky;top:0;z-index:50;background:var(--header-bg);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-link{padding:0.4rem 0.85rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;text-decoration:none;color:var(--muted-fg);}
+.nav-link:hover{background:var(--muted);}
+.nav-link-active{color:var(--primary);background:var(--muted);}
+.badge{display:inline-block;padding:0.3rem 0.75rem;border-radius:9999px;background:var(--muted);color:var(--primary);font-size:0.75rem;font-weight:600;margin-bottom:1rem;}
+.article-body p{color:var(--muted-fg);line-height:1.8;margin-bottom:1.1rem;font-size:1rem;}
+.article-body h2{font-size:1.5rem;font-weight:800;color:var(--fg);margin:2.5rem 0 0.875rem;letter-spacing:-0.02em;}
+.article-body h3{font-size:1.15rem;font-weight:700;color:var(--fg);margin:1.75rem 0 0.5rem;}
+.article-body ul{color:var(--muted-fg);line-height:1.8;margin-bottom:1.1rem;padding-left:1.5rem;}
+.article-body li{margin-bottom:0.4rem;}
+.article-body strong{color:var(--fg);font-weight:700;}
+.article-body a{color:var(--primary);}
+.callout{background:var(--muted);border-left:4px solid var(--primary);border-radius:0 0.75rem 0.75rem 0;padding:1.25rem 1.5rem;margin:1.75rem 0;}
+.callout p{margin:0;color:var(--fg);}
+table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:0.9rem;}
+th{background:var(--muted);padding:0.75rem 1rem;text-align:left;font-weight:700;border:1px solid var(--border);color:var(--fg);}
+td{padding:0.75rem 1rem;border:1px solid var(--border);color:var(--muted-fg);}
+tr:hover td{background:var(--muted);}
+.related-card{text-decoration:none;background:var(--muted);border-radius:0.75rem;padding:1.25rem;color:inherit;display:block;}
+.related-card:hover{opacity:0.85;}
+.related-title{font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;color:var(--fg);}
+.related-sub{font-size:0.8rem;color:var(--muted-fg);}
+.site-footer{border-top:1px solid var(--border);padding:1.5rem 1.25rem;text-align:center;font-size:0.875rem;color:var(--muted-fg);}
+.site-footer a{color:var(--muted-fg);text-decoration:underline;}
+#theme-toggle{background:transparent;border:none;cursor:pointer;font-size:1.2rem;padding:0.4rem 0.5rem;border-radius:0.5rem;line-height:1;}
+#theme-toggle:hover{background:var(--muted);}
+@media(max-width:600px){.nav-link{padding:0.35rem 0.55rem;font-size:0.78rem;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div style="max-width:72rem;margin:0 auto;padding:0.5rem 1.25rem;min-height:4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;">
+    <a href="/" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;color:var(--fg);">
+      <span style="width:2.5rem;height:2.5rem;border-radius:0.75rem;background:linear-gradient(135deg,#FFD23F,#FFA500);font-family:Georgia,serif;font-weight:900;font-size:1.25rem;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.5);">$</span>
+      <span style="font-weight:700;font-size:1.05rem;letter-spacing:-0.02em;">My Commission Calculator</span>
+    </a>
+    <nav style="display:flex;align-items:center;gap:0.25rem;flex-wrap:wrap;">
+      <a href="/" class="nav-link">Calculator</a>
+      <a href="/about.html" class="nav-link">About</a>
+      <a href="/blog.html" class="nav-link nav-link-active">Blog</a>
+      <button id="theme-toggle" aria-label="Toggle theme">☀️</button>
+    </nav>
+  </div>
+</header>
+
+<div style="max-width:48rem;margin:0 auto;padding:3rem 1.25rem 2rem;">
+  <a href="/blog.html" style="display:inline-flex;align-items:center;gap:0.5rem;color:var(--primary);font-size:0.875rem;font-weight:600;text-decoration:none;margin-bottom:1.5rem;">← Back to Blog</a>
+  <span class="badge">Career Decisions</span>
+  <h1 style="font-size:clamp(1.75rem,4vw,2.75rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:1rem;">Commission vs Salary: Which Sales Job Should You Take?</h1>
+  <p style="color:var(--muted-fg);font-size:1.05rem;line-height:1.65;margin-bottom:1.5rem;">Choosing between a commission-heavy and salary-heavy role is one of the biggest career decisions in sales. Here's a practical framework to help you make the right choice for your situation.</p>
+  <div style="display:flex;align-items:center;gap:1rem;font-size:0.85rem;color:var(--muted-fg);padding-bottom:1.5rem;border-bottom:1px solid var(--border);">
+    <span>📅 May 2025</span><span>·</span><span>⏱ 7 min read</span>
+  </div>
+</div>
+
+<div style="max-width:48rem;margin:0 auto 1.5rem;padding:0 1.25rem;">
+  <ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-5677753426593768" data-ad-slot="REPLACE_WITH_AD_SLOT_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div>
+
+<main style="max-width:48rem;margin:0 auto;padding:0 1.25rem 5rem;" class="article-body">
+
+  <p>Two job offers land in your inbox on the same day. One pays $80,000 base with a small commission kicker. The other pays $40,000 base with uncapped commission and a $120,000 OTE. Which do you take?</p>
+  <p>The honest answer is: it depends on factors most people don't think to ask about. This guide walks through the key considerations so you can make a decision based on your actual situation rather than just the headline numbers.</p>
+
+  <h2>The Core Trade-Off</h2>
+  <p>Every commission vs. salary decision comes down to one fundamental trade-off: <strong>security vs. upside</strong>. A higher base gives you predictable income regardless of how your month goes. A higher commission percentage gives you the ability to earn far more — but also far less — depending on your performance and circumstances.</p>
+  <p>Neither is inherently better. The right answer depends on your financial situation, your confidence in the product, your experience level, and your personal tolerance for income volatility.</p>
+
+  <h2>When a Salary-Heavy Role Makes More Sense</h2>
+  <ul>
+    <li><strong>You're new to sales or the industry.</strong> Building skills takes time. A higher base gives you runway to learn without financial pressure forcing you into shortcuts.</li>
+    <li><strong>You have significant fixed expenses.</strong> Mortgage, kids, debt repayments — if missing a commission month would genuinely hurt you, prioritise the base.</li>
+    <li><strong>The product is unproven.</strong> Selling something new and unvalidated is hard. Commission-heavy pay on a product that hasn't found market fit is a gamble.</li>
+    <li><strong>The sales cycle is long.</strong> Enterprise deals that take 9–12 months to close make commission-only structures genuinely difficult to survive financially.</li>
+    <li><strong>You value stability and predictability.</strong> There is no shame in valuing financial certainty — especially if you perform better without income anxiety.</li>
+  </ul>
+
+  <h2>When a Commission-Heavy Role Makes More Sense</h2>
+  <ul>
+    <li><strong>You have a proven track record.</strong> If you've consistently hit or exceeded quota at previous roles, commission-heavy pay is where you'll out-earn your peers.</li>
+    <li><strong>The product has strong market fit.</strong> A product that sells itself lowers the risk of commission-based income dramatically.</li>
+    <li><strong>You have financial cushion.</strong> 3–6 months of savings removes the desperation that kills commission sales performance.</li>
+    <li><strong>The commission is uncapped.</strong> Uncapped commission with a strong product is one of the best wealth-building vehicles in any profession.</li>
+    <li><strong>You thrive under performance pressure.</strong> Some salespeople genuinely perform better when pay is directly tied to results.</li>
+  </ul>
+
+  <h2>A Framework for Comparing Offers</h2>
+  <p>When you have two offers with different base/commission splits, don't just compare the OTE figures. Model multiple scenarios:</p>
+  <table>
+    <thead><tr><th>Scenario</th><th>High Base Offer ($80k base)</th><th>High Commission Offer ($40k base, $120k OTE)</th></tr></thead>
+    <tbody>
+      <tr><td>Miss quota badly (50%)</td><td>~$90,000</td><td>~$60,000</td></tr>
+      <tr><td>Hit 80% of quota</td><td>~$96,000</td><td>~$88,000</td></tr>
+      <tr><td>Hit 100% of quota</td><td>~$100,000</td><td>~$120,000</td></tr>
+      <tr><td>Hit 130% of quota</td><td>~$106,000</td><td>~$160,000+</td></tr>
+    </tbody>
+  </table>
+  <p>Notice that the high-base offer wins at low attainment but the high-commission offer wins significantly at high attainment. The question is: which scenario is more likely for you, in this role, at this company?</p>
+
+  <h2>The Questions That Actually Matter</h2>
+  <p>Before accepting either offer, get answers to these:</p>
+  <ul>
+    <li>What % of reps hit quota last year? What was the median attainment?</li>
+    <li>Is the commission uncapped? Are there accelerators above quota?</li>
+    <li>How long is the average sales cycle?</li>
+    <li>What is the average deal size and close rate?</li>
+    <li>How is quota set — historically, theoretically, or based on territory?</li>
+    <li>What happened to top performers last year — did they stay or leave?</li>
+  </ul>
+
+  <div class="callout">
+    <p><strong>The most revealing question:</strong> "Can I speak to a current rep about their experience with the comp plan?" A company that's hesitant to let you talk to existing salespeople is a red flag.</p>
+  </div>
+
+  <h2>The Bottom Line</h2>
+  <p>A commission-heavy role at a company with a proven product, achievable quotas, uncapped upside, and a strong team is one of the best financial opportunities in any career. The same structure at a company with an unproven product, inflated quotas, and high rep turnover is a trap.</p>
+  <p>The headline numbers — base, OTE, commission rate — are less important than the underlying conditions that determine whether those numbers are achievable. Do your research, ask the hard questions, and use our <a href="/">commission calculator</a> to model realistic scenarios before you decide.</p>
+
+  <div style="margin-top:3rem;background:linear-gradient(135deg,#0E5C29,#1B7F3A,#34C759);border-radius:1rem;padding:2rem;color:white;text-align:center;">
+    <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:0.5rem;color:white;">Compare your offers side by side</h3>
+    <p style="opacity:0.85;margin-bottom:1.25rem;font-size:0.9rem;">Model different base + commission scenarios in our free calculator.</p>
+    <a href="/" style="display:inline-block;background:white;color:hsl(142,71%,32%);font-weight:700;padding:0.65rem 1.75rem;border-radius:0.75rem;text-decoration:none;font-size:0.9rem;">Open the Calculator →</a>
+  </div>
+
+  <div style="margin-top:2.5rem;">
+    <ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-5677753426593768" data-ad-slot="REPLACE_WITH_AD_SLOT_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+  </div>
+
+  <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);">
+    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Related Articles</h3>
+    <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));">
+      <a href="/blog/what-is-ote.html" class="related-card"><div class="related-title">What Is OTE in Sales?</div><div class="related-sub">On-target earnings explained →</div></a>
+      <a href="/blog/how-to-negotiate-commission.html" class="related-card"><div class="related-title">Negotiate Your Commission</div><div class="related-sub">Tactics that actually work →</div></a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">© <span id="yr"></span> My Commission Calculator · <a href="/about.html">About</a> · <a href="/blog.html">Blog</a> · <a href="/">Calculator</a></footer>
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  const btn=document.getElementById('theme-toggle');
+  function applyTheme(t){document.documentElement.classList.toggle('dark',t==='dark');btn.textContent=t==='dark'?'🌙':'☀️';}
+  applyTheme(localStorage.getItem('mcc-theme')||'light');
+  btn.addEventListener('click',()=>{const n=document.documentElement.classList.contains('dark')?'light':'dark';localStorage.setItem('mcc-theme',n);applyTheme(n);});
+</script>
+</body>
+</html>
