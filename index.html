@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>My Commission Calculator — Free Sales Commission Tool</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231B7F3A'/><text y='.9em' font-size='70' x='50%' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' fill='%23FFD23F'>$</text></svg>" />
 <meta name="description" content="Free, beautiful commission calculator. Basic mode for quick math, Detailed mode with base+OT and add-ons, Advanced mode for tiered, splits, accelerators and annual projections." />
 <meta property="og:title" content="My Commission Calculator" />
 <meta property="og:description" content="Calculate sales commissions in seconds — Basic, Detailed and Advanced modes with tiers, splits, accelerators and projections." />
@@ -519,30 +520,39 @@ function CalculatorPage() {
     const fix = "inline-flex items-center px-3 bg-muted text-muted-foreground font-semibold text-sm";
     return (React.createElement("div", { className: "min-h-screen bg-background text-foreground" },
         React.createElement("header", { style: { position: "sticky", top: 0, zIndex: 50, background: "linear-gradient(135deg,#1B7F3A,#34C759)" } },
-            React.createElement("div", { className: "max-w-6xl mx-auto px-5 flex items-center justify-between flex-wrap gap-2", style: { minHeight: "4rem", paddingTop: "0.5rem", paddingBottom: "0.5rem" } },
-                React.createElement("a", { href: "/", style: { display: "flex", alignItems: "center", gap: "0.75rem", textDecoration: "none" } },
-                    React.createElement("span", { style: { width: "2.5rem", height: "2.5rem", borderRadius: "0.75rem", background: "linear-gradient(135deg,#FFD23F,#FFA500)", fontFamily: "Georgia,serif", fontWeight: 900, fontSize: "1.25rem", display: "flex", alignItems: "center", justifyContent: "center", border: "2px solid rgba(255,255,255,0.4)" } }, "$"),
-                    React.createElement("div", null,
-                        React.createElement("div", { style: { color: "white", fontWeight: 700, fontSize: "1rem", letterSpacing: "-0.02em", lineHeight: 1.2 } }, "My Commission Calculator"),
-                        React.createElement("div", { style: { color: "rgba(255,255,255,0.65)", fontSize: "0.7rem", fontWeight: 500 } }, "Free \u00B7 Instant \u00B7 Private"))),
-                React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "0.1rem", flexWrap: "wrap" } },
-                    React.createElement("a", { href: "/about.html", style: { padding: "0.35rem 0.85rem", borderRadius: "0.5rem", fontSize: "0.875rem", fontWeight: 600, textDecoration: "none", color: "rgba(255,255,255,0.75)", border: "1px solid transparent" }, onMouseOver: e => e.target.style.background="rgba(255,255,255,0.15)", onMouseOut: e => e.target.style.background="transparent" }, "About"),
-                    React.createElement("a", { href: "/blog.html", style: { padding: "0.35rem 0.85rem", borderRadius: "0.5rem", fontSize: "0.875rem", fontWeight: 600, textDecoration: "none", color: "rgba(255,255,255,0.75)", border: "1px solid transparent" }, onMouseOver: e => e.target.style.background="rgba(255,255,255,0.15)", onMouseOut: e => e.target.style.background="transparent" }, "Blog"),
-                    React.createElement("button", { onClick: toggleTheme, "aria-label": "Toggle theme", style: { background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: "0.5rem", color: "white", width: "2rem", height: "2rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem", cursor: "pointer" } }, theme === "light" ? "☀️" : "🌙"),
-                    React.createElement("button", { onClick: share, style: { padding: "0.35rem 0.85rem", borderRadius: "0.5rem", fontSize: "0.875rem", fontWeight: 600, color: "rgba(255,255,255,0.75)", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", cursor: "pointer" } }, "\uD83D\uDD17 Share")))),
+            React.createElement("div", { className: "max-w-6xl mx-auto px-5", style: { height: "3.75rem", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem" } },
+                React.createElement("a", { href: "/", style: { display: "flex", alignItems: "center", gap: "0.65rem", textDecoration: "none", flexShrink: 0 } },
+                    React.createElement("span", { style: { width: "2.25rem", height: "2.25rem", borderRadius: "0.6rem", background: "linear-gradient(135deg,#FFD23F,#FFA500)", fontFamily: "Georgia,serif", fontWeight: 900, fontSize: "1.1rem", display: "flex", alignItems: "center", justifyContent: "center", border: "2px solid rgba(255,255,255,0.35)", flexShrink: 0 } }, "$"),
+                    React.createElement("span", { style: { color: "white", fontWeight: 800, fontSize: "0.95rem", letterSpacing: "-0.02em", whiteSpace: "nowrap" } }, "My Commission Calculator")),
+                React.createElement("div", { style: { display: "flex", alignItems: "center", background: "rgba(0,0,0,0.15)", borderRadius: "0.5rem", padding: "3px" } },
+                    React.createElement("a", { href: "/", style: { color: "rgba(255,255,255,0.9)", fontSize: "0.8rem", fontWeight: 600, padding: "0.3rem 0.85rem", borderRadius: "0.4rem", textDecoration: "none", background: "rgba(255,255,255,0.2)" } }, "Calculator"),
+                    React.createElement("a", { href: "/about.html", style: { color: "rgba(255,255,255,0.75)", fontSize: "0.8rem", fontWeight: 600, padding: "0.3rem 0.85rem", borderRadius: "0.4rem", textDecoration: "none" } }, "About"),
+                    React.createElement("a", { href: "/blog.html", style: { color: "rgba(255,255,255,0.75)", fontSize: "0.8rem", fontWeight: 600, padding: "0.3rem 0.85rem", borderRadius: "0.4rem", textDecoration: "none" } }, "Blog")),
+                React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 } },
+                    React.createElement("button", { onClick: toggleTheme, "aria-label": "Toggle theme", style: { background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: "0.4rem", color: "white", width: "2rem", height: "2rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", cursor: "pointer" } }, theme === "light" ? "☀️" : "🌙"),
+                    React.createElement("button", { onClick: share, style: { background: "white", color: "#1B7F3A", fontSize: "0.8rem", fontWeight: 700, padding: "0.3rem 0.9rem", borderRadius: "0.4rem", border: "none", cursor: "pointer", whiteSpace: "nowrap" } }, "🔗 Share")))),
 
         /* ── Ad unit: Below hero, above calculator ── */
-        React.createElement(AdUnit, { slot: "REPLACE_WITH_AD_SLOT_1", format: "auto" }),
 
-        React.createElement("section", { className: "text-center py-12 sm:py-16 px-5" },
-            React.createElement("span", { className: "inline-block px-3.5 py-1.5 rounded-full bg-muted text-primary text-xs font-semibold border border-border mb-4" }, "💰 Free • No signup • Works offline"),
+        React.createElement("section", { className: "text-center py-10 sm:py-12 px-5" },
+            React.createElement("span", { className: "inline-block px-3.5 py-1.5 rounded-full text-xs font-semibold border mb-4", style: { background: "rgba(52,199,89,0.15)", color: "#34C759", borderColor: "rgba(52,199,89,0.3)" } }, "💰 Free • No signup • Works offline"),
             React.createElement("h1", { className: "text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl mx-auto" },
                 "Know exactly ",
                 React.createElement("span", { className: "text-gradient-gold" }, "what you'll earn.")),
             React.createElement("p", { className: "text-muted-foreground text-base sm:text-lg mt-4 max-w-xl mx-auto" },
                 "The fastest commission calculator on the web. Switch to ",
                 React.createElement("strong", null, "Advanced"),
-                " for tiered rates, splits, accelerators, bonuses and annual projections.")),
+                " for tiered rates, splits, accelerators, bonuses and annual projections."),
+            React.createElement("div", { className: "flex flex-wrap justify-center gap-6 mt-6 text-sm text-muted-foreground" },
+                React.createElement("span", { className: "flex items-center gap-1.5" },
+                    React.createElement("span", { className: "w-2 h-2 rounded-full bg-primary inline-block" }),
+                    "Used by real estate agents"),
+                React.createElement("span", { className: "flex items-center gap-1.5" },
+                    React.createElement("span", { className: "w-2 h-2 rounded-full bg-primary inline-block" }),
+                    "SaaS account executives"),
+                React.createElement("span", { className: "flex items-center gap-1.5" },
+                    React.createElement("span", { className: "w-2 h-2 rounded-full bg-primary inline-block" }),
+                    "Insurance & auto sales reps"))),
 
 
 
@@ -880,14 +890,19 @@ function CalculatorPage() {
                     React.createElement("button", { onClick: () => persistScenarios(scenarios.filter((_, idx) => idx !== i)), className: "flex-1 h-8 text-xs border border-border rounded-lg hover:bg-muted font-semibold" }, "Delete")))))))),
 
         React.createElement("section", { className: "max-w-6xl mx-auto px-5 pb-16" },
+            React.createElement("h2", { className: "text-2xl sm:text-3xl font-extrabold tracking-tight text-center mb-2" }, "Why sales pros choose this calculator"),
+            React.createElement("p", { className: "text-center text-muted-foreground mb-8 text-sm" }, "Built for the way commission actually works — not a simplified version of it."),
             React.createElement("div", { className: "grid gap-4 sm:grid-cols-3" }, [
-                { icon: "⚡", title: "Lightning fast", body: "Calculations update live as you type. No reloads." },
-                { icon: "🔒", title: "100% private", body: "Everything runs in your browser. Nothing sent to a server." },
-                { icon: "🚀", title: "Pro-grade math", body: "Tiered, splits, accelerators, bonuses, draw and projection." },
-            ].map((c) => (React.createElement("div", { key: c.title, className: "bg-card border border-border rounded-xl p-6 text-center" },
-                React.createElement("div", { className: "text-3xl mb-2" }, c.icon),
-                React.createElement("h3", { className: "font-bold mb-1" }, c.title),
-                React.createElement("p", { className: "text-sm text-muted-foreground" }, c.body)))))),
+                { icon: "⚡", title: "Lightning fast", body: "Results update live as you type. No submit buttons, no page reloads, no waiting. Your number is always current.", color: "#FFF9E6", border: "#FFD23F" },
+                { icon: "🔒", title: "100% private", body: "Every calculation runs in your browser. Your numbers never leave your device. No accounts, no tracking, no servers.", color: "#E8F7EF", border: "#34C759" },
+                { icon: "🧮", title: "Pro-grade math", body: "Tiered brackets, quota accelerators, team splits, overtime, add-ons, bonuses and annual projections — all in one place.", color: "#EEF2FF", border: "#6366F1" },
+                { icon: "💾", title: "Save scenarios", body: "Save up to 24 scenarios and compare them side by side. Perfect for modelling different offers or rate negotiations.", color: "#FFF0F0", border: "#F87171" },
+                { icon: "🧾", title: "Tax estimator", body: "See your estimated take-home after tax on both base pay and commission. Set separate rates for each.", color: "#F0FDF4", border: "#4ADE80" },
+                { icon: "📱", title: "Works everywhere", body: "Fully responsive on mobile, tablet and desktop. Works offline too — no internet connection needed once loaded.", color: "#F0F9FF", border: "#38BDF8" },
+            ].map((c) => (React.createElement("div", { key: c.title, className: "rounded-xl p-6", style: { background: c.color, border: `1.5px solid ${c.border}` } },
+                React.createElement("div", { className: "text-3xl mb-3" }, c.icon),
+                React.createElement("h3", { className: "font-bold mb-2 text-foreground" }, c.title),
+                React.createElement("p", { className: "text-sm text-muted-foreground leading-relaxed" }, c.body)))))),
 
         /* ── Rich Content: How Commission Works ── */
         React.createElement("section", { className: "max-w-4xl mx-auto px-5 pb-16" },
@@ -1040,15 +1055,33 @@ function CalculatorPage() {
                         className: "w-full h-10 rounded-lg bg-gradient-cash text-white font-semibold text-sm"
                     }, "Close")))) : null,
 
-        React.createElement("footer", { className: "border-t border-border py-6 text-center text-sm text-muted-foreground" },
-            "\u00A9 ",
-            new Date().getFullYear(),
-            " My Commission Calculator \u00B7 Built for sales pros \uD83D\uDCBC",
-            React.createElement("span", { className: "mx-2 opacity-40" }, "\u00B7"),
-            React.createElement("button", {
-                onClick: () => setPrivacyOpen(true),
-                className: "underline underline-offset-2 hover:text-foreground transition"
-            }, "Privacy Policy")),
+        React.createElement("footer", { className: "border-t border-border mt-4" },
+            React.createElement("div", { className: "max-w-6xl mx-auto px-5 py-10 grid gap-8 sm:grid-cols-3" },
+                React.createElement("div", null,
+                    React.createElement("div", { className: "flex items-center gap-2 mb-3" },
+                        React.createElement("span", { style: { width: "2rem", height: "2rem", borderRadius: "0.5rem", background: "linear-gradient(135deg,#FFD23F,#FFA500)", fontFamily: "Georgia,serif", fontWeight: 900, fontSize: "1rem", display: "flex", alignItems: "center", justifyContent: "center" } }, "$"),
+                        React.createElement("span", { className: "font-bold text-sm" }, "My Commission Calculator")),
+                    React.createElement("p", { className: "text-xs text-muted-foreground leading-relaxed" }, "A free, privacy-first commission calculator built for sales professionals. All calculations run in your browser — your data never leaves your device.")),
+                React.createElement("div", null,
+                    React.createElement("h4", { className: "font-bold text-sm mb-3" }, "Calculator"),
+                    React.createElement("ul", { className: "space-y-2 text-sm text-muted-foreground" },
+                        React.createElement("li", null, React.createElement("a", { href: "/", className: "hover:text-foreground transition" }, "⚡ Basic Calculator")),
+                        React.createElement("li", null, React.createElement("a", { href: "/", className: "hover:text-foreground transition" }, "🧮 Detailed Calculator")),
+                        React.createElement("li", null, React.createElement("a", { href: "/", className: "hover:text-foreground transition" }, "🚀 Advanced Calculator")))),
+                React.createElement("div", null,
+                    React.createElement("h4", { className: "font-bold text-sm mb-3" }, "Resources"),
+                    React.createElement("ul", { className: "space-y-2 text-sm text-muted-foreground" },
+                        React.createElement("li", null, React.createElement("a", { href: "/blog.html", className: "hover:text-foreground transition" }, "Sales Commission Blog")),
+                        React.createElement("li", null, React.createElement("a", { href: "/blog/what-is-ote.html", className: "hover:text-foreground transition" }, "What Is OTE?")),
+                        React.createElement("li", null, React.createElement("a", { href: "/blog/how-to-negotiate-commission.html", className: "hover:text-foreground transition" }, "Negotiate Your Commission")),
+                        React.createElement("li", null, React.createElement("a", { href: "/blog/commission-tax-guide.html", className: "hover:text-foreground transition" }, "Commission Tax Guide")),
+                        React.createElement("li", null, React.createElement("a", { href: "/about.html", className: "hover:text-foreground transition" }, "About"))))),
+            React.createElement("div", { className: "border-t border-border px-5 py-4 flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground max-w-6xl mx-auto" },
+                React.createElement("span", null, "© ", new Date().getFullYear(), " My Commission Calculator · Built for sales pros 📼"),
+                React.createElement("button", {
+                    onClick: () => setPrivacyOpen(true),
+                    className: "underline underline-offset-2 hover:text-foreground transition"
+                }, "Privacy Policy"))),
         toast && React.createElement("div", { className: "fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background px-5 py-3 rounded-full font-semibold text-sm shadow-2xl z-50" }, toast)));
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
