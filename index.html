@@ -532,7 +532,7 @@ function CalculatorPage() {
                     React.createElement("button", { onClick: toggleTheme, "aria-label": "Toggle theme", style: { background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: "0.4rem", color: "white", width: "1.8rem", height: "1.8rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem", cursor: "pointer" } }, theme === "light" ? "☀️" : "🌙"),
                     React.createElement("button", { onClick: share, style: { background: "white", color: "#1B7F3A", fontSize: "0.72rem", fontWeight: 700, padding: "0.25rem 0.65rem", borderRadius: "0.3rem", border: "none", cursor: "pointer", whiteSpace: "nowrap" } }, "Share")))),
 
-        React.createElement("section", { className: "text-center py-6 sm:py-10 px-5" },
+        React.createElement("section", { className: "text-center pt-6 pb-3 sm:pt-10 sm:pb-4 px-5" },
             React.createElement("span", { className: "inline-block px-3.5 py-1.5 rounded-full text-xs font-semibold border mb-4", style: { background: "rgba(52,199,89,0.15)", color: "#34C759", borderColor: "rgba(52,199,89,0.3)" } }, "💰 Free • No signup • Works offline"),
             React.createElement("h1", { className: "text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl mx-auto" },
                 "Know exactly ",
@@ -541,7 +541,7 @@ function CalculatorPage() {
                 "The fastest commission calculator on the web. Switch to ",
                 React.createElement("strong", null, "Advanced"),
                 " for tiered rates, splits, accelerators, bonuses and annual projections."),
-            React.createElement("div", { className: "flex flex-wrap justify-center gap-6 mt-6 text-sm text-muted-foreground" },
+            React.createElement("div", { className: "flex flex-wrap justify-center gap-4 mt-4 text-sm text-muted-foreground" },
                 React.createElement("span", { className: "flex items-center gap-1.5" },
                     React.createElement("span", { className: "w-2 h-2 rounded-full bg-primary inline-block" }),
                     "Used by real estate agents"),
@@ -554,7 +554,7 @@ function CalculatorPage() {
 
 
 
-        React.createElement("main", { className: "max-w-6xl mx-auto px-5 pb-12 grid gap-6 lg:grid-cols-2 lg:items-stretch" },
+        React.createElement("main", { className: "max-w-6xl mx-auto px-5 pt-2 pb-12 grid gap-6 lg:grid-cols-2 lg:items-stretch" },
             React.createElement("section", { className: card },
                 React.createElement("div", { className: "inline-flex p-1 bg-muted rounded-xl border border-border mb-5 flex-wrap" }, ["basic", "detailed", "advanced"].map((m) => (React.createElement("button", { key: m, onClick: () => setMode(m), className: `px-4 sm:px-5 py-2 rounded-lg font-semibold transition text-sm sm:text-base ${mode === m ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"}` }, m === "basic" ? "⚡ Basic" : m === "detailed" ? "🧮 Detailed" : "🚀 Advanced")))),
                 mode !== "detailed" && (React.createElement("div", { className: "flex flex-wrap gap-2 items-center pb-5 mb-5 border-b border-dashed border-border" },
