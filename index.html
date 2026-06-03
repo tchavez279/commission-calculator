@@ -794,7 +794,7 @@ function CalculatorPage() {
                     React.createElement("button", { onClick: reset, className: "flex-1 h-10 rounded-lg border border-border bg-card hover:bg-muted font-semibold text-sm" }, "↺ Reset"),
                     React.createElement("button", { onClick: saveScenario, className: "flex-1 h-10 rounded-lg bg-gradient-cash text-white font-semibold text-sm shadow-money hover:brightness-105" }, "💾 Save scenario"))),
 
-            React.createElement("aside", { className: "lg:sticky lg:top-20 bg-gradient-money text-white rounded-xl p-6 shadow-money border-0" },
+            React.createElement("aside", { className: "bg-gradient-money text-white rounded-xl p-6 shadow-money border-0 h-full" },
                 React.createElement("div", { className: "text-xs uppercase tracking-widest opacity-80 font-semibold" }, "Your earnings"),
                 React.createElement("div", { className: "font-extrabold leading-none my-2 whitespace-nowrap overflow-hidden text-ellipsis tabular-nums text-4xl sm:text-5xl lg:text-[3.5rem]", style: { background: "linear-gradient(180deg, #fff 0%, #FFD23F 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" } }, fmt(result.display, result.cur)),
                 React.createElement("div", { className: "text-sm opacity-85 mb-4" }, result.total > 0 || result.annual > 0
