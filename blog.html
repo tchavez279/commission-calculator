@@ -58,16 +58,17 @@ body{background:var(--bg);color:var(--fg);min-height:100vh;}
 <body>
 
 <header class="site-header">
-  <div style="max-width:72rem;margin:0 auto;padding:0 1rem;height:3.75rem;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">
-    <a href="/" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;flex-shrink:0;">
-      <span style="width:2rem;height:2rem;border-radius:0.5rem;background:linear-gradient(135deg,#FFD23F,#FFA500);font-family:Georgia,serif;font-weight:900;font-size:1rem;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.35);flex-shrink:0;">$</span>
-      <span style="color:white;font-weight:800;font-size:0.85rem;letter-spacing:-0.02em;white-space:nowrap;">My Commission Calculator</span>
+  <div style="max-width:72rem;margin:0 auto;padding:0 0.75rem;height:3.5rem;display:flex;align-items:center;justify-content:space-between;gap:0.4rem;">
+    <a href="/" style="display:flex;align-items:center;gap:0.4rem;text-decoration:none;flex-shrink:0;">
+      <span style="width:1.9rem;height:1.9rem;border-radius:0.45rem;background:linear-gradient(135deg,#FFD23F,#FFA500);font-family:Georgia,serif;font-weight:900;font-size:0.95rem;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.35);flex-shrink:0;">$</span>
+      <span class="hidden sm:inline" style="color:white;font-weight:800;font-size:0.85rem;letter-spacing:-0.02em;white-space:nowrap;">My Commission Calculator</span>
+      <span class="sm:hidden" style="color:white;font-weight:800;font-size:0.82rem;letter-spacing:-0.02em;white-space:nowrap;">Commission Calc</span>
     </a>
     <div style="display:flex;align-items:center;background:rgba(0,0,0,0.15);border-radius:0.4rem;padding:2px;flex-shrink:0;">
-      <a href="/" style="color:rgba(255,255,255,0.75);font-size:0.72rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:0.3rem;text-decoration:none;white-space:nowrap;">Calc</a><a href="/about.html" style="color:rgba(255,255,255,0.75);font-size:0.72rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:0.3rem;text-decoration:none;white-space:nowrap;">About</a><a href="/blog.html" style="color:rgba(255,255,255,0.9);font-size:0.72rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:0.3rem;text-decoration:none;background:rgba(255,255,255,0.2);white-space:nowrap;">Blog</a>
+      <a href="/" style="color:rgba(255,255,255,0.75);font-size:0.72rem;font-weight:600;padding:0.25rem 0.55rem;border-radius:0.3rem;text-decoration:none;white-space:nowrap;">Calc</a><a href="/about.html" style="color:rgba(255,255,255,0.75);font-size:0.72rem;font-weight:600;padding:0.25rem 0.55rem;border-radius:0.3rem;text-decoration:none;white-space:nowrap;">About</a><a href="/blog.html" style="color:rgba(255,255,255,0.9);font-size:0.72rem;font-weight:600;padding:0.25rem 0.55rem;border-radius:0.3rem;text-decoration:none;background:rgba(255,255,255,0.2);white-space:nowrap;">Blog</a>
     </div>
-    <div style="display:flex;align-items:center;gap:0.35rem;flex-shrink:0;">
-      <button id="theme-toggle" aria-label="Toggle theme" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:0.4rem;color:white;width:1.8rem;height:1.8rem;display:flex;align-items:center;justify-content:center;font-size:0.85rem;cursor:pointer;">☀️</button>
+    <div style="display:flex;align-items:center;gap:0.3rem;flex-shrink:0;">
+      <button id="theme-toggle" aria-label="Toggle theme" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:0.4rem;color:white;width:1.75rem;height:1.75rem;display:flex;align-items:center;justify-content:center;font-size:0.85rem;cursor:pointer;">☀️</button>
     </div>
   </div>
 </header>
@@ -195,6 +196,47 @@ body{background:var(--bg);color:var(--fg);min-height:100vh;}
         <p class="muted" style="font-size:0.9rem;line-height:1.6;">Commission statements are full of jargon and adjustments. Here's a plain-English guide to every line — and how to spot errors before they cost you money.</p>
         <div style="margin-top:1.25rem;display:flex;align-items:center;gap:0.5rem;" class="post-date">
           <span>📅 March 2025</span><span>·</span><span>6 min read</span>
+        </div>
+      </div>
+    </a>
+    <a href="/Blog/saas-sales-commission-guide.html" class="post-card">
+      <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);padding:2rem 1.5rem;">
+        <span style="font-size:2.5rem;">💻</span>
+      </div>
+      <div style="padding:1.5rem;">
+        <p class="post-meta">SaaS Sales</p>
+        <h2 style="font-size:1.2rem;font-weight:800;margin:0.5rem 0 0.75rem;line-height:1.3;">SaaS Sales Commission Guide: How Software Reps Get Paid</h2>
+        <p class="muted" style="font-size:0.9rem;line-height:1.6;">ARR, ACV, clawbacks, accelerators and SPIFFs — a complete guide to software sales compensation and how to maximise your earnings.</p>
+        <div style="margin-top:1.25rem;display:flex;align-items:center;gap:0.5rem;" class="post-date">
+          <span>📅 June 2025</span><span>·</span><span>9 min read</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="/Blog/insurance-agent-commission-guide.html" class="post-card">
+      <div style="background:linear-gradient(135deg,#0a3d62,#1e6091);padding:2rem 1.5rem;">
+        <span style="font-size:2.5rem;">🛡️</span>
+      </div>
+      <div style="padding:1.5rem;">
+        <p class="post-meta">Insurance</p>
+        <h2 style="font-size:1.2rem;font-weight:800;margin:0.5rem 0 0.75rem;line-height:1.3;">Insurance Agent Commission Guide: How Agents Get Paid</h2>
+        <p class="muted" style="font-size:0.9rem;line-height:1.6;">First-year vs. renewal commissions, captive vs. independent rates, chargebacks and override structures — the complete insurance commission breakdown.</p>
+        <div style="margin-top:1.25rem;display:flex;align-items:center;gap:0.5rem;" class="post-date">
+          <span>📅 May 2025</span><span>·</span><span>8 min read</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="/Blog/automotive-sales-commission-guide.html" class="post-card">
+      <div style="background:linear-gradient(135deg,#2c3e50,#4a6741);padding:2rem 1.5rem;">
+        <span style="font-size:2.5rem;">🚗</span>
+      </div>
+      <div style="padding:1.5rem;">
+        <p class="post-meta">Automotive</p>
+        <h2 style="font-size:1.2rem;font-weight:800;margin:0.5rem 0 0.75rem;line-height:1.3;">Automotive Sales Commission: How Car Salespeople Really Get Paid</h2>
+        <p class="muted" style="font-size:0.9rem;line-height:1.6;">Front-end gross, back-end gross, pack fees, minis and volume bonuses — everything you need to know about car dealership commission structures.</p>
+        <div style="margin-top:1.25rem;display:flex;align-items:center;gap:0.5rem;" class="post-date">
+          <span>📅 April 2025</span><span>·</span><span>8 min read</span>
         </div>
       </div>
     </a>
